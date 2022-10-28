@@ -2,6 +2,7 @@ import React from 'react';
 import { defaultButtonProps } from './consts';
 import { ButtonProps, DefaultButtonProps } from './types';
 
+/** Button component */
 export const Button: React.FC<ButtonProps> = (_p) => {
   const p = _p as ButtonProps & DefaultButtonProps;
 

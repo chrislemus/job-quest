@@ -1,5 +1,6 @@
 import { defaultButtonProps } from '@app/common/components/atoms/button/consts';
 
+/** Button component props. */
 export type ButtonProps = {
   variant?: 'primary' | 'secondary';
   element?: 'button' | 'a';
@@ -20,4 +21,5 @@ export type ButtonProps = {
   children?: React.ReactNode[] | React.ReactNode;
 };
 
+/** Button component default props. */
 export type DefaultButtonProps = typeof defaultButtonProps;

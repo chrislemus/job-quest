@@ -1,8 +1,8 @@
 import { Button } from '@app/common/components/atoms/button';
-import { useState } from 'react';
 import { useMenuActiveClass } from '../hooks';
 
-export const NavBar1 = () => {
+/** Navbar for non-logged in users. */
+export const NavBar1: React.FC = () => {
   const { onMenuClick, menuActiveClass } = useMenuActiveClass();
 
   return (
