@@ -34,11 +34,6 @@ export const NavBar1: React.FC = () => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <Button element="a">
-                {' '}
-                <strong>Sign up</strong>
-              </Button>
-
               <Button element="a" color="light">
                 Log in
               </Button>
