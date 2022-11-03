@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import { Button } from '@app/common/components/atoms/button';
-import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
 const LoginModal: React.FC<{ active: boolean; toggleActive: () => void }> = (
