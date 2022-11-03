@@ -32,14 +32,6 @@ const Home: NextPage = () => {
   const [logIn, setLogIn] = useState<boolean>(false);
   const toggleLogin = () => setLogIn((a) => !a);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => console.log(data);
-
   return (
     <>
       <main>
