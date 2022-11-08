@@ -7,10 +7,6 @@ export default function RootLayout(p: PropsWithChildren<{}>) {
       <head>
         <title>Job Quest</title>
         <link rel="icon" href="/favicon.ico" />
-        <script
-          src="https://kit.fontawesome.com/30c44256a9.js"
-          crossorigin="anonymous"
-        ></script>
       </head>
       <body>{p.children}</body>
     </html>
