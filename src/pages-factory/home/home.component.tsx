@@ -24,15 +24,14 @@ export const Home: NextPage = () => {
               fugiat aliqua.
             </p>
 
-            <Button>Get Started</Button>
-
-            <button
-              className="button is-light"
+            <Button color="primary">Get Started</Button>
+            <Button
+              variant="light"
               onClick={toggleLogin}
-              style={{ marginLeft: '1rem' }}
+              customStyle={{ marginLeft: '1rem' }}
             >
               LogIn
-            </button>
+            </Button>
           </div>
           <div className="column ">
             <img
