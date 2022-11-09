@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
 
 type ReactBtn = React.DetailedHTMLProps<
@@ -7,6 +8,8 @@ type ReactBtn = React.DetailedHTMLProps<
 
 /** Button component props. */
 export type ButtonProps = {
+  disabled?: boolean;
+  loading?: boolean;
   type: ReactBtn['type'];
   size?: 'small' | 'normal' | 'medium' | 'large';
   onClick?: ReactBtn['onClick'];
@@ -31,10 +34,13 @@ export function Button(_p: PropsWithChildren<ButtonProps>) {
 
   return (
     <button
-      className={`button is-${p.size} ${color} ${variant}`}
+      className={clsx('button', `is-${p.size} ${color} ${variant}`, {
+        'is-loading': p.loading,
+      })}
       type={p.type}
       onClick={p.onClick}
       style={p.customStyle}
+      disabled={p.disabled || p.loading}
     >
       {p.children}
     </button>
