@@ -6,6 +6,7 @@ import { PropsWithChildren } from 'react';
 const queryClient = new QueryClient();
 
 export default function RootLayout(p: PropsWithChildren<{}>) {
+  console.log('root layout rendered');
   return (
     <html>
       <head>
