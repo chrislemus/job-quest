@@ -1,13 +1,16 @@
 'use client';
 import clsx from 'clsx';
+import { RouterAuthGuard } from '@src/features/auth/ui';
 import { PropsWithChildren, useState } from 'react';
 
 export default function Layout(p: PropsWithChildren<{}>) {
   return (
-    <div className="has-background-white-bis">
-      <NavBar />
-      {p.children}
-    </div>
+    <RouterAuthGuard>
+      <div className="has-background-white-bis">
+        <NavBar />
+        {p.children}
+      </div>
+    </RouterAuthGuard>
   );
 }
 
@@ -18,7 +21,7 @@ function NavBar() {
   return (
     <nav className="navbar is-transparent ">
       <div className="navbar-brand">
-        <a className="navbar-item" href="https://bulma.io">
+        <a className="navbar-item" href="/">
           <img
             src="https://bulma.io/images/bulma-logo.png"
             alt="Bulma: a modern CSS framework based on Flexbox"

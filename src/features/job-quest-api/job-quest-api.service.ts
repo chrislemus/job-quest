@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { authService } from '@src/features/auth';
 import { jobQuestApiConfig } from './job-quest-api.config';
+import { authLocalStore } from '../auth/auth-local.store';
 
 const apiUrls = jobQuestApiConfig.urls;
 
@@ -11,7 +11,7 @@ export const jobQuestApiService = axios.create({
 
 jobQuestApiService.interceptors.request.use((config) => {
   let token: string | undefined;
-  const tokens = authService.getTokens();
+  const tokens = authLocalStore.getTokens();
 
   if (config?.url === apiUrls.auth.refresh) {
     token = tokens?.refresh_token;
@@ -37,7 +37,7 @@ jobQuestApiService.interceptors.response.use(
       config?.url !== apiUrls.auth.refresh &&
       err.response
     ) {
-      const tokens = authService.getTokens();
+      const tokens = authLocalStore.getTokens();
       if (err.response.status === 401 && tokens) {
         if (!config._retry) {
           config._retry = true;
@@ -50,13 +50,13 @@ jobQuestApiService.interceptors.response.use(
               { headers: { Authorization: `Bearer ${refreshToken}` } }
             );
             const { access_token } = res.data;
-            authService.updateLocalAccessToken(access_token);
+            authLocalStore.updateToken('access_token', access_token);
             return jobQuestApiService(config);
           } catch (_error) {
             return Promise.reject(_error);
           }
         } else {
-          authService.removeTokens();
+          authLocalStore.removeTokens();
         }
       }
     }

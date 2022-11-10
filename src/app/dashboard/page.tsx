@@ -1,18 +1,24 @@
 'use client';
-import { useAuthCtx } from '@src/features/auth';
+import { storeAsync } from '@src/storeAsync';
 import { useUserCtx } from '@src/features/user';
 import { Button } from '@src/ui/atoms/button';
 
 export default function Dashboard() {
-  const userCtx = useUserCtx();
-  const authCtx = useAuthCtx();
+  const user = storeAsync.user.profile();
+
+  const logoutStore = storeAsync.auth.logout();
 
   return (
     <>
       <main>
         <h1>hi</h1>
-        <p>{JSON.stringify(userCtx.profile.data)}</p>
-        <Button onClick={authCtx.logout}>Log Out</Button>
+        <p>{JSON.stringify(user.data)}</p>
+        <Button
+          onClick={() => logoutStore.mutate()}
+          loading={logoutStore.isLoading}
+        >
+          Log Out
+        </Button>
       </main>
     </>
   );

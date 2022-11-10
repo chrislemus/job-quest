@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { authLocalStore } from './auth-local.store';
 import { authService } from './auth.service';
 
 const initialState = {
@@ -24,7 +25,7 @@ export const AuthProvider = (p: PropsWithChildren<{}>) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const validateUserAuth = () => {
-    const tokens = authService.getTokens();
+    const tokens = authLocalStore.getTokens();
     setIsAuthenticated(!!tokens);
   };
 
@@ -42,17 +43,15 @@ export const AuthProvider = (p: PropsWithChildren<{}>) => {
       return res;
     });
 
-  useEffect(() => {
-    const dashboardUrl = '/dashboard';
-    const inDashboard = pathname.startsWith(dashboardUrl);
-    console.log('isAuthenticated', isAuthenticated);
-    console.log('inDashboard', inDashboard);
-    if (isAuthenticated && !inDashboard) {
-      router.push(dashboardUrl);
-    } else if (!isAuthenticated && inDashboard) {
-      router.push('/?login=true');
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   const dashboardUrl = '/dashboard';
+  //   const inDashboard = pathname.startsWith(dashboardUrl);
+  //   if (isAuthenticated && !inDashboard) {
+  //     router.push(dashboardUrl);
+  //   } else if (!isAuthenticated && inDashboard) {
+  //     router.push('/?login=true');
+  //   }
+  // }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
