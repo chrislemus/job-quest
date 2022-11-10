@@ -1,3 +1,4 @@
+'use client';
 import { ModalCard } from '@src/ui/molecules';
 import { Button } from '@src/ui/atoms/button';
 import { PropsWithoutRef } from 'react';

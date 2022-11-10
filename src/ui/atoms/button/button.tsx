@@ -10,6 +10,7 @@ type ReactBtn = React.DetailedHTMLProps<
 export type ButtonProps = {
   disabled?: boolean;
   loading?: boolean;
+  isFullWidth?: boolean;
   type: ReactBtn['type'];
   size?: 'small' | 'normal' | 'medium' | 'large';
   onClick?: ReactBtn['onClick'];
@@ -36,6 +37,7 @@ export function Button(_p: PropsWithChildren<ButtonProps>) {
     <button
       className={clsx('button', `is-${p.size} ${color} ${variant}`, {
         'is-loading': p.loading,
+        'is-fullwidth': p.isFullWidth,
       })}
       type={p.type}
       onClick={p.onClick}

@@ -1,15 +1,28 @@
 'use client';
 import { Button } from '@src/ui/atoms/button';
-import { useState } from 'react';
+import { PropsWithoutRef, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useBoolean } from '@src/hooks';
 import { LoginModal } from './ui/login-modal';
 
-export default function Home() {
-  const [logIn, setLogIn] = useState<boolean>(false);
-  const toggleLogin = () => setLogIn((a) => !a);
+interface HomeProps {
+  searchParams?: {
+    login?: boolean;
+  };
+}
+
+export default function Home(p: PropsWithoutRef<HomeProps>) {
+  const [logIn, setLogin] = useBoolean();
+
+  const logInRedirect = useSearchParams().get('login');
+
+  useEffect(() => {
+    if (logInRedirect) setLogin.on();
+  }, [logInRedirect]);
 
   return (
     <main>
-      <LoginModal active={logIn} toggleActive={toggleLogin} />
+      <LoginModal active={logIn} toggleActive={setLogin.toggle} />
       <section
         className="section has-background-white-bis columns is-vcentered is-multiline"
         style={{ paddingBottom: '7rem' }}
@@ -24,7 +37,10 @@ export default function Home() {
           </p>
 
           <Button color="primary">Get Started</Button>
-          <Button onClick={toggleLogin} customStyle={{ marginLeft: '1rem' }}>
+          <Button
+            onClick={setLogin.toggle}
+            customStyle={{ marginLeft: '1rem' }}
+          >
             Log In
           </Button>
         </div>

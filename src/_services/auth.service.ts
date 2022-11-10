@@ -14,9 +14,14 @@ const login = (email: string, password: string) => {
   });
 };
 
-const logout = () => tokenService.removeUser();
+const logout = () => {
+  return apiService.post('/auth/logout').then((res) => {
+    tokenService.removeUser();
+    return res;
+  });
+};
 
-const getCurrentUser = () => tokenService.getUser();
+const getCurrentUser = () => tokenService.getAuthUser();
 
 export const authService = {
   register,

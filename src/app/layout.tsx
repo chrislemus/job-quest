@@ -2,11 +2,12 @@
 import '@src/styles/bulma.sass';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
+import { UserProvider } from '@root/src/features/user/user.context';
+import { AuthProvider } from '@src/features/auth';
 
 const queryClient = new QueryClient();
 
 export default function RootLayout(p: PropsWithChildren<{}>) {
-  console.log('root layout rendered');
   return (
     <html>
       <head>
@@ -15,7 +16,9 @@ export default function RootLayout(p: PropsWithChildren<{}>) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          {p.children}
+          <AuthProvider>
+            <UserProvider>{p.children}</UserProvider>
+          </AuthProvider>
         </QueryClientProvider>
       </body>
     </html>

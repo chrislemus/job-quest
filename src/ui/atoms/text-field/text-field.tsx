@@ -1,4 +1,3 @@
-'use client';
 import { clsx } from 'clsx';
 import React, { DOMAttributes } from 'react';
 

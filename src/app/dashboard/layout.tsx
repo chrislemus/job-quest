@@ -1,27 +1,12 @@
 'use client';
-import { userService } from '@src/services';
 import clsx from 'clsx';
-import { useRouter } from 'next/router';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 
 export default function Layout(p: PropsWithChildren<{}>) {
-  const router = useRouter();
-
-  useEffect(() => {
-    console.log(router);
-    router?.push('/');
-  }, [router?.push]);
-
-  const [user, setUser] = useState('second');
-  useEffect(() => {
-    userService.getProfile().then((user) => setUser(JSON.stringify(user)));
-  }, []);
-
   return (
     <div className="has-background-white-bis">
       <NavBar />
-      {user}
-      <div className="column is-10 has-background-white-bis">s</div>
+      {p.children}
     </div>
   );
 }
@@ -29,6 +14,7 @@ export default function Layout(p: PropsWithChildren<{}>) {
 function NavBar() {
   const [activeMenu, setActiveMenu] = useState(false);
   const toggleActiveMenu = () => setActiveMenu((s) => !s);
+
   return (
     <nav className="navbar is-transparent ">
       <div className="navbar-brand">
