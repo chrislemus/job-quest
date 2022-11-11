@@ -1,5 +1,5 @@
 import { Modal, ModalContent, ModalTitle } from '@common/ui/molecules';
-import { Button } from '@common/ui/atoms/button';
+import { Button } from '@common/ui/atoms';
 import { PropsWithoutRef } from 'react';
 
 interface SignUpModalProps {

@@ -1,13 +1,9 @@
 'use client';
-import { Button } from '@common/ui/atoms/button';
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useBoolean } from '@common/hooks';
 import { LoginModal } from '@app/home/ui/login-modal';
-import { Typography } from '@common/ui/atoms/typography';
-import { Box } from '@common/ui/atoms/box';
-import { Container } from '@common/ui/atoms/container';
-import { Grid } from '@common/ui/atoms/grid';
+import { Container, Grid, Box, Typography, Button } from '@common/ui/atoms';
 
 export default function Home() {
   const [logIn, setLogin] = useBoolean();

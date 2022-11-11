@@ -6,9 +6,8 @@ import {
   ModalContentText,
   ModalTitle,
 } from '@common/ui/molecules';
-import { Button } from '@common/ui/atoms/button';
 import { PropsWithoutRef } from 'react';
-import { TextField } from '@common/ui/atoms/text-field';
+import { TextField, Button } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@core/auth/ui';
 import { FormProvider, useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
