@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useBoolean } from '@common/hooks';
 import { LoginModal } from '@app/home/ui/login-modal';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-
-import Grid from '@mui/material/Grid';
+import { Typography } from '@common/ui/atoms/typography';
+import { Box } from '@common/ui/atoms/box';
+import { Container } from '@common/ui/atoms/container';
+import { Grid } from '@common/ui/atoms/grid';
 
 export default function Home() {
   const [logIn, setLogin] = useBoolean();
@@ -19,63 +19,42 @@ export default function Home() {
   }, [logInRedirect]);
 
   return (
-    <Container
-      maxWidth="lg"
-      style={{
-        background: 'hsl(0, 0%, 98%)',
-        paddingTop: '5rem',
-        paddingBottom: '5rem',
-      }}
-    >
-      <main>
+    <main style={{ background: 'hsl(0, 0%, 98%)' }}>
+      <Container maxWidth="md">
         <LoginModal active={logIn} toggleActive={setLogin.toggle} />
-        {/* <section
-        // className="section has-background-white-bis columns is-vcentered is-multiline"
-        // style={{ paddingBottom: '7rem' }}
-        > */}
-        {/* <Box sx={{ flexGrow: 1 }}> */}
-        <Grid container spacing={2}>
-          <Grid xs={6}>
-            {/* <div className="column m-5"> */}
-            <h1 className="title is-1 mb-0">Streamline your</h1>
-            <h1 className="title is-1 has-text-primary">Job Search</h1>
-            <p className="mb-4">
+        <Grid container pt={9} pb={9} rowSpacing={{ xs: 5 }}>
+          <Grid xs={12} alignSelf="center" textAlign="center">
+            <Typography variant="h3" component="h1" fontWeight="bold">
+              Job Search Productivity
+            </Typography>
+            <Typography variant="body1" component="h1" pb={5} pt={1}>
               Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
               lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecata
               fugiat aliqua.
-            </p>
-
+            </Typography>
             <Button color="primary" variant="contained">
               Get Started
             </Button>
-            <Button
-              onClick={setLogin.toggle}
-              customStyle={{ marginLeft: '1rem' }}
-            >
-              Log In
-            </Button>
-            {/* </div> */}
+            <Button onClick={setLogin.toggle}>Log In</Button>
           </Grid>
-          <Grid xs={6}>
-            {/* <div className="column"> */}
-            <img
-              className="image"
-              // height="100%"
-              src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"
-              alt="woman-on-phone"
-              style={{
-                display: 'block',
-                height: 'auto',
-                width: ' 100%',
-                borderRadius: '1rem',
-              }}
-            />
-            {/* </div>{' '} */}
+          <Grid xs={12}>
+            <Box>
+              <img
+                width="100%"
+                src="https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"
+                alt="woman-on-phone"
+                style={{
+                  display: 'block',
+                  marginRight: 'auto',
+                  marginLeft: 'auto',
+                  borderRadius: '1rem',
+                  maxWidth: '850px',
+                }}
+              />
+            </Box>
           </Grid>
         </Grid>
-        {/* </Box> */}
-        {/* </section> */}
-      </main>
-    </Container>
+      </Container>
+    </main>
   );
 }

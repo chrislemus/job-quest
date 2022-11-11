@@ -2,7 +2,6 @@
 import {
   Modal,
   ModalActions,
-  ModalCard,
   ModalContent,
   ModalContentText,
   ModalTitle,
@@ -29,7 +28,6 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
     },
     resolver: formValidator(User),
   });
-  console.log(form.formState);
 
   const loginMutation = useLogin();
 
@@ -43,18 +41,14 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
     }
   }
   const onFormSubmit = () =>
-    form.handleSubmit(
-      async (data: User) => {
-        console.log(data);
-        await loginMutation.mutate(data);
-      },
-      (d) => console.log(d)
-    );
+    form.handleSubmit(async (data: User) => {
+      await loginMutation.mutate(data);
+    });
 
   return (
     <RouterAuthGuard>
       <FormProvider {...form}>
-        <form onSubmit={onFormSubmit()}>
+        <form onSubmit={onFormSubmit()} id="login">
           <Modal active={p.active} toggleActive={p.toggleActive}>
             <ModalTitle>Log In</ModalTitle>
             <ModalContent>
@@ -86,7 +80,12 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
               <Button
                 color="primary"
                 type="submit"
-                onClick={onFormSubmit()}
+                variant="contained"
+                form="login"
+                disabled={
+                  form.formState.isSubmitting ||
+                  form.formState.isSubmitSuccessful
+                }
                 loading={form.formState.isSubmitting}
               >
                 Log In

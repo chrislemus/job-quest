@@ -7,8 +7,7 @@ import { store } from '@common/store/store';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 
 const queryClient = new QueryClient();
-const theme = createTheme();
-
+export const theme = createTheme();
 export default function RootLayout(p: PropsWithChildren<{}>) {
   return (
     <html>
