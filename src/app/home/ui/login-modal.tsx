@@ -1,18 +1,19 @@
 'use client';
+import { PropsWithoutRef } from 'react';
+import { TextField, Button } from '@common/ui/atoms';
+import { RouterAuthGuard } from '@core/auth/ui';
+import { useForm } from 'react-hook-form';
+import { formValidator } from '@common/utils';
+import { User } from '@app/home/dto';
+import { useLogin } from '@core/auth/mutation-hooks';
 import {
+  Form,
   Modal,
   ModalActions,
   ModalContent,
   ModalContentText,
   ModalTitle,
 } from '@common/ui/molecules';
-import { PropsWithoutRef } from 'react';
-import { TextField, Button } from '@common/ui/atoms';
-import { RouterAuthGuard } from '@core/auth/ui';
-import { FormProvider, useForm } from 'react-hook-form';
-import { formValidator } from '@common/utils';
-import { User } from '@app/home/dto';
-import { useLogin } from '@core/auth/mutation-hooks';
 
 interface LoginModalProps {
   active: boolean;
@@ -39,63 +40,62 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
       errorMsg = 'server error, unable to login';
     }
   }
-  const onFormSubmit = () =>
-    form.handleSubmit(async (data: User) => {
-      await loginMutation.mutate(data);
-    });
 
   return (
     <RouterAuthGuard>
-      <FormProvider {...form}>
-        <form onSubmit={onFormSubmit()} id="login">
-          <Modal active={p.active} toggleActive={p.toggleActive}>
-            <ModalTitle>Log In</ModalTitle>
-            <ModalContent>
-              <ModalContentText>
-                Welcome back! Enter your account info below to continue.
-              </ModalContentText>
+      <Form
+        id="login"
+        formMethods={form}
+        onValidSubmit={async (data) => {
+          await loginMutation.mutate(data);
+        }}
+      >
+        <Modal active={p.active} toggleActive={p.toggleActive}>
+          <ModalTitle>Log In</ModalTitle>
+          <ModalContent>
+            <ModalContentText>
+              Welcome back! Enter your account info below to continue.
+            </ModalContentText>
 
-              {errorMsg && <ModalContentText>{errorMsg}</ModalContentText>}
-              <br />
-              <TextField
-                name="email"
-                type="email"
-                label="Email"
-                fullWidth
-                isInvalid={!!form.formState.errors?.email?.message}
-                helperText={form.formState.errors?.email?.message}
-              />
+            {errorMsg && <ModalContentText>{errorMsg}</ModalContentText>}
+            <br />
+            <TextField
+              name="email"
+              type="email"
+              label="Email"
+              fullWidth
+              isInvalid={!!form.formState.errors?.email?.message}
+              helperText={form.formState.errors?.email?.message}
+            />
 
-              <TextField
-                name="password"
-                type="password"
-                label="Password"
-                fullWidth
-                isInvalid={!!form.formState.errors?.password?.message}
-                helperText={form.formState.errors?.password?.message}
-              />
-            </ModalContent>
-            <ModalActions>
-              <Button
-                color="primary"
-                type="submit"
-                variant="contained"
-                form="login"
-                disabled={
-                  form.formState.isSubmitting ||
-                  form.formState.isSubmitSuccessful
-                }
-                loading={form.formState.isSubmitting}
-              >
-                Log In
-              </Button>
-              <Button onClick={p.toggleActive} type="button">
-                Cancel
-              </Button>
-            </ModalActions>
-          </Modal>
-        </form>
-      </FormProvider>
+            <TextField
+              name="password"
+              type="password"
+              label="Password"
+              fullWidth
+              isInvalid={!!form.formState.errors?.password?.message}
+              helperText={form.formState.errors?.password?.message}
+            />
+          </ModalContent>
+          <ModalActions>
+            <Button
+              color="primary"
+              type="submit"
+              variant="contained"
+              form="login"
+              disabled={
+                form.formState.isSubmitting || form.formState.isSubmitSuccessful
+              }
+              loading={form.formState.isSubmitting}
+            >
+              Log In
+            </Button>
+            <Button onClick={p.toggleActive} type="button">
+              Cancel
+            </Button>
+          </ModalActions>
+        </Modal>
+      </Form>
     </RouterAuthGuard>
   );
 }
