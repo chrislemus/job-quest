@@ -1,13 +1,13 @@
 'use client';
-import { ModalCard } from '@src/ui/molecules';
-import { Button } from '@src/ui/atoms/button';
+import { ModalCard } from '@common/ui/molecules';
+import { Button } from '@common/ui/atoms/button';
 import { PropsWithoutRef } from 'react';
-import { TextField } from '@src/ui/atoms/text-field';
-import { RouterAuthGuard } from '@src/features/auth/ui';
+import { TextField } from '@common/ui/atoms/text-field';
+import { RouterAuthGuard } from '@core/auth/ui';
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@root/src/utils';
+import { formValidator } from '@common/utils';
 import { User } from '@app/dto';
-import { storeAsync } from '@src/storeAsync';
+import { useLogin } from '@core/auth/mutation-hooks';
 
 interface LoginModalProps {
   active: boolean;
@@ -23,10 +23,10 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
     resolver: formValidator(User),
   });
 
-  const loginStore = storeAsync.auth.login();
+  const loginMutation = useLogin();
 
   let errorMsg: string | undefined;
-  const errorStatus = loginStore?.error?.response?.status;
+  const errorStatus = loginMutation?.error?.response?.status;
   if (errorStatus) {
     if (errorStatus === 401) {
       errorMsg = 'Invalid credentials, please try again';
@@ -39,7 +39,7 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
     <RouterAuthGuard>
       <form
         onSubmit={form.handleSubmit(async (data: User) => {
-          await loginStore.mutate(data);
+          await loginMutation.mutate(data);
         })}
       >
         <ModalCard

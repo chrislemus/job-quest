@@ -1,8 +1,8 @@
 'use client';
-import { Button } from '@src/ui/atoms/button';
+import { Button } from '@common/ui/atoms/button';
 import { PropsWithoutRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useBoolean } from '@src/hooks';
+import { useBoolean } from '@common/hooks';
 import { LoginModal } from './ui/login-modal';
 
 interface HomeProps {

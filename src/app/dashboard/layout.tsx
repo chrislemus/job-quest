@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import { RouterAuthGuard } from '@src/features/auth/ui';
+import { RouterAuthGuard } from '@core/auth/ui';
 import { PropsWithChildren, useState } from 'react';
 
 export default function Layout(p: PropsWithChildren<{}>) {

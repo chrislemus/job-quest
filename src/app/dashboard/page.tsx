@@ -1,12 +1,11 @@
 'use client';
-import { storeAsync } from '@src/storeAsync';
-import { useUserCtx } from '@src/features/user';
-import { Button } from '@src/ui/atoms/button';
+import { useProfile } from '@core/user/mutation-hooks';
+import { useLogout } from '@core/auth/mutation-hooks';
+import { Button } from '@common/ui/atoms/button';
 
 export default function Dashboard() {
-  const user = storeAsync.user.profile();
-
-  const logoutStore = storeAsync.auth.logout();
+  const user = useProfile();
+  const logoutStore = useLogout();
 
   return (
     <>

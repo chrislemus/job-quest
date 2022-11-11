@@ -1,5 +1,5 @@
-import { ModalCard } from '@src/ui/molecules';
-import { Button } from '@src/ui/atoms/button';
+import { ModalCard } from '@common/ui/molecules';
+import { Button } from '@common/ui/atoms/button';
 import { PropsWithoutRef } from 'react';
 
 interface SignUpModalProps {
