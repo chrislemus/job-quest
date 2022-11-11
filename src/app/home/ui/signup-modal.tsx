@@ -4,8 +4,7 @@ import { TextField, Button, Typography } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@core/auth/ui';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
-import { useLogin } from '@core/auth/mutation-hooks';
-import { UserLogin } from '@core/auth/dto';
+import { useSignup } from '@core/auth/mutation-hooks';
 import {
   Form,
   Modal,
@@ -14,45 +13,52 @@ import {
   ModalContentText,
   ModalTitle,
 } from '@common/ui/molecules';
+import { UserSignup } from '@core/auth/dto';
 
 interface LoginModalProps {
   active: boolean;
   toggleActive: () => void;
 }
 
-export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
-  const formId = 'login';
-  const form = useForm<UserLogin>({
-    resolver: formValidator(UserLogin),
+export function SignUpModal(p: PropsWithoutRef<LoginModalProps>) {
+  const formId = 'signup';
+  const form = useForm<UserSignup>({
+    resolver: formValidator(UserSignup),
   });
 
-  const loginMutation = useLogin();
+  const signUpMutation = useSignup();
 
   let errorMsg: string | undefined;
-  const errorStatus = loginMutation?.error?.response?.status;
+  const errorResponseData = signUpMutation?.error?.response?.data as any;
+  const errorStatus = errorResponseData?.statusCode;
+  const errorResMessages = errorResponseData?.message;
 
   if (errorStatus) {
-    if (errorStatus === 401) {
-      errorMsg = 'Invalid credentials, please try again';
+    if (errorStatus === 400 && errorResMessages) {
+      errorMsg = errorResMessages.join(', ');
     } else {
       errorMsg = 'server error, unable to login';
     }
   }
+
+  // let errorMsg =
+  //   signUpMutation?.error?.response &&
+  //   JSON.stringify(signUpMutation?.error?.response?.data);
 
   return (
     <RouterAuthGuard>
       <Form
         id={formId}
         formMethods={form}
-        onValidSubmit={(data) => {
-          loginMutation.mutate(data);
+        onValidSubmit={async (data) => {
+          await signUpMutation.mutate(data);
         }}
       >
         <Modal active={p.active} toggleActive={p.toggleActive}>
-          <ModalTitle>Log In</ModalTitle>
+          <ModalTitle>Sign Up</ModalTitle>
           <ModalContent>
             <ModalContentText>
-              Welcome back! Enter your account info below to continue.
+              Welcome, please enter info below to continue.
             </ModalContentText>
 
             {errorMsg && (
@@ -62,6 +68,22 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
             )}
             <br />
 
+            <TextField
+              name="firstName"
+              type="text"
+              label="First Name"
+              fullWidth
+              isInvalid={!!form.formState.errors?.firstName?.message}
+              helperText={form.formState.errors?.firstName?.message}
+            />
+            <TextField
+              name="lastName"
+              type="text"
+              label="Last Name"
+              fullWidth
+              isInvalid={!!form.formState.errors?.lastName?.message}
+              helperText={form.formState.errors?.lastName?.message}
+            />
             <TextField
               name="email"
               type="email"
@@ -86,10 +108,10 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
               type="submit"
               variant="contained"
               form={formId}
-              disabled={form.formState.isSubmitting || loginMutation.isLoading}
-              loading={form.formState.isSubmitting || loginMutation.isLoading}
+              disabled={form.formState.isSubmitting || signUpMutation.isLoading}
+              loading={form.formState.isSubmitting || signUpMutation.isLoading}
             >
-              Log In
+              Sign Up
             </Button>
             <Button onClick={p.toggleActive} type="button">
               Cancel

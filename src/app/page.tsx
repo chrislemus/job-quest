@@ -4,20 +4,25 @@ import { useSearchParams } from 'next/navigation';
 import { useBoolean } from '@common/hooks';
 import { LoginModal } from '@app/home/ui/login-modal';
 import { Container, Grid, Box, Typography, Button } from '@common/ui/atoms';
+import { SignUpModal } from './home/ui';
 
 export default function Home() {
   const [logIn, setLogin] = useBoolean();
+  const [signUp, setSignUp] = useBoolean();
 
   const logInRedirect = useSearchParams().get('login');
 
   useEffect(() => {
-    if (logInRedirect) setLogin.on();
+    if (logInRedirect) {
+      setLogin.on();
+    }
   }, [logInRedirect]);
 
   return (
     <main style={{ background: 'hsl(0, 0%, 98%)' }}>
       <Container maxWidth="md">
         <LoginModal active={logIn} toggleActive={setLogin.toggle} />
+        <SignUpModal active={signUp} toggleActive={setSignUp.toggle} />
         <Grid container pt={9} pb={9} rowSpacing={{ xs: 5 }}>
           <Grid xs={12} alignSelf="center" textAlign="center">
             <Typography variant="h3" component="h1" fontWeight="bold">
@@ -28,7 +33,11 @@ export default function Home() {
               lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecata
               fugiat aliqua.
             </Typography>
-            <Button color="primary" variant="contained">
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={setSignUp.toggle}
+            >
               Get Started
             </Button>
             <Button onClick={setLogin.toggle}>Log In</Button>

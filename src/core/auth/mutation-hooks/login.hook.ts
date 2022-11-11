@@ -1,17 +1,17 @@
-import { User } from '@app/home/dto';
 import { useDispatch } from '@common/store';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import { authService } from '../services';
 import { refreshAuthStatus as _refreshAuthStatus } from '../store';
 import { useEffect } from 'react';
+import { UserLogin } from '@core/auth/dto';
 
 export const useLogin = () => {
   const dispatch = useDispatch();
 
-  const mutation = useMutation<AxiosResponse, AxiosError, User, unknown>({
+  const mutation = useMutation<AxiosResponse, AxiosError, UserLogin, unknown>({
     mutationKey: ['authService.login'],
-    mutationFn: (user: { email: string; password: string }) =>
+    mutationFn: (user: UserLogin) =>
       authService.login(user.email, user.password),
   });
 

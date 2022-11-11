@@ -1,8 +1,14 @@
 import { jobQuestHttp } from '@core/http/job-quest';
+import { UserSignup } from '@core/auth/dto';
 import { authLocalStore } from './auth-local-store.service';
 
-const signup = (email: string, password: string) => {
-  return jobQuestHttp.post('/auth/signup', { email, password });
+const signup = (user: UserSignup) => {
+  return jobQuestHttp.post('/auth/signup', user).then((res) => {
+    if (res?.data?.access_token) {
+      authLocalStore.setTokens(res.data);
+    }
+    return res;
+  });
 };
 
 const login = (email: string, password: string) => {
