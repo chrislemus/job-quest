@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, { PropsWithChildren } from 'react';
+import Btn from '@mui/material/Button';
 
 type ReactBtn = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -8,45 +9,43 @@ type ReactBtn = React.DetailedHTMLProps<
 
 /** Button component props. */
 export type ButtonProps = {
-  disabled?: boolean;
+  color?: 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
   loading?: boolean;
-  isFullWidth?: boolean;
-  type: ReactBtn['type'];
-  size?: 'small' | 'normal' | 'medium' | 'large';
-  onClick?: ReactBtn['onClick'];
-  color?: 'primary' | 'link' | 'info' | 'success' | 'warning' | 'danger';
-  variant?: 'white' | 'light' | 'dark' | 'black' | 'text' | 'ghost';
+  type?: 'button' | 'reset' | 'submit';
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  size?: 'small' | 'medium' | 'large';
+  variant?: 'text' | 'outlined' | 'contained';
   children?: React.ReactNode[] | React.ReactNode;
   customStyle?: ReactBtn['style'];
 };
 
-/** Default button props defined as const to extract specified value type. */
-export const defaultButtonProps = {
-  size: 'normal',
-  type: 'button',
-} as const;
-
 /** Button component */
-export function Button(_p: PropsWithChildren<ButtonProps>) {
-  const p = _p as ButtonProps & typeof defaultButtonProps;
-
-  const color = p.color ? `is-${p.color}` : '';
-  const variant = p.variant ? `is-${p.variant}` : '';
-
+export function Button(p: PropsWithChildren<ButtonProps>) {
+  const dynamicProps = {
+    loading: (p.loading || undefined) as true | undefined,
+  };
+  console.log('p.loading', p.loading);
+  const isDisabled = p.disabled || p.loading;
+  console.log('isDisabled', isDisabled);
   return (
-    <button
-      className={clsx('button', `is-${p.size} ${color} ${variant}`, {
-        'is-loading': p.loading,
-        'is-fullwidth': p.isFullWidth,
-      })}
+    <Btn
+      {...dynamicProps}
+      color={p.color}
       type={p.type}
-      onClick={p.onClick}
+      onClick={(e) => {
+        if (!isDisabled && p.onClick) {
+          p?.onClick(e);
+        }
+      }}
       style={p.customStyle}
-      disabled={p.disabled || p.loading}
+      disabled={isDisabled}
+      fullWidth={p.fullWidth}
+      size={p.size}
+      variant={p.variant}
     >
       {p.children}
-    </button>
+    </Btn>
   );
 }
-
-Button.defaultProps = defaultButtonProps;

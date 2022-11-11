@@ -1,4 +1,4 @@
-import { User } from '@app/dto';
+import { User } from '@app/home/dto';
 import { useDispatch } from '@common/store';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';

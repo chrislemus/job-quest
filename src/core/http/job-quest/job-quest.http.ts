@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { jobQuestHttpConfig } from './job-quest.config';
+import { jobQuestHttpConfig } from './job-quest-http.config';
 import { authLocalStore } from '@core/auth/services';
 
 const httpUrls = jobQuestHttpConfig.urls;

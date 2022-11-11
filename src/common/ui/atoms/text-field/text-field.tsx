@@ -1,50 +1,44 @@
-import { clsx } from 'clsx';
-import React, { DOMAttributes } from 'react';
+import _TextField from '@mui/material/TextField';
+import React, { ChangeEventHandler, FocusEventHandler } from 'react';
+import {
+  Control,
+  Controller,
+  FieldValues,
+  useFormContext,
+} from 'react-hook-form';
 
 interface TextFieldProps {
   name: string;
   type: 'text' | 'email' | 'password';
+  helperText?: string;
   label?: string;
   placeholder?: string;
-  isInvalid?: boolean | string;
-  isValid?: boolean | string;
-  onBlur?: DOMAttributes<HTMLInputElement>['onBlur'];
-  onChange?: DOMAttributes<HTMLInputElement>['onChange'];
+  fullWidth?: boolean;
+  isInvalid?: boolean;
 }
 
-export const TextField = React.forwardRef<any, TextFieldProps>(
-  function TextField(p: TextFieldProps, ref) {
-    const hasInvalidMsg = typeof p.isInvalid === 'string';
-    const hasValidMsg = typeof p.isValid === 'string';
+// export const TextField = React.forwardRef<any, TextFieldProps>(
+export function TextField(p: TextFieldProps) {
+  const { register } = useFormContext(); // retrieve all hook methods
+  const { name, onChange, onBlur, ref, required, disabled, ..._res } = register(
+    p.name
+  );
 
-    return (
-      <div className="field">
-        {p.label && <label className="label">{p.label}</label>}
-        <div className="control">
-          <input
-            className={clsx('input', {
-              'is-danger': !!p.isInvalid,
-              'is-success': !!p.isValid,
-            })}
-            name={p.name}
-            type={p.type}
-            placeholder={p.placeholder}
-            onBlur={p.onBlur}
-            onChange={p.onChange}
-            ref={ref}
-          />
-          {(hasInvalidMsg || hasValidMsg) && (
-            <p
-              className={clsx('help', {
-                'is-danger': hasInvalidMsg,
-                'is-success': hasValidMsg,
-              })}
-            >
-              {p.isInvalid || p.isValid}
-            </p>
-          )}
-        </div>
-      </div>
-    );
-  }
-);
+  return (
+    <_TextField
+      error={(p.isInvalid || undefined) as true | undefined}
+      margin="dense"
+      type={p.type}
+      label={p.label}
+      placeholder={p.placeholder}
+      fullWidth={p.fullWidth || undefined}
+      name={name}
+      onChange={onChange}
+      onBlur={onBlur}
+      ref={ref}
+      disabled={disabled}
+      required={required}
+      helperText={p.helperText}
+    />
+  );
+}

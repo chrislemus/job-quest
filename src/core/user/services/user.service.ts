@@ -1,8 +1,8 @@
-import { jobQuestApiService, jobQuestApiConfig } from '../../job-quest-api';
+import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
 
 const getProfile = () => {
-  return jobQuestApiService
-    .get<{ id: number; email: string }>(jobQuestApiConfig.urls.auth.profile)
+  return jobQuestHttp
+    .get<{ id: number; email: string }>(jobQuestHttpConfig.urls.auth.profile)
     .then(({ data }) => data);
 };
 

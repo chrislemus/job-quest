@@ -1,12 +1,19 @@
 'use client';
-import { ModalCard } from '@common/ui/molecules';
+import {
+  Modal,
+  ModalActions,
+  ModalCard,
+  ModalContent,
+  ModalContentText,
+  ModalTitle,
+} from '@common/ui/molecules';
 import { Button } from '@common/ui/atoms/button';
 import { PropsWithoutRef } from 'react';
 import { TextField } from '@common/ui/atoms/text-field';
 import { RouterAuthGuard } from '@core/auth/ui';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
-import { User } from '@app/dto';
+import { User } from '@app/home/dto';
 import { useLogin } from '@core/auth/mutation-hooks';
 
 interface LoginModalProps {
@@ -22,6 +29,7 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
     },
     resolver: formValidator(User),
   });
+  console.log(form.formState);
 
   const loginMutation = useLogin();
 
@@ -34,43 +42,51 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
       errorMsg = 'server error, unable to login';
     }
   }
+  const onFormSubmit = () =>
+    form.handleSubmit(
+      async (data: User) => {
+        console.log(data);
+        await loginMutation.mutate(data);
+      },
+      (d) => console.log(d)
+    );
 
   return (
     <RouterAuthGuard>
-      <form
-        onSubmit={form.handleSubmit(async (data: User) => {
-          await loginMutation.mutate(data);
-        })}
-      >
-        <ModalCard
-          active={p.active}
-          toggleActive={p.toggleActive}
-          title="Log In"
-          body={
-            <>
-              <p>Welcome back! Enter your account info below to continue.</p>
-              {errorMsg && <p className="help is-danger">{errorMsg}</p>}
+      <FormProvider {...form}>
+        <form onSubmit={onFormSubmit()}>
+          <Modal active={p.active} toggleActive={p.toggleActive}>
+            <ModalTitle>Log In</ModalTitle>
+            <ModalContent>
+              <ModalContentText>
+                Welcome back! Enter your account info below to continue.
+              </ModalContentText>
+
+              {errorMsg && <ModalContentText>{errorMsg}</ModalContentText>}
               <br />
               <TextField
+                name="email"
                 type="email"
                 label="Email"
-                isInvalid={form.formState.errors?.email?.message}
-                {...form.register('email')}
+                fullWidth
+                isInvalid={!!form.formState.errors?.email?.message}
+                helperText={form.formState.errors?.email?.message}
               />
 
               <TextField
+                name="password"
                 type="password"
                 label="Password"
-                isInvalid={form.formState.errors?.password?.message}
-                {...form.register('password')}
+                fullWidth
+                isInvalid={!!form.formState.errors?.password?.message}
+                helperText={form.formState.errors?.password?.message}
               />
-            </>
-          }
-          footer={
-            <>
+            </ModalContent>
+            <ModalActions>
               <Button
                 color="primary"
                 type="submit"
+                onClick={onFormSubmit()}
                 loading={form.formState.isSubmitting}
               >
                 Log In
@@ -78,10 +94,10 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
               <Button onClick={p.toggleActive} type="button">
                 Cancel
               </Button>
-            </>
-          }
-        />
-      </form>
+            </ModalActions>
+          </Modal>
+        </form>
+      </FormProvider>
     </RouterAuthGuard>
   );
 }
