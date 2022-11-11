@@ -1,22 +1,15 @@
 'use client';
-import clsx from 'clsx';
+import { DashboardNav } from '@common/ui/organisms';
 import { RouterAuthGuard } from '@core/auth/ui';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren } from 'react';
 
 export default function Layout(p: PropsWithChildren<{}>) {
   return (
     <RouterAuthGuard>
       <div className="has-background-white-bis">
-        <NavBar />
+        <DashboardNav />
         {p.children}
       </div>
     </RouterAuthGuard>
   );
-}
-
-function NavBar() {
-  const [activeMenu, setActiveMenu] = useState(false);
-  const toggleActiveMenu = () => setActiveMenu((s) => !s);
-
-  return <div className="columns"></div>;
 }

@@ -1,24 +1,14 @@
 'use client';
-import { useProfile } from '@core/user/mutation-hooks';
-import { useLogout } from '@core/auth/mutation-hooks';
-import { Button } from '@common/ui/atoms/button';
+
+import { Container } from '@common/ui/atoms';
 
 export default function Dashboard() {
-  const user = useProfile();
-  const logoutStore = useLogout();
-
   return (
-    <>
+    <Container maxWidth={false}>
       <main>
         <h1>hi</h1>
-        <p>{JSON.stringify(user.data)}</p>
-        <Button
-          onClick={() => logoutStore.mutate()}
-          loading={logoutStore.isLoading}
-        >
-          Log Out
-        </Button>
+        <p>This is some text to view </p>
       </main>
-    </>
+    </Container>
   );
 }
