@@ -6,7 +6,7 @@ import { PropsWithChildren } from 'react';
 export default function Layout(p: PropsWithChildren<{}>) {
   return (
     <RouterAuthGuard>
-      <div className="has-background-white-bis">
+      <div>
         <DashboardNav />
         {p.children}
       </div>

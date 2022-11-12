@@ -8,3 +8,4 @@ export * from './avatar';
 export * from './icon-button';
 export * from './menu';
 export * from './tooltip';
+export * from './divider';

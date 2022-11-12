@@ -36,9 +36,14 @@ const validateRouteAccess = (urlPath: string) => {
   return true;
 };
 
+const isAuthenticated = () => {
+  return !!authLocalStore.getTokens();
+};
+
 export const authService = {
   signup,
   login,
   logout,
   validateRouteAccess,
+  isAuthenticated,
 };
