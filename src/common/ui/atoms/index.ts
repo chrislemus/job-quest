@@ -9,3 +9,5 @@ export * from './icon-button';
 export * from './menu';
 export * from './tooltip';
 export * from './divider';
+export * from './card';
+export * from './tab';
