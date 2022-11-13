@@ -1,22 +1,12 @@
-type JobList = {
-  id: number;
-  label: string;
-};
+import { JobEntity, JobListEntity } from '@core/job/entities';
 
-export const jobList: JobList[] = [
+export const jobList: JobListEntity[] = [
   { id: 1, label: 'Queue' },
   { id: 2, label: 'Applied' },
   { id: 3, label: 'Offer' },
 ];
 
-export type Job = {
-  id: number;
-  title: string;
-  location: string;
-  jobListId: JobList['id'];
-};
-
-export const jobs: Job[] = [
+export const jobs: JobEntity[] = [
   { id: 1, title: 'Principal Software', location: 'Raleigh, NC', jobListId: 1 },
   {
     id: 2,

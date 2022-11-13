@@ -5,11 +5,11 @@ import { PropsWithChildren } from 'react';
 
 export default function Layout(p: PropsWithChildren<{}>) {
   return (
-    <RouterAuthGuard>
-      <div>
-        <DashboardNav />
-        {p.children}
-      </div>
-    </RouterAuthGuard>
+    // <RouterAuthGuard>
+    <div>
+      <DashboardNav />
+      {p.children}
+    </div>
+    // </RouterAuthGuard>
   );
 }

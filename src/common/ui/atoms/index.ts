@@ -11,3 +11,4 @@ export * from './tooltip';
 export * from './divider';
 export * from './card';
 export * from './tab';
+export * from './skeleton';

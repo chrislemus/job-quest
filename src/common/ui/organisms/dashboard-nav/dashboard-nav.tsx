@@ -1,5 +1,5 @@
 import { useLogout } from '@core/auth/mutation-hooks';
-import { useProfile } from '@core/user/mutation-hooks';
+import { useUserProfile } from '@core/user/query-hooks';
 import { useMemo, useState } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
 import { AdbIcon } from '@common/ui/icons';
@@ -16,7 +16,7 @@ import {
 } from '@common/ui/atoms';
 
 export function DashboardNav() {
-  const user = useProfile();
+  const user = useUserProfile();
   const logoutStore = useLogout();
 
   const userInitials = useMemo(() => {
