@@ -1,2 +1,4 @@
-import _AdbIcon from '@mui/icons-material/Adb';
-export const AdbIcon = _AdbIcon;
+import AdbIcon from '@mui/icons-material/Adb';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+export { AdbIcon, AddCircleIcon };

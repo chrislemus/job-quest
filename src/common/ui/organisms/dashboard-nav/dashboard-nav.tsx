@@ -46,7 +46,7 @@ export function DashboardNav() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/dashboard"
             sx={{
               mr: 2,
               display: { xs: 'flex' },

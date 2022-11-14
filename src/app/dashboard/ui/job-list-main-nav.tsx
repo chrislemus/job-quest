@@ -15,7 +15,6 @@ export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
       sx={{
         borderBottom: 1,
         borderColor: p.loading ? 'transparent' : 'divider',
-        pt: 3,
       }}
     >
       {p.loading || !p.activeJobListId ? (

@@ -1,9 +1,8 @@
 'use client';
-import { Container } from '@common/ui/atoms';
 import { jobListService, jobService } from '@core/job/services';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { JobListMainNav, JobListPanel } from './ui';
+import { JobListMainNav, JobListPanel, JobListSubNav } from './ui';
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
@@ -29,22 +28,20 @@ export default function Dashboard() {
   });
 
   return (
-    <Container maxWidth={false}>
-      <main>
-        <JobListMainNav
-          jobList={JobsListQuery.data || []}
-          setActiveJobList={(a: number) => setActiveJobListId(a)}
-          activeJobListId={activeJobListId}
-          loading={JobsListQuery.isLoading}
-        />
+    <>
+      <JobListMainNav
+        jobList={JobsListQuery.data || []}
+        setActiveJobList={(a: number) => setActiveJobListId(a)}
+        activeJobListId={activeJobListId}
+        loading={JobsListQuery.isLoading}
+      />
 
-        <JobListPanel
-          loading={
-            JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
-          }
-          jobs={jobsQuery.data || []}
-        />
-      </main>
-    </Container>
+      <JobListSubNav />
+
+      <JobListPanel
+        loading={JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined}
+        jobs={jobsQuery.data || []}
+      />
+    </>
   );
 }

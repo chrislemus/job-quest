@@ -1,4 +1,5 @@
 'use client';
+import * as React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
 import { Provider } from 'react-redux';
@@ -7,7 +8,7 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
-export const theme = createTheme();
+const theme = createTheme();
 export default function RootLayout(p: PropsWithChildren<{}>) {
   return (
     <html>
@@ -21,7 +22,6 @@ export default function RootLayout(p: PropsWithChildren<{}>) {
           <CssBaseline>
             <QueryClientProvider client={queryClient}>
               <ReactQueryDevtools initialIsOpen={false} />
-
               <Provider store={store}>{p.children}</Provider>
             </QueryClientProvider>
           </CssBaseline>

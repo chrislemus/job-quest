@@ -17,7 +17,6 @@ interface TextFieldProps {
   isInvalid?: boolean;
 }
 
-// export const TextField = React.forwardRef<any, TextFieldProps>(
 export function TextField(p: TextFieldProps) {
   const { register } = useFormContext(); // retrieve all hook methods
   const { name, onChange, onBlur, ref, required, disabled, ..._res } = register(
