@@ -10,6 +10,7 @@ interface SelectFieldProps {
   label: string;
   options: { value: any; label: string }[];
   defaultValue?: any;
+  variant?: 'outlined' | 'filled' | 'standard';
 }
 
 export function SelectField(p: SelectFieldProps) {
@@ -24,7 +25,7 @@ export function SelectField(p: SelectFieldProps) {
   }, []);
 
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth variant={p.variant}>
       <InputLabel id={labelId}>{p.label}</InputLabel>
       <Controller
         control={control}

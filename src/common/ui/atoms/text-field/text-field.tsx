@@ -1,11 +1,7 @@
-import _TextField from '@mui/material/TextField';
-import React, { ChangeEventHandler, FocusEventHandler } from 'react';
-import {
-  Control,
-  Controller,
-  FieldValues,
-  useFormContext,
-} from 'react-hook-form';
+import _TextField, {
+  TextFieldProps as _TextFieldProps,
+} from '@mui/material/TextField';
+import { useFormContext } from 'react-hook-form';
 
 interface TextFieldProps {
   name: string;
@@ -15,6 +11,11 @@ interface TextFieldProps {
   placeholder?: string;
   fullWidth?: boolean;
   isInvalid?: boolean;
+  onChange?: _TextFieldProps['onChange'];
+  onBlur?: _TextFieldProps['onBlur'];
+  variant?: 'standard' | 'filled' | 'outlined';
+  multiline?: boolean;
+  rows?: string | number;
 }
 
 export function TextField(p: TextFieldProps) {
@@ -25,6 +26,7 @@ export function TextField(p: TextFieldProps) {
 
   return (
     <_TextField
+      variant={p.variant}
       error={(p.isInvalid || undefined) as true | undefined}
       margin="dense"
       type={p.type}
@@ -32,9 +34,17 @@ export function TextField(p: TextFieldProps) {
       placeholder={p.placeholder}
       fullWidth={p.fullWidth || undefined}
       name={name}
-      onChange={onChange}
-      onBlur={onBlur}
+      onChange={(...args) => {
+        onChange(...args);
+        p?.onChange && p?.onChange(...args);
+      }}
+      onBlur={(...args) => {
+        onBlur(...args);
+        p?.onBlur && p?.onBlur(...args);
+      }}
+      multiline={p.multiline}
       ref={ref}
+      rows={p.rows}
       disabled={disabled}
       required={required}
       helperText={p.helperText}

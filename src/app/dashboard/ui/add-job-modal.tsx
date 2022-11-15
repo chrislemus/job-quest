@@ -1,10 +1,15 @@
-import { Button, SelectField, TextField } from '@common/ui/atoms';
+import {
+  Button,
+  SelectField,
+  Stack,
+  TextField,
+  Typography,
+} from '@common/ui/atoms';
 import { formValidator } from '@common/utils';
 import { jobListService, jobService } from '@core/job/services';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { Stack, Typography } from '@mui/material';
 import { AddJobDto } from '@core/job/dto';
 import { queryClient } from '@app/layout';
 import {
@@ -58,14 +63,13 @@ export function AddJobModal(p: NewJobModalContentProps) {
         formMethods={formMethods}
         id={formId}
         onValidSubmit={(job) => {
-          console.log(job);
-          const addedJob = addJobMutation.mutate(job);
+          addJobMutation.mutate(job);
         }}
       >
-        <ModalTitle>Log In</ModalTitle>
+        <ModalTitle>Add a Job</ModalTitle>
         <ModalContent>
           <ModalContentText>
-            Welcome back! Enter your account info below to continue.
+            Quickly add job by entering formation below.
           </ModalContentText>
 
           {errorMsg && (
