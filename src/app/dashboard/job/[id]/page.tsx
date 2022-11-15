@@ -1,4 +1,5 @@
 'use client';
+import { queryClient } from '@app/layout';
 import {
   Button,
   ClickAwayListener,
@@ -58,11 +59,14 @@ export default function Job(p: JobProps) {
   });
 
   const editJobMutation = useMutation({
-    mutationFn: jobService.addJob,
-    onSuccess(data) {
-      // queryClient.invalidateQueries({
-      //   queryKey: ['jobs', { jobListId: data.jobListId }],
-      // });
+    mutationFn: (job: EditJobDto) => {
+      return jobService.editJob(jobId, job);
+    },
+    onSuccess(_data) {
+      console.log(_data);
+      queryClient.invalidateQueries({
+        queryKey: ['job', jobId],
+      });
     },
   });
 
@@ -73,7 +77,7 @@ export default function Job(p: JobProps) {
     }));
   }, [JobsListQuery.data]);
 
-  const errorMsg: string = '';
+  let errorMsg: string = '';
 
   if (job.isLoading)
     return (
@@ -82,19 +86,13 @@ export default function Job(p: JobProps) {
       </Grid>
     );
 
-  const inputBlurSubmit = (e) => {
-    console.log(e);
-  };
-
   return (
     <Container>
       <Form
         formMethods={formMethods}
         id={formId}
-        onValidSubmit={(job) => {
-          console.log(job);
-
-          // editJobMutation.mutate(job);
+        onValidSubmit={(data) => {
+          editJobMutation.mutate(data);
         }}
       >
         <Grid container paddingTop={2} spacing={3}>
@@ -113,6 +111,11 @@ export default function Job(p: JobProps) {
                 </Button>
               </Grid>
             </Grid>
+            {errorMsg && (
+              <Typography paddingTop={1} color="error">
+                {errorMsg}
+              </Typography>
+            )}
           </Grid>
           <Grid xs={12} sm={6}>
             <TextField
@@ -120,7 +123,6 @@ export default function Job(p: JobProps) {
               label="title"
               defaultValue={job.data?.title || undefined}
               fullWidth
-              onBlur={inputBlurSubmit}
               isInvalid={!!formMethods.formState.errors?.title?.message}
               helperText={formMethods.formState.errors?.title?.message}
             />
@@ -131,7 +133,6 @@ export default function Job(p: JobProps) {
               type="text"
               label="Company"
               fullWidth
-              onBlur={inputBlurSubmit}
               defaultValue={job.data?.company || undefined}
               isInvalid={!!formMethods.formState.errors?.company?.message}
               helperText={formMethods.formState.errors?.company?.message}
@@ -142,7 +143,6 @@ export default function Job(p: JobProps) {
               <SelectField
                 name="jobListId"
                 label="Job List"
-                onBlur={inputBlurSubmit}
                 defaultValue={job.data?.jobListId}
                 options={jobListOptions}
               />
@@ -152,7 +152,6 @@ export default function Job(p: JobProps) {
             <SelectField
               name="backgroundColor"
               label="Color"
-              onBlur={inputBlurSubmit}
               defaultValue={job.data?.backgroundColor}
               options={jobBackgroundColors.map((color) => {
                 return {
@@ -178,7 +177,6 @@ export default function Job(p: JobProps) {
               name="url"
               label="Job Url"
               fullWidth
-              onBlur={inputBlurSubmit}
               isInvalid={!!formMethods.formState.errors?.url?.message}
               helperText={formMethods.formState.errors?.url?.message}
             />
@@ -187,7 +185,6 @@ export default function Job(p: JobProps) {
             <TextField
               name="location"
               label="Location"
-              onBlur={inputBlurSubmit}
               defaultValue={job.data?.location || undefined}
               fullWidth
               isInvalid={!!formMethods.formState.errors?.location?.message}
@@ -199,9 +196,8 @@ export default function Job(p: JobProps) {
             <TextField
               name="salary"
               label="Salary"
-              onBlur={inputBlurSubmit}
               setValueAs={(val) => {
-                if (val === '') return null;
+                if (val === '') return undefined;
                 return parseInt(val);
               }}
               defaultValue={job.data?.salary || undefined}
@@ -219,7 +215,6 @@ export default function Job(p: JobProps) {
               defaultValue={job.data?.description || undefined}
               fullWidth
               multiline
-              onBlur={inputBlurSubmit}
               rows={4}
               isInvalid={!!formMethods.formState.errors?.description?.message}
               helperText={formMethods.formState.errors?.description?.message}

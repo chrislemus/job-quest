@@ -1,6 +1,6 @@
 import { jobs as _jobs } from './mocks.const';
 import { JobEntity } from '@core/job/entities';
-import { AddJobDto } from '../dto';
+import { AddJobDto, EditJobDto } from '../dto';
 import { jobBackgroundColors } from '../const';
 
 function getAll(filters?: { jobListId: number }) {
@@ -37,13 +37,33 @@ function addJob(job: AddJobDto) {
     _jobs.push({
       ...job,
       id,
-      location: null,
-      salary: null,
-      description: null,
       backgroundColor,
     });
     resolve(job);
   });
 }
 
-export const jobService = { getAll, addJob, findById };
+function editJob(jobId: number, updatedJob: EditJobDto) {
+  return new Promise<JobEntity>((resolve, reject) => {
+    let jobIdx: undefined | number;
+    const foundJob = _jobs.find((j, idx) => {
+      const foundJob = j.id === jobId;
+      if (foundJob) {
+        jobIdx = idx;
+        return foundJob;
+      }
+    });
+
+    if ((jobIdx === 0 || !!jobIdx) && foundJob) {
+      _jobs[jobIdx] = {
+        ...foundJob,
+        ...updatedJob,
+      };
+      resolve(_jobs[jobIdx]);
+    } else {
+      reject('job not found');
+    }
+  });
+}
+
+export const jobService = { getAll, addJob, findById, editJob };

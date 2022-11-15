@@ -13,8 +13,7 @@ export const jobs: JobEntity[] = [
     title: 'Principal Software',
     company: 'google',
     location: 'Raleigh, NC',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[0],
     jobListId: 1,
   },
@@ -23,8 +22,7 @@ export const jobs: JobEntity[] = [
     title: 'Backend Software Engineer',
     company: 'amazon',
     location: 'Los Angeles, CA',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[1],
     jobListId: 1,
   },
@@ -33,8 +31,7 @@ export const jobs: JobEntity[] = [
     title: 'FrontEnd Software Engineer',
     company: 'netflix',
     location: 'Ontario, NY',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[2],
     jobListId: 1,
   },
@@ -43,8 +40,7 @@ export const jobs: JobEntity[] = [
     title: 'Solutions Architect',
     company: 'Disney',
     location: 'Tampa, Fl',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[3],
     jobListId: 1,
   },
@@ -53,8 +49,7 @@ export const jobs: JobEntity[] = [
     title: 'Pending Title',
     company: 'Amazon',
     location: 'Tampa, Fl',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[4],
     jobListId: 2,
   },
@@ -63,8 +58,7 @@ export const jobs: JobEntity[] = [
     title: 'Janitor Senior',
     company: 'Walmart',
     location: 'Tampa, Fl',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[5],
     jobListId: 2,
   },
@@ -73,8 +67,7 @@ export const jobs: JobEntity[] = [
     title: 'Staff Solution Eng.',
     company: 'Berry Nimble',
     location: 'Tampa, Fl',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[6],
     jobListId: 2,
   },
@@ -83,8 +76,7 @@ export const jobs: JobEntity[] = [
     title: 'OFFer-Principal Software',
     company: 'Target',
     location: 'Raleigh, NC',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[7],
     jobListId: 3,
   },
@@ -93,8 +85,7 @@ export const jobs: JobEntity[] = [
     title: 'Need-Backend Software Engineer',
     company: 'BB&T',
     location: 'Los Angeles, CA',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[8],
     jobListId: 3,
   },
@@ -103,8 +94,7 @@ export const jobs: JobEntity[] = [
     title: 'FrontEnd Software Engineer',
     company: 'Bank of America',
     location: 'Ontario, NY',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[9],
     jobListId: 3,
   },
@@ -113,8 +103,7 @@ export const jobs: JobEntity[] = [
     title: 'Solutions Architect',
     company: 'Jet',
     location: 'Tampa, Fl',
-    salary: null,
-    description: null,
+
     backgroundColor: jobBackgroundColors[10],
     jobListId: 3,
   },

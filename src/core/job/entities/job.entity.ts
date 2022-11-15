@@ -4,9 +4,10 @@ export class JobEntity {
   id: number;
   title: string;
   company: string;
-  location: string | null;
-  salary: number | null;
-  description: string | null;
+  location?: string;
+  url?: string;
+  salary?: number;
+  description?: string;
   backgroundColor: string;
   jobListId: JobListEntity['id'];
 }
