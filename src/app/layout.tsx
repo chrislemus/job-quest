@@ -7,8 +7,9 @@ import { store } from '@common/store/store';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-const queryClient = new QueryClient();
-const theme = createTheme();
+export const queryClient = new QueryClient();
+export const theme = createTheme();
+
 export default function RootLayout(p: PropsWithChildren<{}>) {
   return (
     <html>

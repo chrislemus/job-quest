@@ -20,7 +20,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
           {p.job.title}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {p.job.location}
+          {p.job.company}
         </Typography>
       </CardContent>
       <CardActions>
