@@ -82,6 +82,10 @@ export default function Job(p: JobProps) {
       </Grid>
     );
 
+  const inputBlurSubmit = (e) => {
+    console.log(e);
+  };
+
   return (
     <Container>
       <Form
@@ -95,39 +99,30 @@ export default function Job(p: JobProps) {
       >
         <Grid container paddingTop={2} spacing={3}>
           <Grid xs={12}>
-            <Grid container rowSpacing={1}>
-              <Grid xs={10}>
+            <Grid container paddingLeft={0}>
+              <Grid flexGrow={1}>
                 <Typography variant="h4">{job?.data?.title}</Typography>
                 <Typography variant="subtitle1">
                   {job?.data?.company}
                 </Typography>
               </Grid>
 
-              <Grid xs={5} sm={3} md={2}>
-                {jobListOptions && (
-                  <SelectField
-                    name="jobListId"
-                    label=""
-                    variant="standard"
-                    defaultValue={job.data?.jobListId}
-                    options={jobListOptions}
-                  />
-                )}
+              <Grid>
+                <Button variant="contained" type="submit">
+                  Save
+                </Button>
               </Grid>
             </Grid>
           </Grid>
-
           <Grid xs={12} sm={6}>
-            {/* <Button type="submit" form={formId}>
-              dwed
-            </Button> */}
             <TextField
               name="title"
               label="title"
               defaultValue={job.data?.title || undefined}
               fullWidth
-              // isInvalid={!!formMethods.formState.errors?.company?.message}
-              // helperText={formMethods.formState.errors?.company?.message}
+              onBlur={inputBlurSubmit}
+              isInvalid={!!formMethods.formState.errors?.title?.message}
+              helperText={formMethods.formState.errors?.title?.message}
             />
           </Grid>
           <Grid xs={12} sm={6}>
@@ -136,81 +131,28 @@ export default function Job(p: JobProps) {
               type="text"
               label="Company"
               fullWidth
+              onBlur={inputBlurSubmit}
               defaultValue={job.data?.company || undefined}
-
-              // isInvalid={!!formMethods.formState.errors?.company?.message}
-              // helperText={formMethods.formState.errors?.company?.message}
+              isInvalid={!!formMethods.formState.errors?.company?.message}
+              helperText={formMethods.formState.errors?.company?.message}
             />
           </Grid>
-          <Grid xs={12} sm={6}>
-            <TextField
-              name="jobUrl"
-              label="Job Url"
-              fullWidth
-              // isInvalid={!!formMethods.formState.errors?.company?.message}
-              // helperText={formMethods.formState.errors?.company?.message}
-            />
-          </Grid>
-          <Grid xs={12} sm={6}>
-            <TextField
-              name="location"
-              label="Location"
-              defaultValue={job.data?.location || undefined}
-              fullWidth
-              // isInvalid={!!formMethods.formState.errors?.company?.message}
-              // helperText={formMethods.formState.errors?.company?.message}
-            />
-          </Grid>
-          <Grid xs={8} sm={6}>
-            <TextField
-              name="salary"
-              label="Salary"
-              setValueAs={(val) => {
-                if (val === '') return null;
-                return parseInt(val);
-              }}
-              defaultValue={job.data?.salary || undefined}
-              fullWidth
-              isInvalid={!!formMethods.formState.errors?.salary?.message}
-              helperText={formMethods.formState.errors?.salary?.message}
-            />
-          </Grid>
-          {/* <Grid xs={4} sm={2}>
-            <div>
-              <TextField
-                name="backgroundColor"
-                label="Color"
-                defaultValue={job.data?.backgroundColor || undefined}
-                fullWidth
-                // isInvalid={!!formMethods.formState.errors?.company?.message}
-                // helperText={formMethods.formState.errors?.company?.message}
+          <Grid xs={8} sm={3} md={2}>
+            {jobListOptions && (
+              <SelectField
+                name="jobListId"
+                label="Job List"
+                onBlur={inputBlurSubmit}
+                defaultValue={job.data?.jobListId}
+                options={jobListOptions}
               />
-            </div>
-          </Grid> */}
+            )}
+          </Grid>
           <Grid xs={4} sm={2}>
-            {/* <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={10}
-                label="Age"
-                // onChange={handleChange}
-              >
-                <MenuItem value={10}>
-                  <div
-                    style={{
-                      backgroundColor: job.data?.backgroundColor,
-                      height: '1rem',
-                      width: '100%',
-                    }}
-                  ></div>
-                </MenuItem>
-              </Select>
-            </FormControl> */}
             <SelectField
               name="backgroundColor"
               label="Color"
+              onBlur={inputBlurSubmit}
               defaultValue={job.data?.backgroundColor}
               options={jobBackgroundColors.map((color) => {
                 return {
@@ -230,6 +172,46 @@ export default function Job(p: JobProps) {
               })}
             />
           </Grid>
+          <Grid xs={0} sm={7} md={8} />
+          <Grid xs={12} sm={6}>
+            <TextField
+              name="url"
+              label="Job Url"
+              fullWidth
+              onBlur={inputBlurSubmit}
+              isInvalid={!!formMethods.formState.errors?.url?.message}
+              helperText={formMethods.formState.errors?.url?.message}
+            />
+          </Grid>
+          <Grid xs={12} sm={6}>
+            <TextField
+              name="location"
+              label="Location"
+              onBlur={inputBlurSubmit}
+              defaultValue={job.data?.location || undefined}
+              fullWidth
+              isInvalid={!!formMethods.formState.errors?.location?.message}
+              helperText={formMethods.formState.errors?.location?.message}
+            />
+          </Grid>
+
+          <Grid xs={8} sm={6} md={3}>
+            <TextField
+              name="salary"
+              label="Salary"
+              onBlur={inputBlurSubmit}
+              setValueAs={(val) => {
+                if (val === '') return null;
+                return parseInt(val);
+              }}
+              defaultValue={job.data?.salary || undefined}
+              fullWidth
+              isInvalid={!!formMethods.formState.errors?.salary?.message}
+              helperText={formMethods.formState.errors?.salary?.message}
+            />
+          </Grid>
+          <Grid xs={4} sm={6} md={9} />
+
           <Grid xs={12}>
             <TextField
               name="description"
@@ -237,9 +219,10 @@ export default function Job(p: JobProps) {
               defaultValue={job.data?.description || undefined}
               fullWidth
               multiline
+              onBlur={inputBlurSubmit}
               rows={4}
-              // isInvalid={!!formMethods.formState.errors?.company?.message}
-              // helperText={formMethods.formState.errors?.company?.message}
+              isInvalid={!!formMethods.formState.errors?.description?.message}
+              helperText={formMethods.formState.errors?.description?.message}
             />
           </Grid>
         </Grid>

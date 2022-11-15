@@ -47,6 +47,10 @@ export class EditJobDto implements Omit<JobEntity, 'id'> {
   location: string | null;
 
   @ValidateIf(allowNull)
+  @IsString()
+  url: string | null;
+
+  @ValidateIf(allowNull)
   @IsNumber({}, { message: 'must be a number' })
   salary: number | null;
 
@@ -54,9 +58,8 @@ export class EditJobDto implements Omit<JobEntity, 'id'> {
   @IsString()
   description: string | null;
 
-  @ValidateIf(allowNull)
   @IsString()
-  jobCardColor: string | null;
+  backgroundColor: string;
 
   @IsNumber()
   jobListId: JobListEntity['id'];

@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { ReactNode, useEffect } from 'react';
+import { FocusEventHandler, ReactNode, useEffect } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -10,6 +10,7 @@ interface SelectFieldProps {
   label: string;
   options: { value: any; label: ReactNode }[];
   defaultValue?: any;
+  onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   variant?: 'outlined' | 'filled' | 'standard';
 }
 
@@ -37,7 +38,10 @@ export function SelectField(p: SelectFieldProps) {
             label={p.label}
             id={fieldId}
             onChange={onChange}
-            onBlur={onBlur}
+            onBlur={(...args) => {
+              onBlur();
+              p?.onBlur && p?.onBlur(...args);
+            }}
             ref={ref}
           >
             {p.options?.map((o, idx) => {

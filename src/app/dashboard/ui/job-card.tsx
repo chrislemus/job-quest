@@ -1,26 +1,21 @@
 import { JobEntity } from '@core/job/entities';
 import { PropsWithoutRef, useMemo } from 'react';
-
 import {
   Card,
   CardActionArea,
   CardContent,
   Typography,
 } from '@common/ui/atoms';
-import { lightTextColors } from '@core/job/const';
+import { theme } from '@app/layout';
 
 interface JobCardProps {
   job: JobEntity;
 }
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
-  const backgroundColor = p.job.backgroundColor || undefined;
+  const backgroundColor = p.job.backgroundColor || '#ffff';
   const textColor = useMemo(() => {
-    let textColor = 'dark';
-    if (backgroundColor && lightTextColors.includes(backgroundColor)) {
-      textColor = 'white';
-    }
-    return textColor;
+    return theme.palette.getContrastText(backgroundColor);
   }, [backgroundColor]);
 
   return (

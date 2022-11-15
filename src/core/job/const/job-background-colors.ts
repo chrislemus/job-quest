@@ -1,4 +1,4 @@
-export const lightTextColors = [
+export const jobBackgroundColors = [
   '#e91e63',
   '#f44336',
   '#ff5722',
@@ -7,9 +7,6 @@ export const lightTextColors = [
   '#3f51b5',
   '#2196f3',
   '#009688',
-];
-
-export const darksTextColors = [
   '#03a9f4',
   '#00bcd4',
   '#4caf50',
@@ -19,5 +16,3 @@ export const darksTextColors = [
   '#ffc107',
   '#ff9800',
 ];
-
-export const jobBackgroundColors = [...lightTextColors, ...darksTextColors];
