@@ -1,6 +1,7 @@
 import { jobs as _jobs } from './mocks.const';
 import { JobEntity } from '@core/job/entities';
 import { AddJobDto } from '../dto';
+import { jobBackgroundColors } from '../const';
 
 function getAll(filters?: { jobListId: number }) {
   return new Promise<JobEntity[]>((resolve, _reject) => {
@@ -27,7 +28,20 @@ function findById(id: number) {
 function addJob(job: AddJobDto) {
   return new Promise<AddJobDto>((resolve, _reject) => {
     const id = _jobs.length + 1;
-    _jobs.push({ ...job, id, location: 'na' });
+
+    const backgroundColor =
+      jobBackgroundColors[
+        Math.round(Math.random() * jobBackgroundColors.length)
+      ];
+
+    _jobs.push({
+      ...job,
+      id,
+      location: null,
+      salary: null,
+      description: null,
+      backgroundColor,
+    });
     resolve(job);
   });
 }

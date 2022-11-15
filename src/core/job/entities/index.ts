@@ -1,2 +1,2 @@
 export * from './job-list.entity';
-export * from './job';
+export * from './job.entity';

@@ -1,11 +1,12 @@
 import _TextField, {
   TextFieldProps as _TextFieldProps,
 } from '@mui/material/TextField';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 interface TextFieldProps {
   name: string;
-  type: 'text' | 'email' | 'password';
+  type?: 'text' | 'email' | 'password';
   helperText?: string;
   label?: string;
   placeholder?: string;
@@ -16,13 +17,23 @@ interface TextFieldProps {
   variant?: 'standard' | 'filled' | 'outlined';
   multiline?: boolean;
   rows?: string | number;
+  defaultValue?: string | number;
+  valueAsNumber?: boolean;
+  setValueAs?: (value: any) => any;
 }
 
 export function TextField(p: TextFieldProps) {
-  const { register } = useFormContext(); // retrieve all hook methods
+  const { register, getValues, setValue } = useFormContext(); // retrieve all hook methods
   const { name, onChange, onBlur, ref, required, disabled, ..._res } = register(
-    p.name
+    p.name,
+    { valueAsNumber: p.valueAsNumber, setValueAs: p.setValueAs }
   );
+
+  useEffect(() => {
+    if (!getValues(p.name) && p.defaultValue) {
+      setValue(p.name, p.defaultValue);
+    }
+  }, []);
 
   return (
     <_TextField
