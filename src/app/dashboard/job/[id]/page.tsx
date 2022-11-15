@@ -5,6 +5,7 @@ import {
   Container,
   Grid,
   IconButton,
+  MenuItem,
   SelectField,
   Skeleton,
   Stack,
@@ -18,9 +19,13 @@ import {
   ModalTitle,
 } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
+import { jobBackgroundColors } from '@core/job/const';
 import { EditJobDto } from '@core/job/dto';
 import { JobEntity } from '@core/job/entities';
 import { jobListService, jobService } from '@core/job/services';
+import { Select } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { plainToClass } from 'class-transformer';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -113,9 +118,9 @@ export default function Job(p: JobProps) {
           </Grid>
 
           <Grid xs={12} sm={6}>
-            <Button type="submit" form={formId}>
+            {/* <Button type="submit" form={formId}>
               dwed
-            </Button>
+            </Button> */}
             <TextField
               name="title"
               label="title"
@@ -170,14 +175,59 @@ export default function Job(p: JobProps) {
               helperText={formMethods.formState.errors?.salary?.message}
             />
           </Grid>
+          {/* <Grid xs={4} sm={2}>
+            <div>
+              <TextField
+                name="backgroundColor"
+                label="Color"
+                defaultValue={job.data?.backgroundColor || undefined}
+                fullWidth
+                // isInvalid={!!formMethods.formState.errors?.company?.message}
+                // helperText={formMethods.formState.errors?.company?.message}
+              />
+            </div>
+          </Grid> */}
           <Grid xs={4} sm={2}>
-            <TextField
-              name="jobCardColor"
+            {/* <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={10}
+                label="Age"
+                // onChange={handleChange}
+              >
+                <MenuItem value={10}>
+                  <div
+                    style={{
+                      backgroundColor: job.data?.backgroundColor,
+                      height: '1rem',
+                      width: '100%',
+                    }}
+                  ></div>
+                </MenuItem>
+              </Select>
+            </FormControl> */}
+            <SelectField
+              name="backgroundColor"
               label="Color"
-              defaultValue={job.data?.backgroundColor || undefined}
-              fullWidth
-              // isInvalid={!!formMethods.formState.errors?.company?.message}
-              // helperText={formMethods.formState.errors?.company?.message}
+              defaultValue={job.data?.backgroundColor}
+              options={jobBackgroundColors.map((color) => {
+                return {
+                  value: color,
+                  label: (
+                    <div
+                      style={{
+                        height: '1rem',
+                        width: '100%',
+                        backgroundColor: color,
+                        color: '#ffff',
+                        padding: '2px',
+                      }}
+                    ></div>
+                  ),
+                };
+              })}
             />
           </Grid>
           <Grid xs={12}>

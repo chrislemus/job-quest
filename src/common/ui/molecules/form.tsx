@@ -1,5 +1,6 @@
 import { Box } from '@common/ui/atoms';
 import { PropsWithChildren } from 'react';
+import { DevTool } from '@hookform/devtools';
 import { FormProvider } from 'react-hook-form';
 import {
   FieldValue,
@@ -29,7 +30,10 @@ export function Form<
       noValidate={p.noValidate}
       autoComplete={p.autoComplete}
     >
-      <FormProvider {...p.formMethods}>{p.children}</FormProvider>
+      <FormProvider {...p.formMethods}>
+        {p.children}
+        <DevTool control={p.formMethods.control} />
+      </FormProvider>
     </Box>
   );
 }

@@ -1,12 +1,12 @@
 export const lightTextColors = [
-  '#f44336',
   '#e91e63',
+  '#f44336',
+  '#ff5722',
   '#9c27b0',
   '#673ab7',
   '#3f51b5',
   '#2196f3',
   '#009688',
-  '#ff5722',
 ];
 
 export const darksTextColors = [

@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from 'react-hook-form';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -8,7 +8,7 @@ import Select from '@mui/material/Select';
 interface SelectFieldProps {
   name: string;
   label: string;
-  options: { value: any; label: string }[];
+  options: { value: any; label: ReactNode }[];
   defaultValue?: any;
   variant?: 'outlined' | 'filled' | 'standard';
 }
