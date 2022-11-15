@@ -1,7 +1,6 @@
-import _Card from '@mui/material/Card';
-import _CardActions from '@mui/material/CardActions';
-import _CardContent from '@mui/material/CardContent';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea/CardActionArea';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
-export const Card = _Card;
-export const CardActions = _CardActions;
-export const CardContent = _CardContent;
+export { CardActionArea, Card, CardActions, CardContent };

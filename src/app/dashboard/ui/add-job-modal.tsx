@@ -22,11 +22,10 @@ interface NewJobModalContentProps {
 }
 
 export function AddJobModal(p: NewJobModalContentProps) {
+  const formId = 'new-job';
   const formMethods = useForm<AddJobDto>({
     resolver: formValidator(AddJobDto),
   });
-
-  const formId = 'new-job';
 
   const JobsListQuery = useQuery({
     queryKey: ['jobList'],

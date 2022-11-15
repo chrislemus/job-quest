@@ -13,6 +13,17 @@ function getAll(filters?: { jobListId: number }) {
   });
 }
 
+function findById(id: number) {
+  return new Promise<JobEntity>((resolve, reject) => {
+    const job = _jobs.find((j) => j.id === id);
+    if (job) {
+      resolve(job);
+    } else {
+      reject('no job found');
+    }
+  });
+}
+
 function addJob(job: AddJobDto) {
   return new Promise<AddJobDto>((resolve, _reject) => {
     const id = _jobs.length + 1;
@@ -21,4 +32,4 @@ function addJob(job: AddJobDto) {
   });
 }
 
-export const jobService = { getAll, addJob };
+export const jobService = { getAll, addJob, findById };
