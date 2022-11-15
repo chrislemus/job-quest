@@ -5,6 +5,7 @@ import { RouterAuthGuard } from '@core/auth/ui';
 import { PropsWithChildren } from 'react';
 import { usePathname } from 'next/navigation';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Link from 'next/link';
 
 export default function Layout(p: PropsWithChildren<{}>) {
   const pathName = usePathname();
@@ -18,7 +19,11 @@ export default function Layout(p: PropsWithChildren<{}>) {
         style={{ paddingTop: '1rem' }}
       >
         {pathName !== '/dashboard' && (
-          <Button href="/dashboard" startIcon={<ArrowBackIosIcon />}>
+          <Button
+            href="/dashboard"
+            startIcon={<ArrowBackIosIcon />}
+            LinkComponent={Link}
+          >
             Back
           </Button>
         )}

@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@common/ui/atoms';
 import { theme } from '@app/layout';
+import Link from 'next/link';
 
 interface JobCardProps {
   job: JobEntity;
@@ -20,7 +21,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
 
   return (
     <Card sx={{ minWidth: 275 }} style={{ backgroundColor }}>
-      <CardActionArea href={`/dashboard/job/${p.job.id}`}>
+      <CardActionArea href={`/dashboard/job/${p.job.id}`} component={Link}>
         <CardContent>
           <Typography variant="button" noWrap display="block" color={textColor}>
             <strong>{p.job.title}</strong>
