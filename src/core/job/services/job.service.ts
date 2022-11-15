@@ -17,7 +17,6 @@ function addJob(job: AddJobDto) {
   return new Promise<AddJobDto>((resolve, _reject) => {
     const id = _jobs.length + 1;
     _jobs.push({ ...job, id, location: 'na' });
-    _reject('mock error');
     resolve(job);
   });
 }

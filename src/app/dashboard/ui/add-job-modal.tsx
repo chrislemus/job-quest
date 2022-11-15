@@ -65,7 +65,6 @@ export function AddJobModal(p: NewJobModalContentProps) {
       >
         <ModalTitle>Log In</ModalTitle>
         <ModalContent>
-          {/* {JSON.stringify(form.formState.isSubmitted)} */}
           <ModalContentText>
             Welcome back! Enter your account info below to continue.
           </ModalContentText>
