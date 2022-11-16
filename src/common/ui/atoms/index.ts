@@ -15,3 +15,4 @@ export * from './skeleton';
 export * from './select-field';
 export * from './stack';
 export * from './click-away-listener';
+export * from './input-adornment';

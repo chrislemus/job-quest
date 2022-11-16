@@ -5,6 +5,7 @@ import {
   IsNumberString,
   IsOptional,
   IsString,
+  IsUrl,
 } from 'class-validator';
 import { JobEntity, JobListEntity } from '../entities';
 
@@ -20,12 +21,12 @@ export class EditJobDto implements Omit<JobEntity, 'id'> {
   location?: string;
 
   @IsOptional()
-  // @Transform
-  @IsNumber({}, { message: 'must be a number' })
-  salary?: number;
+  @IsString()
+  salary?: string;
 
   @IsOptional()
   @IsString()
+  @IsUrl()
   url?: string;
 
   @IsOptional()

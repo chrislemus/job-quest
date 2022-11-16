@@ -6,7 +6,7 @@ export class JobEntity {
   company: string;
   location?: string;
   url?: string;
-  salary?: number;
+  salary?: string;
   description?: string;
   backgroundColor: string;
   jobListId: JobListEntity['id'];

@@ -1,36 +1,26 @@
 'use client';
 import { queryClient } from '@app/layout';
-import {
-  Button,
-  ClickAwayListener,
-  Container,
-  Grid,
-  IconButton,
-  MenuItem,
-  SelectField,
-  Skeleton,
-  Stack,
-  TextField,
-  Typography,
-} from '@common/ui/atoms';
-import {
-  Form,
-  ModalContent,
-  ModalContentText,
-  ModalTitle,
-} from '@common/ui/molecules';
+import { Form } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
 import { jobBackgroundColors } from '@core/job/const';
 import { EditJobDto } from '@core/job/dto';
-import { JobEntity } from '@core/job/entities';
 import { jobListService, jobService } from '@core/job/services';
-import { Select } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { plainToClass } from 'class-transformer';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { OpenInNewIcon } from '@common/ui/icons';
+import {
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  SelectField,
+  Skeleton,
+  TextField,
+  Typography,
+  InputAdornment,
+} from '@common/ui/atoms';
+import Link from 'next/link';
 
 interface JobProps {
   params: { id: string };
@@ -39,18 +29,13 @@ export default function Job(p: JobProps) {
   const jobId = parseInt(p.params.id);
   const formId = 'edit-job';
 
-  const job = useQuery({
+  const jobQuery = useQuery({
     queryKey: ['job', jobId],
     queryFn: () => jobService.findById(jobId),
   });
+
   const formMethods = useForm<EditJobDto>({
-    // defaultValues: {
-    //   title: job.data?.title,
-    //   company: job.data?.company,
-    //   jobListId: job.data?.jobListId,
-    // },
     resolver: formValidator(EditJobDto),
-    // mode: 'onBlur',
   });
 
   const JobsListQuery = useQuery({
@@ -63,7 +48,6 @@ export default function Job(p: JobProps) {
       return jobService.editJob(jobId, job);
     },
     onSuccess(_data) {
-      console.log(_data);
       queryClient.invalidateQueries({
         queryKey: ['job', jobId],
       });
@@ -79,12 +63,14 @@ export default function Job(p: JobProps) {
 
   let errorMsg: string = '';
 
-  if (job.isLoading)
+  if (jobQuery.isLoading)
     return (
       <Grid xs={12}>
         <Skeleton height={500} />
       </Grid>
     );
+
+  const formErrors = formMethods.formState.errors;
 
   return (
     <Container>
@@ -99,14 +85,25 @@ export default function Job(p: JobProps) {
           <Grid xs={12}>
             <Grid container paddingLeft={0}>
               <Grid flexGrow={1}>
-                <Typography variant="h4">{job?.data?.title}</Typography>
+                <Typography variant="h4">{jobQuery?.data?.title}</Typography>
                 <Typography variant="subtitle1">
-                  {job?.data?.company}
+                  {jobQuery?.data?.company}
                 </Typography>
               </Grid>
 
               <Grid>
-                <Button variant="contained" type="submit">
+                <Button
+                  variant="contained"
+                  type="submit"
+                  disabled={
+                    formMethods.formState.isSubmitting ||
+                    editJobMutation.isLoading
+                  }
+                  loading={
+                    formMethods.formState.isSubmitting ||
+                    editJobMutation.isLoading
+                  }
+                >
                   Save
                 </Button>
               </Grid>
@@ -121,10 +118,10 @@ export default function Job(p: JobProps) {
             <TextField
               name="title"
               label="title"
-              defaultValue={job.data?.title || undefined}
+              defaultValue={jobQuery.data?.title || undefined}
               fullWidth
-              isInvalid={!!formMethods.formState.errors?.title?.message}
-              helperText={formMethods.formState.errors?.title?.message}
+              isInvalid={!!formErrors?.title?.message}
+              helperText={formErrors?.title?.message}
             />
           </Grid>
           <Grid xs={12} sm={6}>
@@ -133,9 +130,9 @@ export default function Job(p: JobProps) {
               type="text"
               label="Company"
               fullWidth
-              defaultValue={job.data?.company || undefined}
-              isInvalid={!!formMethods.formState.errors?.company?.message}
-              helperText={formMethods.formState.errors?.company?.message}
+              defaultValue={jobQuery.data?.company || undefined}
+              isInvalid={!!formErrors?.company?.message}
+              helperText={formErrors?.company?.message}
             />
           </Grid>
           <Grid xs={8} sm={3} md={2}>
@@ -143,7 +140,7 @@ export default function Job(p: JobProps) {
               <SelectField
                 name="jobListId"
                 label="Job List"
-                defaultValue={job.data?.jobListId}
+                defaultValue={jobQuery.data?.jobListId}
                 options={jobListOptions}
               />
             )}
@@ -152,7 +149,7 @@ export default function Job(p: JobProps) {
             <SelectField
               name="backgroundColor"
               label="Color"
-              defaultValue={job.data?.backgroundColor}
+              defaultValue={jobQuery.data?.backgroundColor}
               options={jobBackgroundColors.map((color) => {
                 return {
                   value: color,
@@ -165,7 +162,7 @@ export default function Job(p: JobProps) {
                         color: '#ffff',
                         padding: '2px',
                       }}
-                    ></div>
+                    />
                   ),
                 };
               })}
@@ -177,18 +174,45 @@ export default function Job(p: JobProps) {
               name="url"
               label="Job Url"
               fullWidth
-              isInvalid={!!formMethods.formState.errors?.url?.message}
-              helperText={formMethods.formState.errors?.url?.message}
+              setValueAs={(val) => {
+                if (!val.startsWith('http') && val?.length > 0) {
+                  return `https://${val}`;
+                }
+                return val;
+              }}
+              onBlur={(e) => {
+                const value = e.target?.value;
+                if (value) {
+                  if (!value.startsWith('http') && value?.length > 0) {
+                    e.target.value = `https://${value}`;
+                  }
+                }
+              }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="job url"
+                    href={jobQuery.data?.url as any}
+                    target="_blank"
+                    LinkComponent={Link}
+                    edge="end"
+                  >
+                    <OpenInNewIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+              isInvalid={!!formErrors?.url?.message}
+              helperText={formErrors?.url?.message}
             />
           </Grid>
           <Grid xs={12} sm={6}>
             <TextField
               name="location"
               label="Location"
-              defaultValue={job.data?.location || undefined}
+              defaultValue={jobQuery.data?.location || undefined}
               fullWidth
-              isInvalid={!!formMethods.formState.errors?.location?.message}
-              helperText={formMethods.formState.errors?.location?.message}
+              isInvalid={!!formErrors?.location?.message}
+              helperText={formErrors?.location?.message}
             />
           </Grid>
 
@@ -196,14 +220,10 @@ export default function Job(p: JobProps) {
             <TextField
               name="salary"
               label="Salary"
-              setValueAs={(val) => {
-                if (val === '') return undefined;
-                return parseInt(val);
-              }}
-              defaultValue={job.data?.salary || undefined}
+              defaultValue={jobQuery.data?.salary || undefined}
               fullWidth
-              isInvalid={!!formMethods.formState.errors?.salary?.message}
-              helperText={formMethods.formState.errors?.salary?.message}
+              isInvalid={!!formErrors?.salary?.message}
+              helperText={formErrors?.salary?.message}
             />
           </Grid>
           <Grid xs={4} sm={6} md={9} />
@@ -212,12 +232,12 @@ export default function Job(p: JobProps) {
             <TextField
               name="description"
               label="Description"
-              defaultValue={job.data?.description || undefined}
+              defaultValue={jobQuery.data?.description || undefined}
               fullWidth
               multiline
               rows={4}
-              isInvalid={!!formMethods.formState.errors?.description?.message}
-              helperText={formMethods.formState.errors?.description?.message}
+              isInvalid={!!formErrors?.description?.message}
+              helperText={formErrors?.description?.message}
             />
           </Grid>
         </Grid>

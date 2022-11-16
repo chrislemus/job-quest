@@ -20,6 +20,7 @@ interface TextFieldProps {
   defaultValue?: string | number;
   valueAsNumber?: boolean;
   setValueAs?: (value: any) => any;
+  endAdornment?: JSX.Element;
 }
 
 export function TextField(p: TextFieldProps) {
@@ -38,8 +39,10 @@ export function TextField(p: TextFieldProps) {
   return (
     <_TextField
       variant={p.variant}
-      error={(p.isInvalid || undefined) as true | undefined}
       margin="dense"
+      InputProps={{
+        endAdornment: p.endAdornment,
+      }}
       type={p.type}
       label={p.label}
       placeholder={p.placeholder}
@@ -58,6 +61,7 @@ export function TextField(p: TextFieldProps) {
       rows={p.rows}
       disabled={disabled}
       required={required}
+      error={(p.isInvalid || undefined) as true | undefined}
       helperText={p.helperText}
     />
   );
