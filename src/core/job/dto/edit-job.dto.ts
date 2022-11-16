@@ -1,8 +1,6 @@
-import { Transform } from 'class-transformer';
 import {
   IsNotEmpty,
   IsNumber,
-  IsNumberString,
   IsOptional,
   IsString,
   IsUrl,
@@ -11,9 +9,11 @@ import { JobEntity, JobListEntity } from '../entities';
 
 export class EditJobDto implements Omit<JobEntity, 'id'> {
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @IsString()
+  @IsNotEmpty()
   company: string;
 
   @IsOptional()
@@ -25,7 +25,6 @@ export class EditJobDto implements Omit<JobEntity, 'id'> {
   salary?: string;
 
   @IsOptional()
-  @IsString()
   @IsUrl()
   url?: string;
 

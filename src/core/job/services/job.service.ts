@@ -59,7 +59,6 @@ function editJob(jobId: number, updatedJob: EditJobDto) {
         ...foundJob,
         ...updatedJob,
       };
-      console.log(_jobs[jobIdx]);
       resolve(_jobs[jobIdx]);
     } else {
       reject('job not found');

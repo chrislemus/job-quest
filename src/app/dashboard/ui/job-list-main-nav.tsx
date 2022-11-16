@@ -1,6 +1,6 @@
 import { Box, Skeleton, Tab, Tabs } from '@common/ui/atoms';
 import { JobListEntity } from '@core/job/entities';
-import { PropsWithoutRef, SyntheticEvent } from 'react';
+import { PropsWithoutRef, SyntheticEvent, useMemo } from 'react';
 
 interface JobListMainNavProps {
   setActiveJobList: (a: number) => void;
@@ -10,6 +10,9 @@ interface JobListMainNavProps {
 }
 
 export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
+  const sortedJobList = useMemo(() => {
+    return p.jobList.sort((a, b) => a.order - b.order);
+  }, [p.jobList]);
   return (
     <Box
       sx={{
@@ -28,7 +31,7 @@ export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
           value={p.activeJobListId}
           centered
         >
-          {p.jobList.map((j) => {
+          {sortedJobList.map((j) => {
             return <Tab label={j.label} value={j.id} key={j.id} />;
           })}
         </Tabs>

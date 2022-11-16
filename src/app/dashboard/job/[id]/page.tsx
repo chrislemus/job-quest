@@ -72,6 +72,10 @@ export default function Job(p: JobProps) {
 
   const formErrors = formMethods.formState.errors;
 
+  const shouldFormatJobUrl = (value: string) => {
+    return !value.startsWith('http') && value?.length > 0;
+  };
+
   return (
     <Container>
       <Form
@@ -174,18 +178,16 @@ export default function Job(p: JobProps) {
               name="url"
               label="Job Url"
               fullWidth
+              defaultValue={jobQuery.data?.url}
               setValueAs={(val) => {
-                if (!val.startsWith('http') && val?.length > 0) {
-                  return `https://${val}`;
-                }
+                if (val?.length === 0) return undefined;
+                if (shouldFormatJobUrl(val)) return `https://${val}`;
                 return val;
               }}
               onBlur={(e) => {
                 const value = e.target?.value;
-                if (value) {
-                  if (!value.startsWith('http') && value?.length > 0) {
-                    e.target.value = `https://${value}`;
-                  }
+                if (shouldFormatJobUrl(value)) {
+                  e.target.value = `https://${value}`;
                 }
               }}
               endAdornment={
@@ -193,6 +195,7 @@ export default function Job(p: JobProps) {
                   <IconButton
                     aria-label="job url"
                     href={jobQuery.data?.url as any}
+                    disabled={!jobQuery.data?.url}
                     target="_blank"
                     LinkComponent={Link}
                     edge="end"
