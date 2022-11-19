@@ -24,25 +24,21 @@ async function findById(id: number) {
   return data;
 }
 
-function addJob(job: CreateJobDto) {
-  return new Promise<CreateJobDto>((resolve, _reject) => {
-    const id = _jobs.length + 1;
+async function createJob(job: CreateJobDto) {
+  const response = await jobQuestHttp.post<ApiOkRes<JobEntity>>(
+    jobQuestHttpConfig.urls.job.root,
+    {
+      ...job,
+      color: job.color
+        ? job.color
+        : jobBackgroundColors[
+            Math.round(Math.random() * jobBackgroundColors.length)
+          ],
+    }
+  );
 
-    const backgroundColor =
-      jobBackgroundColors[
-        Math.round(Math.random() * jobBackgroundColors.length)
-      ];
-
-    // _jobs.push({
-    //   ...job,
-    //   id,
-    //   color: backgroundColor,
-    //   location: null,
-    //   salary: null,
-    //   url:
-    // });
-    resolve(job);
-  });
+  const data = response?.data;
+  return data;
 }
 
 async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
@@ -76,4 +72,4 @@ async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
   // });
 }
 
-export const jobService = { getAll, addJob, findById, updateJob };
+export const jobService = { getAll, createJob, findById, updateJob };

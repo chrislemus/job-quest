@@ -132,9 +132,9 @@ export default function Job(p: JobProps) {
             </Grid>
             {errorMsgs && (
               <Typography paddingTop={1} color="error" variant="body1">
-                {errorMsgs?.map((msg) => {
-                  return <li>{msg}</li>;
-                })}
+                {errorMsgs?.map((msg, idx) => {
+                  return <li key={idx}>{msg}</li>;
+                }) || 'Error'}
               </Typography>
             )}
           </Grid>

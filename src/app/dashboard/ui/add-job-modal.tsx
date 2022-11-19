@@ -20,6 +20,7 @@ import {
   ModalContentText,
   ModalTitle,
 } from '@common/ui/molecules';
+import { ApiErrorRes } from '@core/http/job-quest/interface';
 
 interface NewJobModalContentProps {
   active: boolean;
@@ -38,10 +39,10 @@ export function AddJobModal(p: NewJobModalContentProps) {
   });
 
   const addJobMutation = useMutation({
-    mutationFn: jobService.addJob,
-    onSuccess(data) {
+    mutationFn: jobService.createJob,
+    onSuccess(res) {
       queryClient.invalidateQueries({
-        queryKey: ['jobs', { jobListId: data.jobListId }],
+        queryKey: ['jobs', { jobListId: res.data.jobListId }],
       });
       formMethods.reset();
       p.toggleActive();
@@ -55,7 +56,9 @@ export function AddJobModal(p: NewJobModalContentProps) {
     }));
   }, [JobsListQuery.data]);
 
-  const errorMsg: string = '';
+  let errorMsgs: undefined | string[];
+  const addJobMutationErrors = addJobMutation.error as ApiErrorRes | undefined;
+  errorMsgs = addJobMutationErrors?.messages;
 
   return (
     <Modal active={p.active} toggleActive={p.toggleActive}>
@@ -72,9 +75,11 @@ export function AddJobModal(p: NewJobModalContentProps) {
             Quickly add job by entering formation below.
           </ModalContentText>
 
-          {errorMsg && (
-            <Typography paddingTop={1} color="error">
-              {errorMsg}
+          {errorMsgs && (
+            <Typography paddingTop={1} color="error" variant="body1">
+              {errorMsgs?.map((msg, idx) => {
+                return <li key={idx}>{msg}</li>;
+              }) || 'Error'}
             </Typography>
           )}
           <br />
