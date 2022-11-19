@@ -3,7 +3,7 @@ import { queryClient } from '@app/layout';
 import { Form } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
 import { jobBackgroundColors } from '@core/job/const';
-import { EditJobDto } from '@core/job/dto';
+import { UpdateJobDto } from '@core/job/dto';
 import { jobListService, jobService } from '@core/job/services';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
@@ -21,6 +21,13 @@ import {
   InputAdornment,
 } from '@common/ui/atoms';
 import Link from 'next/link';
+import {
+  ApiErrorRes,
+  ApiOkRes,
+  ApiPageRes,
+} from '@core/http/job-quest/interface';
+import { JobEntity, JobListEntity } from '@core/job/entities';
+import { ApiError } from 'next/dist/server/api-utils';
 
 interface JobProps {
   params: { id: string };
@@ -36,22 +43,27 @@ export default function Job(p: JobProps) {
 
   const jobQueryData = jobQuery?.data?.data;
 
-  const formMethods = useForm<EditJobDto>({
-    resolver: formValidator(EditJobDto),
+  const formMethods = useForm<UpdateJobDto>({
+    resolver: formValidator(UpdateJobDto),
   });
 
-  const JobsListQuery = useQuery({
+  const JobsListQuery = useQuery<ApiPageRes<JobListEntity>, ApiError>({
     queryKey: ['jobList'],
     queryFn: jobListService.getAll,
   });
 
   const editJobMutation = useMutation({
-    mutationFn: (job: EditJobDto) => {
-      return jobService.editJob(jobId, job);
+    // mutationKey: [UpdateJobDto],
+    mutationFn: (job: UpdateJobDto) => {
+      return jobService.updateJob(jobId, job);
     },
-    onSuccess(_data) {
+    onSuccess(data: ApiOkRes<JobEntity>) {
       queryClient.invalidateQueries({
         queryKey: ['job', jobId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['jobs', { jobListId: data.data.jobListId }],
       });
     },
   });
@@ -63,7 +75,11 @@ export default function Job(p: JobProps) {
     }));
   }, [JobsListQuery.data]);
 
-  let errorMsg: string = '';
+  let errorMsgs: undefined | string[];
+  const editJobMutationErrors = editJobMutation.error as
+    | ApiErrorRes
+    | undefined;
+  errorMsgs = editJobMutationErrors?.messages;
 
   if (jobQuery.isLoading)
     return (
@@ -114,9 +130,11 @@ export default function Job(p: JobProps) {
                 </Button>
               </Grid>
             </Grid>
-            {errorMsg && (
-              <Typography paddingTop={1} color="error">
-                {errorMsg}
+            {errorMsgs && (
+              <Typography paddingTop={1} color="error" variant="body1">
+                {errorMsgs?.map((msg) => {
+                  return <li>{msg}</li>;
+                })}
               </Typography>
             )}
           </Grid>
@@ -153,7 +171,7 @@ export default function Job(p: JobProps) {
           </Grid>
           <Grid xs={4} sm={2}>
             <SelectField
-              name="backgroundColor"
+              name="color"
               label="Color"
               defaultValue={jobQueryData?.color}
               options={jobBackgroundColors.map((color) => {
@@ -182,7 +200,7 @@ export default function Job(p: JobProps) {
               fullWidth
               defaultValue={jobQueryData?.url || undefined}
               setValueAs={(val) => {
-                if (val?.length === 0) return undefined;
+                if (val?.length === 0) return '';
                 if (shouldFormatJobUrl(val)) return `https://${val}`;
                 return val;
               }}

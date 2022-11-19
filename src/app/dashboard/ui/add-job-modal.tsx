@@ -10,7 +10,7 @@ import { jobListService, jobService } from '@core/job/services';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { AddJobDto } from '@core/job/dto';
+import { CreateJobDto } from '@core/job/dto';
 import { queryClient } from '@app/layout';
 import {
   Form,
@@ -28,8 +28,8 @@ interface NewJobModalContentProps {
 
 export function AddJobModal(p: NewJobModalContentProps) {
   const formId = 'new-job';
-  const formMethods = useForm<AddJobDto>({
-    resolver: formValidator(AddJobDto),
+  const formMethods = useForm<CreateJobDto>({
+    resolver: formValidator(CreateJobDto),
   });
 
   const JobsListQuery = useQuery({

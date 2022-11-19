@@ -6,15 +6,15 @@ export class JobEntity {
   /** Job company */
   company: string;
   /** Job Location */
-  location: string | null;
+  location?: string | null;
   /** Job post URL */
-  url: string | null;
+  url?: string | null;
   /** Job salary */
-  salary: string | null;
+  salary?: string | null;
   /** Job description */
-  description: string | null;
+  description?: string | null;
   /** Hexadecimal color to be used in UI when displaying job content */
-  color: string | null;
+  color?: string | null;
   /** Job List ID where the Job links to */
   jobListId: number;
   /** ID of the User who owns this Job */

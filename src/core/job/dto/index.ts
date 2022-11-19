@@ -1,2 +1,2 @@
-export * from './add-job.dto';
-export * from './edit-job.dto';
+export * from './create-job.dto';
+export * from './update-job.dto';

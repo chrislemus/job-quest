@@ -1,6 +1,6 @@
 import { jobs as _jobs } from './mocks.const';
 import { JobEntity } from '@core/job/entities';
-import { AddJobDto, EditJobDto } from '../dto';
+import { CreateJobDto, UpdateJobDto } from '../dto';
 import { jobBackgroundColors } from '../const';
 import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
 import { ApiOkRes, ApiPageRes } from '@core/http/job-quest/interface';
@@ -24,8 +24,8 @@ async function findById(id: number) {
   return data;
 }
 
-function addJob(job: AddJobDto) {
-  return new Promise<AddJobDto>((resolve, _reject) => {
+function addJob(job: CreateJobDto) {
+  return new Promise<CreateJobDto>((resolve, _reject) => {
     const id = _jobs.length + 1;
 
     const backgroundColor =
@@ -45,27 +45,35 @@ function addJob(job: AddJobDto) {
   });
 }
 
-function editJob(jobId: number, updatedJob: EditJobDto) {
-  return new Promise<JobEntity>((resolve, reject) => {
-    let jobIdx: undefined | number;
-    const foundJob = _jobs.find((j, idx) => {
-      const foundJob = j.id === jobId;
-      if (foundJob) {
-        jobIdx = idx;
-        return foundJob;
-      }
-    });
+async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
+  const response = await jobQuestHttp.patch<ApiOkRes<JobEntity>>(
+    jobQuestHttpConfig.urls.job.update(jobId),
+    updatedJob
+  );
 
-    if ((jobIdx === 0 || !!jobIdx) && foundJob) {
-      _jobs[jobIdx] = {
-        ...foundJob,
-        ...updatedJob,
-      };
-      resolve(_jobs[jobIdx]);
-    } else {
-      reject('job not found');
-    }
-  });
+  const data = response?.data;
+  return data;
+
+  // return new Promise<JobEntity>((resolve, reject) => {
+  //   let jobIdx: undefined | number;
+  //   const foundJob = _jobs.find((j, idx) => {
+  //     const foundJob = j.id === jobId;
+  //     if (foundJob) {
+  //       jobIdx = idx;
+  //       return foundJob;
+  //     }
+  //   });
+
+  //   if ((jobIdx === 0 || !!jobIdx) && foundJob) {
+  //     _jobs[jobIdx] = {
+  //       ...foundJob,
+  //       ...updatedJob,
+  //     };
+  //     resolve(_jobs[jobIdx]);
+  //   } else {
+  //     reject('job not found');
+  //   }
+  // });
 }
 
-export const jobService = { getAll, addJob, findById, editJob };
+export const jobService = { getAll, addJob, findById, updateJob };

@@ -14,7 +14,7 @@ interface JobCardProps {
 }
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
-  const backgroundColor = p.job.backgroundColor || '#ffff';
+  const backgroundColor = p.job.color || '#ffff';
   const textColor = useMemo(() => {
     return theme.palette.getContrastText(backgroundColor);
   }, [backgroundColor]);

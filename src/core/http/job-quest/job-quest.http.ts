@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { jobQuestHttpConfig } from './job-quest-http.config';
 import { authLocalStore } from '@core/auth/services';
 
@@ -55,7 +55,12 @@ jobQuestHttp.interceptors.response.use(
             authLocalStore.updateToken('accessToken', accessToken);
             return jobQuestHttp(config);
           } catch (_error) {
-            return Promise.reject(_error);
+            const err: any = _error;
+            if (err?.response?.data) {
+              return Promise.reject(err?.response?.data);
+            } else {
+              return Promise.reject(err);
+            }
           }
         } else {
           authLocalStore.removeTokens();
@@ -63,6 +68,6 @@ jobQuestHttp.interceptors.response.use(
       }
     }
     if (failedAuthReq) authLocalStore.removeTokens();
-    return Promise.reject(err);
+    return Promise.reject(err?.response?.data || err?.response || err);
   }
 );
