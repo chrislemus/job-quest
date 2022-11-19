@@ -31,7 +31,8 @@ export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
   return (
     <Grid
       container
-      spacing={6}
+      rowSpacing={6}
+      columnSpacing={3}
       justifyContent={{ xs: 'center', sm: 'flex-start' }}
       paddingTop={3}
     >
