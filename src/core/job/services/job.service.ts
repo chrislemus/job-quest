@@ -3,7 +3,7 @@ import { JobEntity } from '@core/job/entities';
 import { AddJobDto, EditJobDto } from '../dto';
 import { jobBackgroundColors } from '../const';
 import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
-import { ApiPageRes } from '@core/http/job-quest/interface';
+import { ApiOkRes, ApiPageRes } from '@core/http/job-quest/interface';
 
 async function getAll(params?: { jobListId?: number }) {
   const response = await jobQuestHttp.get<ApiPageRes<JobEntity>>(
@@ -15,15 +15,13 @@ async function getAll(params?: { jobListId?: number }) {
   return data;
 }
 
-function findById(id: number) {
-  return new Promise<JobEntity>((resolve, reject) => {
-    const job = _jobs.find((j) => j.id === id);
-    if (job) {
-      resolve(job);
-    } else {
-      reject('no job found');
-    }
-  });
+async function findById(id: number) {
+  const response = await jobQuestHttp.get<ApiOkRes<JobEntity>>(
+    jobQuestHttpConfig.urls.job.findById(id)
+  );
+
+  const data = response?.data;
+  return data;
 }
 
 function addJob(job: AddJobDto) {

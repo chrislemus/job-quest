@@ -34,6 +34,8 @@ export default function Job(p: JobProps) {
     queryFn: () => jobService.findById(jobId),
   });
 
+  const jobQueryData = jobQuery?.data?.data;
+
   const formMethods = useForm<EditJobDto>({
     resolver: formValidator(EditJobDto),
   });
@@ -55,7 +57,7 @@ export default function Job(p: JobProps) {
   });
 
   const jobListOptions = useMemo(() => {
-    return JobsListQuery.data?.map((j) => ({
+    return JobsListQuery.data?.data?.map((j) => ({
       value: j.id,
       label: j.label,
     }));
@@ -89,9 +91,9 @@ export default function Job(p: JobProps) {
           <Grid xs={12}>
             <Grid container paddingLeft={0}>
               <Grid flexGrow={1}>
-                <Typography variant="h4">{jobQuery?.data?.title}</Typography>
+                <Typography variant="h4">{jobQueryData?.title}</Typography>
                 <Typography variant="subtitle1">
-                  {jobQuery?.data?.company}
+                  {jobQueryData?.company}
                 </Typography>
               </Grid>
 
@@ -122,7 +124,7 @@ export default function Job(p: JobProps) {
             <TextField
               name="title"
               label="title"
-              defaultValue={jobQuery.data?.title || undefined}
+              defaultValue={jobQueryData?.title || undefined}
               fullWidth
               isInvalid={!!formErrors?.title?.message}
               helperText={formErrors?.title?.message}
@@ -134,7 +136,7 @@ export default function Job(p: JobProps) {
               type="text"
               label="Company"
               fullWidth
-              defaultValue={jobQuery.data?.company || undefined}
+              defaultValue={jobQueryData?.company || undefined}
               isInvalid={!!formErrors?.company?.message}
               helperText={formErrors?.company?.message}
             />
@@ -144,7 +146,7 @@ export default function Job(p: JobProps) {
               <SelectField
                 name="jobListId"
                 label="Job List"
-                defaultValue={jobQuery.data?.jobListId}
+                defaultValue={jobQueryData?.jobListId}
                 options={jobListOptions}
               />
             )}
@@ -153,7 +155,7 @@ export default function Job(p: JobProps) {
             <SelectField
               name="backgroundColor"
               label="Color"
-              defaultValue={jobQuery.data?.backgroundColor}
+              defaultValue={jobQueryData?.color}
               options={jobBackgroundColors.map((color) => {
                 return {
                   value: color,
@@ -178,7 +180,7 @@ export default function Job(p: JobProps) {
               name="url"
               label="Job Url"
               fullWidth
-              defaultValue={jobQuery.data?.url}
+              defaultValue={jobQueryData?.url || undefined}
               setValueAs={(val) => {
                 if (val?.length === 0) return undefined;
                 if (shouldFormatJobUrl(val)) return `https://${val}`;
@@ -194,8 +196,8 @@ export default function Job(p: JobProps) {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="job url"
-                    href={jobQuery.data?.url as any}
-                    disabled={!jobQuery.data?.url}
+                    href={jobQueryData?.url as any}
+                    disabled={!jobQueryData?.url}
                     target="_blank"
                     LinkComponent={Link}
                     edge="end"
@@ -212,7 +214,7 @@ export default function Job(p: JobProps) {
             <TextField
               name="location"
               label="Location"
-              defaultValue={jobQuery.data?.location || undefined}
+              defaultValue={jobQueryData?.location || undefined}
               fullWidth
               isInvalid={!!formErrors?.location?.message}
               helperText={formErrors?.location?.message}
@@ -223,7 +225,7 @@ export default function Job(p: JobProps) {
             <TextField
               name="salary"
               label="Salary"
-              defaultValue={jobQuery.data?.salary || undefined}
+              defaultValue={jobQueryData?.salary || undefined}
               fullWidth
               isInvalid={!!formErrors?.salary?.message}
               helperText={formErrors?.salary?.message}
@@ -235,7 +237,7 @@ export default function Job(p: JobProps) {
             <TextField
               name="description"
               label="Description"
-              defaultValue={jobQuery.data?.description || undefined}
+              defaultValue={jobQueryData?.description || undefined}
               fullWidth
               multiline
               rows={4}

@@ -10,6 +10,7 @@ export const jobQuestHttpConfig = {
     },
     job: {
       root: '/job',
+      findById: (id: number) => `/job/${id}`,
     },
     jobList: {
       root: '/job-list',
