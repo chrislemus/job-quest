@@ -14,9 +14,9 @@ jobQuestHttp.interceptors.request.use((config) => {
   const tokens = authLocalStore.getTokens();
 
   if (config?.url === httpUrls.auth.refresh) {
-    token = tokens?.refresh_token;
+    token = tokens?.refreshToken;
   } else if (config?.url !== httpUrls.auth.login) {
-    token = tokens?.access_token;
+    token = tokens?.accessToken;
   }
 
   if (token) {
@@ -31,26 +31,28 @@ jobQuestHttp.interceptors.response.use(
   (res) => res,
   async (err) => {
     const config = err.config;
-
+    const tokens = authLocalStore.getTokens();
+    const authErrorCode =
+      err.response.status === 401 || err.response.status === 403;
+    const failedAuthReq = authErrorCode && tokens;
     if (
       config?.url !== httpUrls.auth.login &&
       config?.url !== httpUrls.auth.refresh &&
       err.response
     ) {
-      const tokens = authLocalStore.getTokens();
-      if (err.response.status === 401 && tokens) {
+      if (failedAuthReq) {
         if (!config._retry) {
           config._retry = true;
 
           try {
-            const refreshToken = tokens?.refresh_token;
+            const refreshToken = tokens?.refreshToken;
             const res = await jobQuestHttp.post(
               httpUrls.auth.refresh,
               {},
               { headers: { Authorization: `Bearer ${refreshToken}` } }
             );
-            const { access_token } = res.data;
-            authLocalStore.updateToken('access_token', access_token);
+            const { accessToken } = res.data;
+            authLocalStore.updateToken('accessToken', accessToken);
             return jobQuestHttp(config);
           } catch (_error) {
             return Promise.reject(_error);
@@ -60,7 +62,7 @@ jobQuestHttp.interceptors.response.use(
         }
       }
     }
-
+    if (failedAuthReq) authLocalStore.removeTokens();
     return Promise.reject(err);
   }
 );

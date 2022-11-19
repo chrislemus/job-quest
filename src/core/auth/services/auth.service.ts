@@ -4,18 +4,16 @@ import { authLocalStore } from './auth-local-store.service';
 
 const signup = (user: UserSignup) => {
   return jobQuestHttp.post('/auth/signup', user).then((res) => {
-    if (res?.data?.access_token) {
-      authLocalStore.setTokens(res.data);
-    }
+    const tokens = res?.data?.data;
+    if (tokens) authLocalStore.setTokens(tokens);
     return res;
   });
 };
 
 const login = (email: string, password: string) => {
   return jobQuestHttp.post('/auth/login', { email, password }).then((res) => {
-    if (res?.data?.access_token) {
-      authLocalStore.setTokens(res.data);
-    }
+    const tokens = res?.data?.data;
+    if (tokens) authLocalStore.setTokens(tokens);
     return res;
   });
 };
