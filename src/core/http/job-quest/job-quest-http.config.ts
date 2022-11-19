@@ -8,5 +8,11 @@ export const jobQuestHttpConfig = {
       logout: '/auth/logout',
       profile: '/auth/profile',
     },
+    job: {
+      root: '/job',
+    },
+    jobList: {
+      root: '/job-list',
+    },
   },
 };

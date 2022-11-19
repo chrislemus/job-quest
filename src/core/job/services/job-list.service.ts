@@ -1,10 +1,14 @@
+import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
+import { ApiPageRes } from '@core/http/job-quest/interface';
 import { JobListEntity } from '@core/job/entities';
-import { jobList } from './mocks.const';
 
-function getAll() {
-  return new Promise<JobListEntity[]>((resolve, _reject) => {
-    resolve(jobList);
-  });
+async function getAll() {
+  const response = await jobQuestHttp.get<ApiPageRes<JobListEntity>>(
+    jobQuestHttpConfig.urls.jobList.root
+  );
+
+  const data = response?.data;
+  return data;
 }
 
 export const jobListService = { getAll };

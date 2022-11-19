@@ -33,7 +33,7 @@ jobQuestHttp.interceptors.response.use(
     const config = err.config;
     const tokens = authLocalStore.getTokens();
     const authErrorCode =
-      err.response.status === 401 || err.response.status === 403;
+      err?.response?.status === 401 || err?.response?.status === 403;
     const failedAuthReq = authErrorCode && tokens;
     if (
       config?.url !== httpUrls.auth.login &&
@@ -51,7 +51,7 @@ jobQuestHttp.interceptors.response.use(
               {},
               { headers: { Authorization: `Bearer ${refreshToken}` } }
             );
-            const { accessToken } = res.data;
+            const accessToken = res?.data?.data?.accessToken;
             authLocalStore.updateToken('accessToken', accessToken);
             return jobQuestHttp(config);
           } catch (_error) {

@@ -2,16 +2,17 @@ import { jobs as _jobs } from './mocks.const';
 import { JobEntity } from '@core/job/entities';
 import { AddJobDto, EditJobDto } from '../dto';
 import { jobBackgroundColors } from '../const';
+import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
+import { ApiPageRes } from '@core/http/job-quest/interface';
 
-function getAll(filters?: { jobListId: number }) {
-  return new Promise<JobEntity[]>((resolve, _reject) => {
-    let jobs = _jobs;
-    if (filters?.jobListId) {
-      jobs = jobs.filter((j) => j.jobListId === filters.jobListId);
-    }
+async function getAll(params?: { jobListId?: number }) {
+  const response = await jobQuestHttp.get<ApiPageRes<JobEntity>>(
+    jobQuestHttpConfig.urls.job.root,
+    { params }
+  );
 
-    resolve(jobs);
-  });
+  const data = response?.data;
+  return data;
 }
 
 function findById(id: number) {
@@ -34,11 +35,14 @@ function addJob(job: AddJobDto) {
         Math.round(Math.random() * jobBackgroundColors.length)
       ];
 
-    _jobs.push({
-      ...job,
-      id,
-      backgroundColor,
-    });
+    // _jobs.push({
+    //   ...job,
+    //   id,
+    //   color: backgroundColor,
+    //   location: null,
+    //   salary: null,
+    //   url:
+    // });
     resolve(job);
   });
 }

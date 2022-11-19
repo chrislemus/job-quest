@@ -49,7 +49,7 @@ export function AddJobModal(p: NewJobModalContentProps) {
   });
 
   const jobListOptions = useMemo(() => {
-    return JobsListQuery.data?.map((j) => ({
+    return JobsListQuery.data?.data?.map((j) => ({
       value: j.id,
       label: j.label,
     }));

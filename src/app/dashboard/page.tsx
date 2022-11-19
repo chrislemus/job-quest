@@ -13,24 +13,24 @@ export default function Dashboard() {
       return jobListService.getAll();
     },
     onSuccess: (d) => {
-      const defaultId = d?.[0]?.id;
+      const defaultId = d?.data?.[0]?.id;
       if (!activeJobListId && defaultId) setActiveJobListId(defaultId);
     },
   });
 
-  const jobsQueryFilters = { jobListId: activeJobListId || 0 };
+  const jobsQueryFilters = { jobListId: activeJobListId || undefined };
   const jobsQuery = useQuery({
-    enabled: !!JobsListQuery.data,
+    enabled: !!JobsListQuery?.data,
     queryKey: ['jobs', jobsQueryFilters],
     queryFn: () => {
-      return activeJobListId ? jobService.getAll(jobsQueryFilters) : [];
+      return jobService.getAll(jobsQueryFilters);
     },
   });
 
   return (
     <>
       <JobListMainNav
-        jobList={JobsListQuery.data || []}
+        jobList={JobsListQuery.data?.data || []}
         setActiveJobList={(a: number) => setActiveJobListId(a)}
         activeJobListId={activeJobListId}
         loading={JobsListQuery.isLoading}
@@ -40,7 +40,7 @@ export default function Dashboard() {
 
       <JobListPanel
         loading={JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined}
-        jobs={jobsQuery.data || []}
+        jobs={jobsQuery.data?.data || []}
       />
     </>
   );
