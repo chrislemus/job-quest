@@ -49,27 +49,15 @@ async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
 
   const data = response?.data;
   return data;
-
-  // return new Promise<JobEntity>((resolve, reject) => {
-  //   let jobIdx: undefined | number;
-  //   const foundJob = _jobs.find((j, idx) => {
-  //     const foundJob = j.id === jobId;
-  //     if (foundJob) {
-  //       jobIdx = idx;
-  //       return foundJob;
-  //     }
-  //   });
-
-  //   if ((jobIdx === 0 || !!jobIdx) && foundJob) {
-  //     _jobs[jobIdx] = {
-  //       ...foundJob,
-  //       ...updatedJob,
-  //     };
-  //     resolve(_jobs[jobIdx]);
-  //   } else {
-  //     reject('job not found');
-  //   }
-  // });
 }
 
-export const jobService = { getAll, createJob, findById, updateJob };
+async function deleteJob(jobId: number) {
+  const response = await jobQuestHttp.delete<ApiOkRes<JobEntity>>(
+    jobQuestHttpConfig.urls.job.delete(jobId)
+  );
+
+  const data = response?.data;
+  return data;
+}
+
+export const jobService = { getAll, createJob, findById, updateJob, deleteJob };
