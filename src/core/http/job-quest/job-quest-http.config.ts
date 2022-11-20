@@ -1,6 +1,7 @@
 export const jobQuestHttpConfig = {
   urls: {
-    base: 'http://localhost:3001',
+    // base: 'http://localhost:3001',
+    base: 'http://172.20.10.2:3001',
     auth: {
       login: '/auth/login',
       refresh: '/auth/refresh',
