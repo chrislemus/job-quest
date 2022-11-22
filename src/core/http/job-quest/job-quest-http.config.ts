@@ -1,6 +1,6 @@
 export const jobQuestHttpConfig = {
   urls: {
-    base: 'http://localhost:3001',
+    base: `http://${process.env.NEXT_PUBLIC_JOBQUEST_API_ROOT_URL}`,
     auth: {
       login: '/auth/login',
       refresh: '/auth/refresh',

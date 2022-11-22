@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { jobQuestHttpConfig } from './job-quest-http.config';
 import { authLocalStore } from '@core/auth/services';
 
