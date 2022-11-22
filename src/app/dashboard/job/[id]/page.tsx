@@ -1,5 +1,5 @@
 'use client';
-import { queryClient } from '@app/layout';
+import { queryClient } from '@common/query-client';
 import { Form, Modal } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
 import { jobBackgroundColors } from '@core/job/const';

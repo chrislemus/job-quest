@@ -11,7 +11,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@core/job/dto';
-import { queryClient } from '@app/layout';
 import {
   Form,
   Modal,
@@ -21,6 +20,7 @@ import {
   ModalTitle,
 } from '@common/ui/molecules';
 import { ApiErrorRes } from '@core/http/job-quest/interface';
+import { queryClient } from '@common/query-client';
 
 interface NewJobModalContentProps {
   active: boolean;
