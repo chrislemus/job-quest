@@ -1,4 +1,3 @@
-import { jobs as _jobs } from './mocks.const';
 import { JobEntity } from '@core/job/entities';
 import { CreateJobDto, UpdateJobDto } from '../dto';
 import { jobBackgroundColors } from '../const';
