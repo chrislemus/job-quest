@@ -6,9 +6,9 @@ import { jobBackgroundColors } from '@core/job/const';
 import { UpdateJobDto } from '@core/job/dto';
 import { jobListService, jobService } from '@core/job/services';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { OpenInNewIcon } from '@common/ui/icons';
+import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
 import {
   Button,
   Container,
@@ -39,6 +39,18 @@ export default function Job(p: JobProps) {
   const router = useRouter();
   const jobId = parseInt(p.params.id);
   const formId = 'edit-job';
+  const [successCount, setSuccessCount] = useState(0);
+
+  useEffect(() => {
+    if (successCount > 0) {
+      const timeOut = setTimeout(() => {
+        setSuccessCount((count) => count - 1);
+      }, 1000);
+      return () => {
+        clearTimeout(timeOut);
+      };
+    }
+  }, [successCount]);
 
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useBoolean();
 
@@ -81,6 +93,7 @@ export default function Job(p: JobProps) {
       return jobService.updateJob(jobId, job);
     },
     onSuccess(data: ApiOkRes<JobEntity>) {
+      setSuccessCount((count) => count + 1);
       queryClient.invalidateQueries({
         queryKey: ['job', jobId],
       });
@@ -142,9 +155,15 @@ export default function Job(p: JobProps) {
                     <Button
                       variant="contained"
                       type="submit"
+                      color={successCount > 0 ? 'success' : undefined}
                       disabled={
                         formMethods.formState.isSubmitting ||
                         editJobMutation.isLoading
+                      }
+                      startIcon={
+                        successCount > 0 ? (
+                          <CheckCircleOutlineIcon />
+                        ) : undefined
                       }
                       loading={
                         formMethods.formState.isSubmitting ||
@@ -312,7 +331,7 @@ export default function Job(p: JobProps) {
               {/* 
 
               TODO: add error response messages 
-              
+
               */}
               <Grid container justifyContent="space-around" paddingTop={6}>
                 <Grid paddingRight={2}>
