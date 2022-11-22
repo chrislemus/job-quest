@@ -9,7 +9,7 @@ export class UpdateJobDto implements Partial<CreateJobDto> {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title?: string;
   /**
    * Job company
    * @example Acme
@@ -17,27 +17,27 @@ export class UpdateJobDto implements Partial<CreateJobDto> {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  company: string;
+  company?: string;
   /**
    * Job Location
    * @example 'Raleigh, NC'
    */
   @IsOptional()
   @IsString()
-  location: string;
+  location?: string;
   /**
    * Job post URL
    */
   @IsOptional()
   @IsString()
-  url: string;
+  url?: string;
   /**
    * Job salary
    * @example 56k
    */
   @IsOptional()
   @IsString()
-  salary: string;
+  salary?: string;
   /**
    * Job description
    */

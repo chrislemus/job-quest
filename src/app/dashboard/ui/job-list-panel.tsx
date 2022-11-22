@@ -1,22 +1,23 @@
 import { Grid, Skeleton } from '@common/ui/atoms';
-import { JobEntity } from '@core/job/entities';
+import { JobEntity, JobListEntity } from '@core/job/entities';
 import { PropsWithChildren, PropsWithoutRef, useMemo } from 'react';
 import { JobCard } from './job-card';
 
 interface JobListPanelProps {
   jobs: JobEntity[];
+  jobLists: JobListEntity[];
   loading?: number;
 }
 
-export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
-  function GridItem(p: PropsWithChildren<{}>) {
-    return (
-      <Grid xs={12} sm={6} md={4} lg={3}>
-        {p.children}
-      </Grid>
-    );
-  }
+function GridItem(p: PropsWithChildren<{}>) {
+  return (
+    <Grid xs={12} sm={6} md={4} lg={3}>
+      {p.children}
+    </Grid>
+  );
+}
 
+export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
   const loadingCards = useMemo(
     () =>
       p.loading &&
@@ -42,7 +43,11 @@ export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
         p.jobs.map((job, idx) => {
           return (
             <GridItem key={idx}>
-              <JobCard job={job} key={idx + job.title + job.jobListId} />
+              <JobCard
+                job={job}
+                key={idx + job.title + job.jobListId}
+                jobLists={p.jobLists}
+              />
             </GridItem>
           );
         })

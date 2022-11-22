@@ -41,6 +41,7 @@ export default function Dashboard() {
       <JobListPanel
         loading={JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined}
         jobs={jobsQuery.data?.data || []}
+        jobLists={JobsListQuery.data?.data || []}
       />
     </>
   );
