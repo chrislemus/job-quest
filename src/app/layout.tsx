@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 import { Provider } from 'react-redux';
 import { store } from '@common/store/store';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export const queryClient = new QueryClient();
 export const theme = createTheme();
@@ -22,7 +22,7 @@ export default function RootLayout(p: PropsWithChildren<{}>) {
         <ThemeProvider theme={theme}>
           <CssBaseline>
             <QueryClientProvider client={queryClient}>
-              <ReactQueryDevtools initialIsOpen={false} />
+              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
               <Provider store={store}>{p.children}</Provider>
             </QueryClientProvider>
           </CssBaseline>
