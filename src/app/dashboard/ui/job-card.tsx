@@ -79,22 +79,20 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
         {editJobMutation.isLoading ? (
           <MenuItem>Loading...</MenuItem>
         ) : (
-          <>
-            {p.jobLists.map((list) => {
-              return (
-                <MenuItem
-                  key={list.id}
-                  disabled={p.job.jobListId === list.id}
-                  onClick={async () => {
-                    await editJobMutation.mutateAsync(list.id);
-                    handleClose();
-                  }}
-                >
-                  {list.label}
-                </MenuItem>
-              );
-            })}
-          </>
+          p.jobLists.map((list) => {
+            return (
+              <MenuItem
+                key={list.id}
+                disabled={p.job.jobListId === list.id}
+                onClick={async () => {
+                  await editJobMutation.mutateAsync(list.id);
+                  handleClose();
+                }}
+              >
+                {list.label}
+              </MenuItem>
+            );
+          })
         )}
       </Menu>
     </Card>
