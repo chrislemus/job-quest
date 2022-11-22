@@ -2,7 +2,7 @@ import { useLogout } from '@core/auth/mutation-hooks';
 import { useUserProfile } from '@core/user/query-hooks';
 import { useMemo, useState } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
-import { AdbIcon } from '@common/ui/icons';
+import { HistoryEduIcon } from '@common/ui/icons';
 import { deepPurple } from '@common/colors';
 import {
   Avatar,
@@ -41,7 +41,7 @@ export function DashboardNav() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'flex' }, mr: 1 }} />
+          <HistoryEduIcon sx={{ display: { xs: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -58,7 +58,7 @@ export function DashboardNav() {
               flexGrow: 1,
             }}
           >
-            LOGO
+            JobQuest
           </Typography>
 
           <Box sx={{ flexGrow: 0 }}>
