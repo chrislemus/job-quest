@@ -1,3 +1,4 @@
+/** Job Entity */
 export class JobEntity {
   /** ID of the Job */
   id: number;
