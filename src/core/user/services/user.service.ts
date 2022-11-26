@@ -1,9 +1,12 @@
 import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
+import { UserProfile } from '../interfaces';
 
-async function getProfile() {
-  const res = await jobQuestHttp.get<{
-    data: { id: number; email: string; firstName: string; lastName: string };
-  }>(jobQuestHttpConfig.urls.auth.profile);
+/** Fetch user profile data */
+async function getProfile(): Promise<UserProfile> {
+  const res = await jobQuestHttp.get<{ data: UserProfile }>(
+    jobQuestHttpConfig.urls.auth.profile
+  );
+
   const data = res?.data;
   return data?.data;
 }
