@@ -1,3 +1,8 @@
+/**
+ * HEX values for available job colors.
+ * This is a temp. solution and where the data
+ * will be pulled from the API instead.
+ */
 export const jobBackgroundColors = [
   '#e91e63',
   '#f44336',
