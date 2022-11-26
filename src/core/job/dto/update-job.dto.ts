@@ -1,6 +1,9 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CreateJobDto } from './create-job.dto';
 
+/**
+ * Request body Data transfer object for updating a Job.
+ */
 export class UpdateJobDto implements Partial<CreateJobDto> {
   /**
    * Job Title

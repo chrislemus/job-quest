@@ -1,7 +1,9 @@
-import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { JobEntity } from '../entities';
 
+/**
+ * Request body data transfer object for creating a Job.
+ */
 export class CreateJobDto implements Omit<JobEntity, 'id' | 'userId'> {
   /**
    * Job Title
