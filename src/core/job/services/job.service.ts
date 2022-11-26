@@ -4,6 +4,7 @@ import { jobBackgroundColors } from '../const';
 import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
 import { ApiOkRes, ApiPageRes } from '@core/http/job-quest/interface';
 
+/** Fetch all Jobs */
 async function getAll(params?: { jobListId?: number }) {
   const response = await jobQuestHttp.get<ApiPageRes<JobEntity>>(
     jobQuestHttpConfig.urls.job.root,
@@ -14,6 +15,7 @@ async function getAll(params?: { jobListId?: number }) {
   return data;
 }
 
+/** Fetch a Job by ID */
 async function findById(id: number) {
   const response = await jobQuestHttp.get<ApiOkRes<JobEntity>>(
     jobQuestHttpConfig.urls.job.findById(id)
@@ -23,6 +25,7 @@ async function findById(id: number) {
   return data;
 }
 
+/** Create a job */
 async function createJob(job: CreateJobDto) {
   const response = await jobQuestHttp.post<ApiOkRes<JobEntity>>(
     jobQuestHttpConfig.urls.job.root,
@@ -40,6 +43,7 @@ async function createJob(job: CreateJobDto) {
   return data;
 }
 
+/** Update a Job */
 async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
   const response = await jobQuestHttp.patch<ApiOkRes<JobEntity>>(
     jobQuestHttpConfig.urls.job.update(jobId),
@@ -50,6 +54,7 @@ async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
   return data;
 }
 
+/** Delete a Job */
 async function deleteJob(jobId: number) {
   const response = await jobQuestHttp.delete<ApiOkRes<JobEntity>>(
     jobQuestHttpConfig.urls.job.delete(jobId)
