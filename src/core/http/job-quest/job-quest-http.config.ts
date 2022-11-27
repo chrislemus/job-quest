@@ -1,3 +1,6 @@
+/**
+ * Http config configurations
+ */
 export const jobQuestHttpConfig = {
   urls: {
     base: `${process.env.NEXT_PUBLIC_JOBQUEST_API_ROOT_URL}`,

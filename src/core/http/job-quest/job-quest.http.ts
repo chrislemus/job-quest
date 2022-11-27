@@ -2,13 +2,21 @@ import axios from 'axios';
 import { jobQuestHttpConfig } from './job-quest-http.config';
 import { authLocalStore } from '@core/auth/services';
 
+/** Api URLs */
 const httpUrls = jobQuestHttpConfig.urls;
 
+/**
+ * Job Quest API Http instance.
+ * - Abstracts all low level auth details from consumers.
+ */
 export const jobQuestHttp = axios.create({
   baseURL: httpUrls.base,
   headers: { 'Content-Type': 'application/json' },
 });
 
+/**
+ * Intercept outgoing request to provide auth details.
+ */
 jobQuestHttp.interceptors.request.use((config) => {
   let token: string | undefined;
   const tokens = authLocalStore.getTokens();
@@ -27,6 +35,9 @@ jobQuestHttp.interceptors.request.use((config) => {
   return config;
 });
 
+/**
+ * Intercept incoming response to check for fail auth and implement retry strategy.
+ */
 jobQuestHttp.interceptors.response.use(
   (res) => res,
   async (err) => {
