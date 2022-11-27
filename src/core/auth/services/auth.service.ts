@@ -1,46 +1,74 @@
 import { jobQuestHttp } from '@core/http/job-quest';
 import { UserSignup } from '@core/auth/dto';
 import { authLocalStore } from './auth-local-store.service';
+import { JWT } from '../types';
+import { ApiOkRes } from '@core/http/job-quest/interface';
+import { AxiosResponse as AxiosRes } from 'axios';
 
 // TODO: Add error response handlers. Including NETWORK error.
 // NETWORK axios error occurs on mobile device when trying to call localhost
 // instead of actual IP address
 
-const signup = (user: UserSignup) => {
-  return jobQuestHttp.post('/auth/signup', user).then((res) => {
+// TODO: add auth error res using API ERROR
+
+/**
+ * Signup a new user
+ * @returns JWT on success or error details if failed
+ */
+function signup(user: UserSignup): Promise<AxiosRes<ApiOkRes<JWT>>> {
+  return jobQuestHttp.post<ApiOkRes<JWT>>('/auth/signup', user).then((res) => {
     const tokens = res?.data?.data;
     if (tokens) authLocalStore.setTokens(tokens);
     return res;
   });
-};
+}
 
-async function login(email: string, password: string) {
-  const response = await jobQuestHttp.post('/auth/login', { email, password });
+/**
+ *
+ * User login
+ * @returns JWT on success or error details if failed
+ */
+async function login(email: string, password: string): Promise<ApiOkRes<JWT>> {
+  const response = await jobQuestHttp.post<ApiOkRes<JWT>>('/auth/login', {
+    email,
+    password,
+  });
   const data = response?.data;
   const tokens = data?.data;
   if (tokens) authLocalStore.setTokens(tokens);
   return data;
 }
 
-const logout = () => {
-  return jobQuestHttp.post('/auth/logout').then((res) => {
-    authLocalStore.removeTokens();
-    return res;
-  });
-};
+/**
+ * Logout user
+ */
+async function logout(): Promise<boolean> {
+  await jobQuestHttp.post('/auth/logout');
+  authLocalStore.removeTokens();
+  return true;
+}
 
-const validateRouteAccess = (urlPath: string) => {
+/**
+ * Checks if auth user has access to a resource.
+ * @param urlPath URL path user is trying to access.
+ * @returns If `true`, user has access to resource.
+ */
+function validateRouteAccess(urlPath: string): boolean {
   const isProtectedRoute = urlPath?.startsWith('/dashboard');
   if (isProtectedRoute) {
     const tokens = authLocalStore.getTokens();
     return !!tokens;
   }
   return true;
-};
+}
 
-const isAuthenticated = () => {
+/**
+ * Checks if user is authenticated.
+ * @returns If `true`, user is authenticated.
+ */
+function isAuthenticated(): boolean {
   return !!authLocalStore.getTokens();
-};
+}
 
 export const authService = {
   signup,
