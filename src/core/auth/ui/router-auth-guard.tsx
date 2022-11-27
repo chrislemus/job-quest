@@ -3,6 +3,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { authService } from '../services';
 
+/**
+ * Wraps child components and verifies if user has access to routes.
+ */
 export function RouterAuthGuard(p: PropsWithChildren<{}>) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const router = useRouter();

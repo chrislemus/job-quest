@@ -2,6 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { authLocalStore } from '../services/auth-local-store.service';
 import { initialState } from './initial-state.const';
 
+/**
+ * Auth slice
+ */
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
