@@ -1,4 +1,9 @@
 'use client';
+import { useForm } from 'react-hook-form';
+import { formValidator } from '@common/utils';
+import { useSignUp } from '@core/auth/mutation-hooks';
+import { Form } from '@common/ui/molecules';
+import { UserSignUp } from '@core/auth/dto';
 import {
   TextField,
   Button,
@@ -6,11 +11,6 @@ import {
   Stack,
   FormErrors,
 } from '@common/ui/atoms';
-import { useForm } from 'react-hook-form';
-import { formValidator } from '@common/utils';
-import { useSignUp } from '@core/auth/mutation-hooks';
-import { Form } from '@common/ui/molecules';
-import { UserSignUp } from '@core/auth/dto';
 
 export default function SignUp() {
   const formId = 'signup';
@@ -28,11 +28,10 @@ export default function SignUp() {
         await signUpMutation.mutate(data);
       }}
     >
-      <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
-        Sign Up
-      </Typography>
-
       <Stack spacing={3}>
+        <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
+          Sign Up
+        </Typography>
         <FormErrors errors={signUpMutation?.error?.messages} />
         <TextField
           name="firstName"

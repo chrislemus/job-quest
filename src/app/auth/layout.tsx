@@ -8,7 +8,7 @@ import { RouterAuthGuard } from '@core/auth/ui';
 
 export default function AuthLayout(p: PropsWithChildren<{}>) {
   return (
-    <div
+    <Box
       style={{
         backgroundColor: '#FAFDFF',
         height: 'calc(100vh + 20rem)',
@@ -33,9 +33,7 @@ export default function AuthLayout(p: PropsWithChildren<{}>) {
                   xs={10}
                   sm={8}
                   sx={{
-                    [theme.breakpoints.up('sm')]: {
-                      marginTop: -5,
-                    },
+                    paddingY: 5,
                     [theme.breakpoints.down('sm')]: {
                       paddingY: 10,
                     },
@@ -53,6 +51,6 @@ export default function AuthLayout(p: PropsWithChildren<{}>) {
           </Grid>
         </Container>
       </RouterAuthGuard>
-    </div>
+    </Box>
   );
 }

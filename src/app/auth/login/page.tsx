@@ -25,11 +25,10 @@ export default function Login() {
         loginMutation.mutate(data);
       }}
     >
-      <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
-        Log In
-      </Typography>
-
       <Stack spacing={3}>
+        <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
+          Log In
+        </Typography>
         <FormErrors errors={loginMutation?.error?.messages} />
 
         <TextField

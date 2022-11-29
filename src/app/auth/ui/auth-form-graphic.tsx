@@ -5,8 +5,12 @@ import { HistoryEduIcon } from '@common/ui/icons';
 export function AuthFormGraphic() {
   return (
     <Box
-      style={{
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         padding: '4rem 2rem',
+        height: '100%',
         background:
           'linear-gradient(133deg, rgba(0,98,255,1) 0%, rgba(5,123,237,1) 35%, rgba(0,212,255,1) 100%)',
       }}
@@ -53,7 +57,10 @@ export function AuthFormGraphic() {
           marginTop: 5,
           borderRadius: 3,
           boxShadow: 3,
-          width: '75%',
+          width: '80%',
+          [theme.breakpoints.between('sm', 'md')]: {
+            width: '100%',
+          },
         }}
       >
         <img
