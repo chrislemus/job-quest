@@ -1,27 +1,21 @@
 'use client';
-import { Button, Stack, TextField, Typography } from '@common/ui/atoms';
 import { Form } from '@common/ui/molecules';
 import { UserLogin } from '@core/auth/dto';
 import { useLogin } from '@core/auth/mutation-hooks';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
+import {
+  Button,
+  FormErrors,
+  Stack,
+  TextField,
+  Typography,
+} from '@common/ui/atoms';
 
 export default function Login() {
   const formId = 'login';
   const form = useForm<UserLogin>({ resolver: formValidator(UserLogin) });
-
   const loginMutation = useLogin();
-
-  let errorMsg: string | undefined;
-  const errorStatus = loginMutation?.error?.response?.status;
-
-  if (errorStatus) {
-    if (errorStatus === 401) {
-      errorMsg = 'Invalid credentials, please try again';
-    } else {
-      errorMsg = 'server error, unable to login';
-    }
-  }
 
   return (
     <Form
@@ -35,14 +29,9 @@ export default function Login() {
         Log In
       </Typography>
 
-      {errorMsg && (
-        <Typography paddingTop={1} color="error">
-          {errorMsg}
-        </Typography>
-      )}
-      <br />
-
       <Stack spacing={3}>
+        <FormErrors errors={loginMutation?.error?.messages} />
+
         <TextField
           name="email"
           type="email"

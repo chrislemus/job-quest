@@ -1,6 +1,6 @@
 'use client';
 import { PropsWithoutRef } from 'react';
-import { TextField, Button, Typography } from '@common/ui/atoms';
+import { TextField, Button, FormErrors } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@core/auth/ui';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
@@ -28,17 +28,6 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
 
   const loginMutation = useLogin();
 
-  let errorMsg: string | undefined;
-  const errorStatus = loginMutation?.error?.response?.status;
-
-  if (errorStatus) {
-    if (errorStatus === 401) {
-      errorMsg = 'Invalid credentials, please try again';
-    } else {
-      errorMsg = 'server error, unable to login';
-    }
-  }
-
   return (
     <RouterAuthGuard>
       <Form
@@ -55,13 +44,8 @@ export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
               Welcome back! Enter your account info below to continue.
             </ModalContentText>
 
-            {errorMsg && (
-              <Typography paddingTop={1} color="error">
-                {errorMsg}
-              </Typography>
-            )}
+            <FormErrors errors={loginMutation?.error?.messages} />
             <br />
-
             <TextField
               name="email"
               type="email"

@@ -1,6 +1,6 @@
 'use client';
 import { PropsWithoutRef } from 'react';
-import { TextField, Button, Typography } from '@common/ui/atoms';
+import { TextField, Button, FormErrors } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@core/auth/ui';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
@@ -28,23 +28,6 @@ export function SignUpModal(p: PropsWithoutRef<LoginModalProps>) {
 
   const signUpMutation = useSignUp();
 
-  let errorMsg: string | undefined;
-  const errorResponseData = signUpMutation?.error?.response?.data as any;
-  const errorStatus = errorResponseData?.statusCode;
-  const errorResMessages = errorResponseData?.message;
-
-  if (errorStatus) {
-    if (errorStatus === 400 && errorResMessages) {
-      errorMsg = errorResMessages.join(', ');
-    } else {
-      errorMsg = 'server error, unable to login';
-    }
-  }
-
-  // let errorMsg =
-  //   signUpMutation?.error?.response &&
-  //   JSON.stringify(signUpMutation?.error?.response?.data);
-
   return (
     <RouterAuthGuard>
       <Form
@@ -61,11 +44,8 @@ export function SignUpModal(p: PropsWithoutRef<LoginModalProps>) {
               Welcome, please enter info below to continue.
             </ModalContentText>
 
-            {errorMsg && (
-              <Typography paddingTop={1} color="error">
-                {errorMsg}
-              </Typography>
-            )}
+            <FormErrors errors={signUpMutation?.error?.messages} />
+
             <br />
 
             <TextField
