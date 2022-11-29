@@ -9,8 +9,8 @@ export const jobQuestHttpConfig = {
       refresh: '/auth/refresh',
       signup: '/auth/signup',
       logout: '/auth/logout',
-      profile: '/auth/profile',
     },
+    user: { profile: '/user/profile' },
     job: {
       root: '/job',
       findById: (id: number) => `/job/${id}`,

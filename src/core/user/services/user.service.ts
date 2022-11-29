@@ -4,7 +4,7 @@ import { UserProfile } from '../interfaces';
 /** Fetch user profile data */
 async function getProfile(): Promise<UserProfile> {
   const res = await jobQuestHttp.get<{ data: UserProfile }>(
-    jobQuestHttpConfig.urls.auth.profile
+    jobQuestHttpConfig.urls.user.profile
   );
 
   const data = res?.data;
