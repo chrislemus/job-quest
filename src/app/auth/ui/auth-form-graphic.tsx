@@ -53,12 +53,12 @@ export function AuthFormGraphic() {
           marginTop: 5,
           borderRadius: 3,
           boxShadow: 3,
-          width: '80%',
+          width: '75%',
         }}
       >
         <img
           width="100%"
-          src="/job-quest-dashboard.png"
+          src="/job-quest-dashboard-509x388.png"
           alt="job-quest-dashboard"
           style={{
             display: 'block',
