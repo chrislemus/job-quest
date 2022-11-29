@@ -1,5 +1,11 @@
 'use client';
-import { TextField, Button, Typography, Stack } from '@common/ui/atoms';
+import {
+  TextField,
+  Button,
+  Typography,
+  Stack,
+  FormErrors,
+} from '@common/ui/atoms';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import { useSignUp } from '@core/auth/mutation-hooks';
@@ -14,24 +20,6 @@ export default function SignUp() {
 
   const signUpMutation = useSignUp();
 
-  let errorMsg: string | undefined;
-  const errorResponseData = signUpMutation?.error?.response?.data as any;
-  const errorStatus = errorResponseData?.statusCode;
-  const errorResMessages = errorResponseData?.message;
-
-  // console.log(signUpMutation);
-  if (errorStatus) {
-    if (errorStatus === 400 && errorResMessages) {
-      errorMsg = errorResMessages.join(', ');
-    } else {
-      errorMsg = 'server error, unable to login';
-    }
-  }
-
-  // let errorMsg =
-  //   signUpMutation?.error?.response &&
-  //   JSON.stringify(signUpMutation?.error?.response?.data);
-
   return (
     <Form
       id={formId}
@@ -44,10 +32,8 @@ export default function SignUp() {
         Sign Up
       </Typography>
 
-      {!errorMsg && <Typography color="error">{errorMsg}dwed</Typography>}
-      {/* <br /> */}
-
       <Stack spacing={3}>
+        <FormErrors errors={signUpMutation?.error?.messages} />
         <TextField
           name="firstName"
           type="text"
