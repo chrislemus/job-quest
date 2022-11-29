@@ -1,28 +1,14 @@
 'use client';
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from '@common/ui/atoms';
+import { Button, Stack, TextField, Typography } from '@common/ui/atoms';
 import { Form } from '@common/ui/molecules';
 import { UserLogin } from '@core/auth/dto';
 import { useLogin } from '@core/auth/mutation-hooks';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
-import { theme } from '@common/theme';
-import { HistoryEduIcon } from '@common/ui/icons';
-// import {theme}
 
 export default function Login() {
   const formId = 'login';
-  const form = useForm<UserLogin>({
-    resolver: formValidator(UserLogin),
-  });
-  const a = theme;
+  const form = useForm<UserLogin>({ resolver: formValidator(UserLogin) });
 
   const loginMutation = useLogin();
 

@@ -4,6 +4,7 @@ import { theme } from '@common/theme';
 import { Box, Container, Grid } from '@common/ui/atoms';
 import { AuthFormGraphic, FormBottomText } from './ui';
 import { Stack } from '@mui/system';
+import { RouterAuthGuard } from '@core/auth/ui';
 
 export default function AuthLayout(p: PropsWithChildren<{}>) {
   return (
@@ -14,42 +15,44 @@ export default function AuthLayout(p: PropsWithChildren<{}>) {
         paddingTop: '4rem',
       }}
     >
-      <Container>
-        <Grid container>
-          <Grid boxShadow={4} xs={12} sm={6}>
-            <AuthFormGraphic />
-          </Grid>
-          <Grid sx={{ background: '#fff' }} boxShadow={4} xs={12} sm={6}>
-            <Grid
-              container
-              justifyContent="center"
-              alignContent="center"
-              display="flex"
-              height="100%"
-            >
+      <RouterAuthGuard>
+        <Container>
+          <Grid container>
+            <Grid boxShadow={4} xs={12} sm={6}>
+              <AuthFormGraphic />
+            </Grid>
+            <Grid sx={{ background: '#fff' }} boxShadow={4} xs={12} sm={6}>
               <Grid
-                xs={10}
-                sm={8}
-                sx={{
-                  [theme.breakpoints.up('sm')]: {
-                    marginTop: -5,
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    paddingY: 10,
-                  },
-                }}
+                container
+                justifyContent="center"
+                alignContent="center"
+                display="flex"
+                height="100%"
               >
-                <Stack spacing={3}>
-                  {p.children}
-                  <Box>
-                    <FormBottomText />
-                  </Box>
-                </Stack>
+                <Grid
+                  xs={10}
+                  sm={8}
+                  sx={{
+                    [theme.breakpoints.up('sm')]: {
+                      marginTop: -5,
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                      paddingY: 10,
+                    },
+                  }}
+                >
+                  <Stack spacing={3}>
+                    {p.children}
+                    <Box>
+                      <FormBottomText />
+                    </Box>
+                  </Stack>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      </RouterAuthGuard>
     </div>
   );
 }

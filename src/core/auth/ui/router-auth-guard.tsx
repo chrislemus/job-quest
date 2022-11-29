@@ -16,7 +16,7 @@ export function RouterAuthGuard(p: PropsWithChildren<{}>) {
       const latestAuthStatus = authService.isAuthenticated();
       if (latestAuthStatus !== isAuthenticated)
         setIsAuthenticated(latestAuthStatus);
-    }, 1000);
+    }, 500);
 
     return () => {
       clearInterval(interval);
@@ -31,7 +31,7 @@ export function RouterAuthGuard(p: PropsWithChildren<{}>) {
       if (isAuthenticated) {
         if (!inDashboard) router?.push(dashboardUrl);
       } else if (!isAuthenticated && inDashboard) {
-        router?.push('/?login=true');
+        router?.push('/auth/login');
       }
     }
   }, [isAuthenticated]);
