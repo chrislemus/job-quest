@@ -5,4 +5,13 @@ module.exports = {
   experimental: {
     appDir: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/auth/login',
+        permanent: false,
+      },
+    ];
+  },
 };
