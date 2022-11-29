@@ -17,11 +17,16 @@ export default function AuthLayout(p: PropsWithChildren<{}>) {
     >
       <RouterAuthGuard>
         <Container>
-          <Grid container>
-            <Grid boxShadow={4} xs={12} sm={6}>
+          <Grid container boxShadow={4} borderRadius={4} overflow="hidden">
+            <Grid boxShadow="inherit" xs={12} sm={6}>
               <AuthFormGraphic />
             </Grid>
-            <Grid sx={{ background: '#fff' }} boxShadow={4} xs={12} sm={6}>
+            <Grid
+              sx={{ background: '#fff' }}
+              boxShadow="inherit"
+              xs={12}
+              sm={6}
+            >
               <Grid
                 container
                 justifyContent="center"
