@@ -4,7 +4,7 @@ import { TextField, Button, Typography } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@core/auth/ui';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
-import { useSignup } from '@core/auth/mutation-hooks';
+import { useSignUp } from '@core/auth/mutation-hooks';
 import {
   Form,
   Modal,
@@ -13,7 +13,7 @@ import {
   ModalContentText,
   ModalTitle,
 } from '@common/ui/molecules';
-import { UserSignup } from '@core/auth/dto';
+import { UserSignUp } from '@core/auth/dto';
 
 interface LoginModalProps {
   active: boolean;
@@ -22,11 +22,11 @@ interface LoginModalProps {
 
 export function SignUpModal(p: PropsWithoutRef<LoginModalProps>) {
   const formId = 'signup';
-  const form = useForm<UserSignup>({
-    resolver: formValidator(UserSignup),
+  const form = useForm<UserSignUp>({
+    resolver: formValidator(UserSignUp),
   });
 
-  const signUpMutation = useSignup();
+  const signUpMutation = useSignUp();
 
   let errorMsg: string | undefined;
   const errorResponseData = signUpMutation?.error?.response?.data as any;

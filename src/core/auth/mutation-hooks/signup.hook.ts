@@ -4,14 +4,14 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { authService } from '../services';
 import { refreshAuthStatus } from '../store';
 import { useEffect } from 'react';
-import { UserSignup } from '@core/auth/dto';
+import { UserSignUp } from '@core/auth/dto';
 
-export const useSignup = () => {
+export const useSignUp = () => {
   const dispatch = useDispatch();
 
-  const mutation = useMutation<AxiosResponse, AxiosError, UserSignup, unknown>({
+  const mutation = useMutation<AxiosResponse, AxiosError, UserSignUp, unknown>({
     mutationKey: ['authService.signup'],
-    mutationFn: (user: UserSignup) => authService.signup(user),
+    mutationFn: (user: UserSignUp) => authService.signup(user),
   });
 
   useEffect(() => {
