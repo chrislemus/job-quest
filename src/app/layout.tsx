@@ -2,8 +2,6 @@
 import * as React from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
-import { Provider } from 'react-redux';
-import { store } from '@common/store/store';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@common/theme';
 import { queryClient } from '@common/query-client';
@@ -22,7 +20,7 @@ export default function RootLayout(p: PropsWithChildren<{}>) {
           <CssBaseline>
             <QueryClientProvider client={queryClient}>
               {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-              <Provider store={store}>{p.children}</Provider>
+              {p.children}
             </QueryClientProvider>
           </CssBaseline>
         </ThemeProvider>
