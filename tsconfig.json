@@ -19,8 +19,7 @@
     "paths": {
       "@app/*": ["./src/app/*"],
       "@common/*": ["./src/common/*"],
-      "@core/*": ["./src/core/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@core/*": ["./src/core/*"]
     },
     "plugins": [
       {
