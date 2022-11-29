@@ -1,5 +1,5 @@
 import { jobQuestHttp } from '@core/http/job-quest';
-import { UserSignup } from '@core/auth/dto';
+import { UserSignUp } from '@core/auth/dto';
 import { authLocalStore } from './auth-local-store.service';
 import { JWT } from '../types';
 import { ApiOkRes } from '@core/http/job-quest/interface';
@@ -15,7 +15,7 @@ import { AxiosResponse as AxiosRes } from 'axios';
  * Signup a new user
  * @returns JWT on success or error details if failed
  */
-function signup(user: UserSignup): Promise<AxiosRes<ApiOkRes<JWT>>> {
+function signup(user: UserSignUp): Promise<AxiosRes<ApiOkRes<JWT>>> {
   return jobQuestHttp.post<ApiOkRes<JWT>>('/auth/signup', user).then((res) => {
     const tokens = res?.data?.data;
     if (tokens) authLocalStore.setTokens(tokens);
