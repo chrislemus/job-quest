@@ -9,9 +9,6 @@ interface JobListSubNavProps {
 export function JobListSubNav(p: JobListSubNavProps) {
   const [activeModal, setActiveModal] = useBoolean();
 
-  // const [activeModal, setActiveModal] = useState<'new-job' | null>(null);
-  // const removeModal = () => setActiveModal(null);
-
   return (
     <>
       {p.loading ? (
