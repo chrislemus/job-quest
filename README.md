@@ -1,27 +1,50 @@
-# Next.js + Tailwind CSS Example
+# Job Quest
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+An intuitive webapp to organize your job search. Store information on job postings and keep track of job applications.
 
-## Deploy your own
+![user-log-in](/readme-assets/app-previews/dashboard.png)
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+**Table of Contents**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+- [Job Quest](#job-quest)
+  - [Technology Stack](#technology-stack)
+  - [Installation](#installation)
+  - [Operation](#operation)
+  - [Live Preview](#live-preview)
+  - [Screenshot](#screenshots)
 
-## How to use
+## Technology Stack
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+1. React w/ Typescript
+2. Material UI
+3. React Hook Form
+4. React Query
+5. Next JS
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-```
+## Installation
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
+1. Download and run project backend - [go to backend repo](https://github.com/chrislemus/job-quest-api)
+2. Download this repository
+3. Run the node version specified in `.nvmrc`.
+   - You could run `nvm use` if you have [nvm](https://github.com/nvm-sh/nvm) installed in your machine.
+4. Install dependencies `npm install`
+5. Run build command
+   - `npm run build` builds app for production
+   - `npm run dev` builds app in development/watch mode
+     - after running this command the cli will provide a url to preview the app (eg. http://localhost:3000).
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
+## Operation
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+Once logged, the main dashboard may contain a few cards, each representing a job posting. Click on any card view/edit information.
+
+All jobs are categorized by **Job List** type (ie. Queue, Applied, Interview, Offer, etc). The **Job List** tab menu will display your jobs based on the selected **Job List** type.
+
+## Live Preview
+
+[Check out the live demo here!](https://job-quest.vercel.app/auth/login)
+
+## Screenshots
+
+### Log In
+
+![user-log-in](/readme-assets/app-previews/login.gif)
