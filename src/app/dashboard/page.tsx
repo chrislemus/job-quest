@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   const jobsQueryFilters = { jobListId: activeJobListId || undefined };
   const jobsQuery = useQuery({
-    enabled: !!JobsListQuery?.data,
+    enabled: !!jobsQueryFilters.jobListId,
     queryKey: ['jobs', jobsQueryFilters],
     queryFn: () => {
       return jobService.getAll(jobsQueryFilters);
