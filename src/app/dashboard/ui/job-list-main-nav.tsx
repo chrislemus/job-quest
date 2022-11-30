@@ -29,7 +29,8 @@ export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
           }}
           aria-label="Job List Nav"
           value={p.activeJobListId}
-          centered
+          variant="scrollable"
+          scrollButtons="auto"
         >
           {sortedJobList.map((j) => {
             return <Tab label={j.label} value={j.id} key={j.id} />;
