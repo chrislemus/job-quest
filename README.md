@@ -1,6 +1,8 @@
+![Vercel](https://vercelbadge.vercel.app/api/chrislemus/job-quest)
+
 # Job Quest
 
-An intuitive webapp to organize your job search. Store information on job postings and keep track of job applications.
+An intuitive web app to organize your job search. Store information on job postings and keep track of job applications.
 
 ![user-log-in](/readme-assets/app-previews/dashboard.png)
 
@@ -8,6 +10,7 @@ An intuitive webapp to organize your job search. Store information on job postin
 
 - [Job Quest](#job-quest)
   - [Technology Stack](#technology-stack)
+  - [Deployment](#deployment)
   - [Installation](#installation)
   - [Operation](#operation)
   - [Live Preview](#live-preview)
@@ -15,11 +18,14 @@ An intuitive webapp to organize your job search. Store information on job postin
 
 ## Technology Stack
 
-1. React w/ Typescript
-2. Material UI
-3. React Hook Form
-4. React Query
-5. Next JS
+1. Next JS - React w/ Typescript (framework)
+2. Material UI (styling)
+3. React Hook Form (form handling)
+4. React Query (server fetch/caching)
+
+## Deployment
+
+[Vercel](https://vercel.com/) handles app deployment.
 
 ## Installation
 
@@ -35,7 +41,7 @@ An intuitive webapp to organize your job search. Store information on job postin
 
 ## Operation
 
-Once logged, the main dashboard may contain a few cards, each representing a job posting. Click on any card view/edit information.
+Once logged in, the main dashboard may contain a few cards representing a job posting. Click on any card view/edit information.
 
 All jobs are categorized by **Job List** type (ie. Queue, Applied, Interview, Offer, etc). The **Job List** tab menu will display your jobs based on the selected **Job List** type.
 
@@ -48,3 +54,11 @@ All jobs are categorized by **Job List** type (ie. Queue, Applied, Interview, Of
 ### Log In
 
 ![user-log-in](/readme-assets/app-previews/login.gif)
+
+### Job Updates
+
+![user-log-in](/readme-assets/app-previews/job-updates.gif)
+
+### Job Shortcuts/Navigation
+
+![user-log-in](/readme-assets/app-previews/job-shortcuts-navigation.gif)
