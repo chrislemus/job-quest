@@ -35,13 +35,13 @@ An intuitive web app to organize your job search. Store information on job posti
    - You could run `nvm use` if you have [nvm](https://github.com/nvm-sh/nvm) installed in your machine.
 4. Install dependencies `npm install`
 5. Run build command
-   - `npm run build` builds app for production
-   - `npm run dev` builds app in development/watch mode
+   - `npm run build` builds app for production.
+   - `npm run dev` builds app in development/watch mode.
      - after running this command the cli will provide a url to preview the app (eg. http://localhost:3000).
 
 ## Operation
 
-Once logged in, the main dashboard may contain a few cards representing a job posting. Click on any card view/edit information.
+Once logged in, the main dashboard may contain a few cards representing a job posting. Click on any card to view/edit job information.
 
 All jobs are categorized by **Job List** type (ie. Queue, Applied, Interview, Offer, etc). The **Job List** tab menu will display your jobs based on the selected **Job List** type.
 
