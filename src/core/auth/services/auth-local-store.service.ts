@@ -1,24 +1,28 @@
 import { JWT } from '../types';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const setTokens = (tokens: JWT) => {
-  localStorage.setItem('user', JSON.stringify(tokens));
+  // TODO: set maxAge to match jwt expiry, once the implementation of additional data is added on backend
+  const maxAge = 86400; // one day (in seconds);
+  cookies.set('auth', tokens, { path: '/', maxAge });
 };
 
 const getTokens = (): JWT | null => {
-  const strObj = localStorage.getItem('user');
-  return strObj === null ? null : (JSON.parse(strObj) as JWT);
+  const tokens = cookies.get<JWT>('auth') || null;
+  return tokens;
 };
 
 const updateToken = (tokenName: keyof JWT, tokenValue: string) => {
   const tokens = getTokens();
   if (tokens) {
     tokens[tokenName] = tokenValue;
-    localStorage.setItem('user', JSON.stringify(tokens));
+    cookies.set('auth', tokens);
   }
 };
 
 const removeTokens = () => {
-  localStorage.removeItem('user');
+  cookies.remove('auth');
 };
 
 export const authLocalStore = {
