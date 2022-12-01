@@ -1,7 +1,7 @@
 'use client';
 import { Form } from '@common/ui/molecules';
-import { UserLogin } from '@app/auth/dto';
-import { useLogin } from '@app/auth/mutation-hooks';
+import { UserLogin } from '@app/auth/_dto';
+import { useLogin } from '@app/auth/_mutation-hooks';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import {

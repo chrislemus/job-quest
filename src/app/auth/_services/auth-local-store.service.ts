@@ -1,4 +1,4 @@
-import { JWT } from '../types';
+import { JWT } from '../_types';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 

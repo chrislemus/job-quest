@@ -1,7 +1,7 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { authService } from '@app/auth/services';
+import { authService } from '@app/auth/_services';
 
 /**
  * Wraps child components and verifies if user has access to routes.

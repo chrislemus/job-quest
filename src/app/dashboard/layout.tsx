@@ -1,6 +1,6 @@
 'use client';
 import { Button, Container } from '@common/ui/atoms';
-import { RouterAuthGuard } from '@app/auth/ui';
+import { RouterAuthGuard } from '@app/auth/_ui';
 import { PropsWithChildren } from 'react';
 import { usePathname } from 'next/navigation';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';

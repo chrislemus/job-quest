@@ -1,7 +1,7 @@
 import { jobQuestApiService } from '@common/api/job-quest';
-import { UserSignUp } from '@app/auth/dto';
+import { UserSignUp } from '@app/auth/_dto';
 import { authLocalStore } from './auth-local-store.service';
-import { JWT } from '../types';
+import { JWT } from '../_types';
 import { ApiOkRes } from '@common/api/job-quest/interface';
 import { AxiosResponse as AxiosRes } from 'axios';
 
