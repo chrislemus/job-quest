@@ -2,9 +2,9 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useBoolean } from '@common/hooks';
-import { LoginModal } from '@app/home/ui/login-modal';
+import { LoginModal } from '@app/home/_ui/login-modal';
 import { Container, Grid, Box, Typography, Button } from '@common/ui/atoms';
-import { SignUpModal } from './home/ui';
+import { SignUpModal } from './home/_ui';
 
 export default function Home() {
   const [logIn, setLogin] = useBoolean();
