@@ -1,5 +1,5 @@
 import { Grid, Skeleton } from '@common/ui/atoms';
-import { JobEntity, JobListEntity } from '@core/job/entities';
+import { JobEntity, JobListEntity } from '@app/dashboard/job/_entities';
 import { PropsWithChildren, PropsWithoutRef, useMemo } from 'react';
 import { JobCard } from './job-card';
 

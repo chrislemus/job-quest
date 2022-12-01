@@ -1,5 +1,5 @@
 import { Box, Skeleton, Tab, Tabs } from '@common/ui/atoms';
-import { JobListEntity } from '@core/job/entities';
+import { JobListEntity } from '@app/dashboard/job/_entities';
 import { PropsWithoutRef, SyntheticEvent, useMemo } from 'react';
 
 interface JobListMainNavProps {

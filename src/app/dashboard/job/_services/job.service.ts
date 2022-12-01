@@ -1,4 +1,4 @@
-import { JobEntity } from '@core/job/entities';
+import { JobEntity } from '@app/dashboard/job/_entities';
 import { CreateJobDto, UpdateJobDto } from '../_dto';
 import { jobBackgroundColors } from '../_consts';
 import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
