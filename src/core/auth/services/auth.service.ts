@@ -1,4 +1,4 @@
-import { jobQuestHttp } from '@common/api/job-quest';
+import { jobQuestApiService } from '@common/api/job-quest';
 import { UserSignUp } from '@core/auth/dto';
 import { authLocalStore } from './auth-local-store.service';
 import { JWT } from '../types';
@@ -16,11 +16,13 @@ import { AxiosResponse as AxiosRes } from 'axios';
  * @returns JWT on success or error details if failed
  */
 function signup(user: UserSignUp): Promise<AxiosRes<ApiOkRes<JWT>>> {
-  return jobQuestHttp.post<ApiOkRes<JWT>>('/auth/signup', user).then((res) => {
-    const tokens = res?.data?.data;
-    if (tokens) authLocalStore.setTokens(tokens);
-    return res;
-  });
+  return jobQuestApiService
+    .post<ApiOkRes<JWT>>('/auth/signup', user)
+    .then((res) => {
+      const tokens = res?.data?.data;
+      if (tokens) authLocalStore.setTokens(tokens);
+      return res;
+    });
 }
 
 /**
@@ -29,7 +31,7 @@ function signup(user: UserSignUp): Promise<AxiosRes<ApiOkRes<JWT>>> {
  * @returns JWT on success or error details if failed
  */
 async function login(email: string, password: string): Promise<ApiOkRes<JWT>> {
-  const response = await jobQuestHttp.post<ApiOkRes<JWT>>('/auth/login', {
+  const response = await jobQuestApiService.post<ApiOkRes<JWT>>('/auth/login', {
     email,
     password,
   });
@@ -43,7 +45,7 @@ async function login(email: string, password: string): Promise<ApiOkRes<JWT>> {
  * Logout user
  */
 async function logout(): Promise<boolean> {
-  await jobQuestHttp.post('/auth/logout');
+  await jobQuestApiService.post('/auth/logout');
   authLocalStore.removeTokens();
   return true;
 }

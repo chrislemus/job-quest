@@ -1,13 +1,13 @@
 import { JobEntity } from '@core/job/entities';
 import { CreateJobDto, UpdateJobDto } from '../dto';
 import { jobBackgroundColors } from '../const';
-import { jobQuestHttp, jobQuestHttpConfig } from '@common/api/job-quest';
+import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
 import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/interface';
 
 /** Fetch all Jobs */
 async function getAll(params?: { jobListId?: number }) {
-  const response = await jobQuestHttp.get<ApiPageRes<JobEntity>>(
-    jobQuestHttpConfig.urls.job.root,
+  const response = await jobQuestApiService.get<ApiPageRes<JobEntity>>(
+    jobQuestApiUrls.job.root,
     { params }
   );
 
@@ -17,8 +17,8 @@ async function getAll(params?: { jobListId?: number }) {
 
 /** Fetch a Job by ID */
 async function findById(id: number) {
-  const response = await jobQuestHttp.get<ApiOkRes<JobEntity>>(
-    jobQuestHttpConfig.urls.job.findById(id)
+  const response = await jobQuestApiService.get<ApiOkRes<JobEntity>>(
+    jobQuestApiUrls.job.findById(id)
   );
 
   const data = response?.data;
@@ -27,8 +27,8 @@ async function findById(id: number) {
 
 /** Create a job */
 async function createJob(job: CreateJobDto) {
-  const response = await jobQuestHttp.post<ApiOkRes<JobEntity>>(
-    jobQuestHttpConfig.urls.job.root,
+  const response = await jobQuestApiService.post<ApiOkRes<JobEntity>>(
+    jobQuestApiUrls.job.root,
     {
       ...job,
       color: job.color
@@ -45,8 +45,8 @@ async function createJob(job: CreateJobDto) {
 
 /** Update a Job */
 async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
-  const response = await jobQuestHttp.patch<ApiOkRes<JobEntity>>(
-    jobQuestHttpConfig.urls.job.update(jobId),
+  const response = await jobQuestApiService.patch<ApiOkRes<JobEntity>>(
+    jobQuestApiUrls.job.update(jobId),
     updatedJob
   );
 
@@ -56,8 +56,8 @@ async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
 
 /** Delete a Job */
 async function deleteJob(jobId: number) {
-  const response = await jobQuestHttp.delete<ApiOkRes<JobEntity>>(
-    jobQuestHttpConfig.urls.job.delete(jobId)
+  const response = await jobQuestApiService.delete<ApiOkRes<JobEntity>>(
+    jobQuestApiUrls.job.delete(jobId)
   );
 
   const data = response?.data;
