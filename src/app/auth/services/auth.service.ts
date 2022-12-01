@@ -1,5 +1,5 @@
 import { jobQuestApiService } from '@common/api/job-quest';
-import { UserSignUp } from '@core/auth/dto';
+import { UserSignUp } from '@app/auth/dto';
 import { authLocalStore } from './auth-local-store.service';
 import { JWT } from '../types';
 import { ApiOkRes } from '@common/api/job-quest/interface';

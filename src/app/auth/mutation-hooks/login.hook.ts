@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { authService } from '../services';
-import { UserLogin } from '@core/auth/dto';
+import { UserLogin } from '@app/auth/dto';
 import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
 import { JWT } from '../types';
 

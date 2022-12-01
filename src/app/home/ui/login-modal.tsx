@@ -4,8 +4,8 @@ import { TextField, Button, FormErrors } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@core/auth/ui';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
-import { useLogin } from '@core/auth/mutation-hooks';
-import { UserLogin } from '@core/auth/dto';
+import { useLogin } from '@app/auth/mutation-hooks';
+import { UserLogin } from '@app/auth/dto';
 import {
   Form,
   Modal,

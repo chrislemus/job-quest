@@ -1,9 +1,9 @@
 'use client';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
-import { useSignUp } from '@core/auth/mutation-hooks';
+import { useSignUp } from '@app/auth/mutation-hooks';
 import { Form } from '@common/ui/molecules';
-import { UserSignUp } from '@core/auth/dto';
+import { UserSignUp } from '@app/auth/dto';
 import {
   TextField,
   Button,

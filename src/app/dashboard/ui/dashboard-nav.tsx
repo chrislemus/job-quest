@@ -1,4 +1,4 @@
-import { useLogout } from '@core/auth/mutation-hooks';
+import { useLogout } from '@app/auth/mutation-hooks';
 import { useUserProfile } from '@core/user/query-hooks';
 import { useMemo, useState } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
