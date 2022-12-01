@@ -2,7 +2,7 @@
 import { queryClient } from '@common/query-client';
 import { Form, Modal } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
-import { jobBackgroundColors } from '@app/dashboard/job/const';
+import { jobBackgroundColors } from '@app/dashboard/job/_consts';
 import Link from 'next/link';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
@@ -10,9 +10,9 @@ import { useForm } from 'react-hook-form';
 import { ApiError } from 'next/dist/server/api-utils';
 import { useBoolean } from '@common/hooks';
 import { useRouter } from 'next/navigation';
-import { jobListService, jobService } from '@app/dashboard/job/services';
-import { JobEntity, JobListEntity } from '@app/dashboard/job/entities';
-import { UpdateJobDto } from '@app/dashboard/job/dto';
+import { jobListService, jobService } from '@app/dashboard/job/_services';
+import { JobEntity, JobListEntity } from '@app/dashboard/job/_entities';
+import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
 import {
   ApiErrorRes,

@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { JobEntity } from '../entities';
+import { JobEntity } from '../_entities';
 
 /**
  * Request body data transfer object for creating a Job.

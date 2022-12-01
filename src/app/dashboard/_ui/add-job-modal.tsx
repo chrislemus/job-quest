@@ -1,9 +1,9 @@
 import { formValidator } from '@common/utils';
-import { jobListService, jobService } from '@app/dashboard/job/services';
+import { jobListService, jobService } from '@app/dashboard/job/_services';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { CreateJobDto } from '@app/dashboard/job/dto';
+import { CreateJobDto } from '@app/dashboard/job/_dto';
 import { ApiErrorRes } from '@common/api/job-quest/interface';
 import { queryClient } from '@common/query-client';
 import {

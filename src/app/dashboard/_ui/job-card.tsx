@@ -1,8 +1,8 @@
-import { JobEntity, JobListEntity } from '@app/dashboard/job/entities';
+import { JobEntity, JobListEntity } from '@app/dashboard/job/_entities';
 import Link from 'next/link';
 import { MoveUpIcon } from '@common/ui/icons';
 import { useMutation } from '@tanstack/react-query';
-import { jobService } from '@app/dashboard/job/services';
+import { jobService } from '@app/dashboard/job/_services';
 import { ApiOkRes } from '@common/api/job-quest/interface';
 import { queryClient } from '@common/query-client';
 import { theme } from '@common/theme';

@@ -1,7 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { jobListService, jobService } from '@app/dashboard/job/services';
+import { jobListService, jobService } from '@app/dashboard/job/_services';
 import { JobListMainNav, JobListPanel, JobListSubNav } from './_ui';
 
 export default function Dashboard() {
