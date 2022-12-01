@@ -45,7 +45,7 @@ jobQuestHttp.interceptors.response.use(
     const tokens = authLocalStore.getTokens();
     const authErrorCode =
       err?.response?.status === 401 || err?.response?.status === 403;
-    const failedAuthReq = authErrorCode && tokens;
+    const failedAuthReq = !!authErrorCode && !!tokens;
     if (
       config?.url !== httpUrls.auth.login &&
       config?.url !== httpUrls.auth.refresh &&
