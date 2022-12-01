@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { authService } from '../_services';
+import { authService } from '@app/auth/_services';
 import { UserSignUp } from '@app/auth/_dto';
 import { ApiErrorRes } from '@common/api/job-quest/interface';
 

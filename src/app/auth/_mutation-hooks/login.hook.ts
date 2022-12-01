@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
-import { authService } from '../_services';
+import { authService } from '@app/auth/_services';
 import { UserLogin } from '@app/auth/_dto';
 import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
-import { JWT } from '../_types';
+import { JWT } from '@app/auth/_types';
 
 export const useLogin = () => {
   const mutation = useMutation<ApiOkRes<JWT>, ApiErrorRes, UserLogin>({

@@ -1,4 +1,4 @@
-import { JWT } from '../_types';
+import { JWT } from '@app/auth/_types';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
