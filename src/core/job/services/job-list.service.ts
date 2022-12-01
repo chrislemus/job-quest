@@ -1,5 +1,5 @@
-import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
-import { ApiPageRes } from '@core/http/job-quest/interface';
+import { jobQuestHttp, jobQuestHttpConfig } from '@common/api/job-quest';
+import { ApiPageRes } from '@common/api/job-quest/interface';
 import { JobListEntity } from '@core/job/entities';
 
 /** Fetch all Job Lists */

@@ -1,4 +1,4 @@
-import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
+import { jobQuestHttp, jobQuestHttpConfig } from '@common/api//job-quest';
 import { UserProfile } from '../interfaces';
 
 /** Fetch user profile data */

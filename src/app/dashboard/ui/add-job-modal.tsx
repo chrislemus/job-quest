@@ -19,7 +19,7 @@ import {
   ModalContentText,
   ModalTitle,
 } from '@common/ui/molecules';
-import { ApiErrorRes } from '@core/http/job-quest/interface';
+import { ApiErrorRes } from '@common/api/job-quest/interface';
 import { queryClient } from '@common/query-client';
 
 interface NewJobModalContentProps {

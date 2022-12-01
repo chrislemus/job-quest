@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { MoveUpIcon } from '@common/ui/icons';
 import { useMutation } from '@tanstack/react-query';
 import { jobService } from '@core/job/services';
-import { ApiOkRes } from '@core/http/job-quest/interface';
+import { ApiOkRes } from '@common/api/job-quest/interface';
 import { queryClient } from '@common/query-client';
 import { theme } from '@common/theme';
 

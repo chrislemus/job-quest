@@ -26,7 +26,7 @@ import {
   ApiErrorRes,
   ApiOkRes,
   ApiPageRes,
-} from '@core/http/job-quest/interface';
+} from '@common/api/job-quest/interface';
 import { JobEntity, JobListEntity } from '@core/job/entities';
 import { ApiError } from 'next/dist/server/api-utils';
 import { useBoolean } from '@common/hooks';

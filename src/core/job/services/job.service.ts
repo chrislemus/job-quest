@@ -1,8 +1,8 @@
 import { JobEntity } from '@core/job/entities';
 import { CreateJobDto, UpdateJobDto } from '../dto';
 import { jobBackgroundColors } from '../const';
-import { jobQuestHttp, jobQuestHttpConfig } from '@core/http/job-quest';
-import { ApiOkRes, ApiPageRes } from '@core/http/job-quest/interface';
+import { jobQuestHttp, jobQuestHttpConfig } from '@common/api/job-quest';
+import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/interface';
 
 /** Fetch all Jobs */
 async function getAll(params?: { jobListId?: number }) {

@@ -1,8 +1,8 @@
-import { jobQuestHttp } from '@core/http/job-quest';
+import { jobQuestHttp } from '@common/api/job-quest';
 import { UserSignUp } from '@core/auth/dto';
 import { authLocalStore } from './auth-local-store.service';
 import { JWT } from '../types';
-import { ApiOkRes } from '@core/http/job-quest/interface';
+import { ApiOkRes } from '@common/api/job-quest/interface';
 import { AxiosResponse as AxiosRes } from 'axios';
 
 // TODO: Add error response handlers. Including NETWORK error.
