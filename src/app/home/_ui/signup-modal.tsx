@@ -1,7 +1,7 @@
 'use client';
 import { PropsWithoutRef } from 'react';
 import { TextField, Button, FormErrors } from '@common/ui/atoms';
-import { RouterAuthGuard } from '@core/auth/ui';
+import { RouterAuthGuard } from '@app/auth/ui';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import { useSignUp } from '@app/auth/mutation-hooks';
