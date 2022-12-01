@@ -1,4 +1,11 @@
-import { JobEntity, JobListEntity } from '@core/job/entities';
+import { JobEntity, JobListEntity } from '@app/dashboard/job/entities';
+import Link from 'next/link';
+import { MoveUpIcon } from '@common/ui/icons';
+import { useMutation } from '@tanstack/react-query';
+import { jobService } from '@app/dashboard/job/services';
+import { ApiOkRes } from '@common/api/job-quest/interface';
+import { queryClient } from '@common/query-client';
+import { theme } from '@common/theme';
 import { PropsWithoutRef, useMemo, useState } from 'react';
 import {
   Card,
@@ -9,13 +16,6 @@ import {
   MenuItem,
   Typography,
 } from '@common/ui/atoms';
-import Link from 'next/link';
-import { MoveUpIcon } from '@common/ui/icons';
-import { useMutation } from '@tanstack/react-query';
-import { jobService } from '@core/job/services';
-import { ApiOkRes } from '@common/api/job-quest/interface';
-import { queryClient } from '@common/query-client';
-import { theme } from '@common/theme';
 
 interface JobCardProps {
   job: JobEntity;

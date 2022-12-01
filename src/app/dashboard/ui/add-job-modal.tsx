@@ -1,3 +1,11 @@
+import { formValidator } from '@common/utils';
+import { jobListService, jobService } from '@app/dashboard/job/services';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
+import { useForm } from 'react-hook-form';
+import { CreateJobDto } from '@app/dashboard/job/dto';
+import { ApiErrorRes } from '@common/api/job-quest/interface';
+import { queryClient } from '@common/query-client';
 import {
   Button,
   SelectField,
@@ -5,12 +13,6 @@ import {
   TextField,
   Typography,
 } from '@common/ui/atoms';
-import { formValidator } from '@common/utils';
-import { jobListService, jobService } from '@core/job/services';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
-import { CreateJobDto } from '@core/job/dto';
 import {
   Form,
   Modal,
@@ -19,8 +21,6 @@ import {
   ModalContentText,
   ModalTitle,
 } from '@common/ui/molecules';
-import { ApiErrorRes } from '@common/api/job-quest/interface';
-import { queryClient } from '@common/query-client';
 
 interface NewJobModalContentProps {
   active: boolean;

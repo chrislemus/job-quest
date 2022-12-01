@@ -2,13 +2,23 @@
 import { queryClient } from '@common/query-client';
 import { Form, Modal } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
-import { jobBackgroundColors } from '@core/job/const';
-import { UpdateJobDto } from '@core/job/dto';
-import { jobListService, jobService } from '@core/job/services';
+import { jobBackgroundColors } from '@app/dashboard/job/const';
+import Link from 'next/link';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { ApiError } from 'next/dist/server/api-utils';
+import { useBoolean } from '@common/hooks';
+import { useRouter } from 'next/navigation';
+import { jobListService, jobService } from '@app/dashboard/job/services';
+import { JobEntity, JobListEntity } from '@app/dashboard/job/entities';
+import { UpdateJobDto } from '@app/dashboard/job/dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
+import {
+  ApiErrorRes,
+  ApiOkRes,
+  ApiPageRes,
+} from '@common/api/job-quest/interface';
 import {
   Button,
   Container,
@@ -21,20 +31,11 @@ import {
   InputAdornment,
   Box,
 } from '@common/ui/atoms';
-import Link from 'next/link';
-import {
-  ApiErrorRes,
-  ApiOkRes,
-  ApiPageRes,
-} from '@common/api/job-quest/interface';
-import { JobEntity, JobListEntity } from '@core/job/entities';
-import { ApiError } from 'next/dist/server/api-utils';
-import { useBoolean } from '@common/hooks';
-import { useRouter } from 'next/navigation';
 
 interface JobProps {
   params: { id: string };
 }
+
 export default function Job(p: JobProps) {
   const router = useRouter();
   const jobId = parseInt(p.params.id);
