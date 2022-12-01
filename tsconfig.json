@@ -18,8 +18,7 @@
     "incremental": true,
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@common/*": ["./src/common/*"],
-      "@core/*": ["./src/core/*"]
+      "@common/*": ["./src/common/*"]
     },
     "plugins": [
       {
