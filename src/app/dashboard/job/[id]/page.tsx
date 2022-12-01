@@ -2,7 +2,7 @@
 import { queryClient } from '@common/query-client';
 import { Form, Modal } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
-import { jobBackgroundColors } from '@app/dashboard/job/_consts';
+import { jobBackgroundColors } from '@app/dashboard/job/_ constants';
 import Link from 'next/link';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';

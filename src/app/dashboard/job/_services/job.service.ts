@@ -1,6 +1,6 @@
 import { JobEntity } from '@app/dashboard/job/_entities';
 import { CreateJobDto, UpdateJobDto } from '../_dto';
-import { jobBackgroundColors } from '../_consts';
+import { jobBackgroundColors } from '../_ constants';
 import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
 import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/interface';
 
