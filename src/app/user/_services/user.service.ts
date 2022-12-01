@@ -1,5 +1,5 @@
-import { jobQuestApiService, jobQuestApiUrls } from '@common/api//job-quest';
-import { UserProfile } from '../interfaces';
+import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
+import { UserProfile } from '@app/user/_interfaces';
 
 /** Fetch user profile data */
 async function getProfile(): Promise<UserProfile> {

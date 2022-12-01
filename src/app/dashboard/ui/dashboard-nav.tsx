@@ -1,5 +1,5 @@
 import { useLogout } from '@app/auth/mutation-hooks';
-import { useUserProfile } from '@app/user/query-hooks';
+import { useUserProfile } from '@app/user/_query-hooks';
 import { useMemo, useState } from 'react';
 import { AppBar, Toolbar } from '@mui/material';
 import { HistoryEduIcon } from '@common/ui/icons';
