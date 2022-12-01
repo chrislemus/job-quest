@@ -4,7 +4,7 @@ import { RouterAuthGuard } from '@app/auth/ui';
 import { PropsWithChildren } from 'react';
 import { usePathname } from 'next/navigation';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { DashboardNav } from './ui';
+import { DashboardNav } from './_ui';
 import Link from 'next/link';
 
 export default function Layout(p: PropsWithChildren<{}>) {
