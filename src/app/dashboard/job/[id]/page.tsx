@@ -4,12 +4,13 @@ import { Form, Modal } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
 import { jobColors } from '@app/dashboard/job/_ constants';
 import Link from 'next/link';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useBoolean } from '@common/hooks';
 import { useRouter } from 'next/navigation';
 import { jobService } from '@app/dashboard/job/_services';
+import { useJobQuery } from '@app/dashboard/job/_query-hooks';
 import { JobEntity } from '@app/dashboard/job/_entities';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
@@ -68,11 +69,7 @@ export default function Job(p: JobProps) {
     },
   });
 
-  const jobQuery = useQuery({
-    queryKey: ['job', jobId],
-    queryFn: () => jobService.findById(jobId),
-    enabled: !deleteJobMutation.isLoading && !deleteJobMutation.isSuccess,
-  });
+  const jobQuery = useJobQuery(jobId);
 
   const jobQueryData = jobQuery?.data?.data;
 

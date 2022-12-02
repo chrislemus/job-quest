@@ -1,5 +1,6 @@
 import { Grid, Skeleton } from '@common/ui/atoms';
-import { JobEntity, JobListEntity } from '@app/dashboard/job/_entities';
+import { JobEntity } from '@app/dashboard/job/_entities';
+import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import { PropsWithChildren, PropsWithoutRef, useMemo } from 'react';
 import { JobCard } from './job-card';
 
@@ -37,6 +38,7 @@ export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
       justifyContent={{ xs: 'center', sm: 'flex-start' }}
       paddingTop={3}
     >
+      {/* TODO: add error boundary */}
       {p.loading ? (
         <>{loadingCards}</>
       ) : (

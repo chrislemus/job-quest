@@ -1,9 +1,8 @@
 'use client';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { jobService } from '@app/dashboard/job/_services';
 import { JobListMainNav, JobListPanel, JobListSubNav } from './_ui';
 import { useJobListQuery } from './job-list/_query-hooks';
+import { useJobsQuery } from './job/_query-hooks';
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
@@ -19,14 +18,7 @@ export default function Dashboard() {
     }
   }, [JobsListQuery.isSuccess]);
 
-  const jobsQueryFilters = { jobListId: activeJobListId || undefined };
-  const jobsQuery = useQuery({
-    enabled: !!jobsQueryFilters.jobListId,
-    queryKey: ['jobs', jobsQueryFilters],
-    queryFn: () => {
-      return jobService.getAll(jobsQueryFilters);
-    },
-  });
+  const jobsQuery = useJobsQuery({ jobListId: activeJobListId || undefined });
 
   return (
     <>
