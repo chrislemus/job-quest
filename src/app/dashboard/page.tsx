@@ -1,23 +1,23 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { jobService } from '@app/dashboard/job/_services';
 import { JobListMainNav, JobListPanel, JobListSubNav } from './_ui';
-import { jobListService } from './job-list/_services';
+import { useJobListQuery } from './job-list/_query-hooks';
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
+  const JobsListQuery = useJobListQuery();
 
-  const JobsListQuery = useQuery({
-    queryKey: ['jobList'],
-    queryFn: () => {
-      return jobListService.getAll();
-    },
-    onSuccess: (d) => {
-      const defaultId = d?.data?.[0]?.id;
-      if (!activeJobListId && defaultId) setActiveJobListId(defaultId);
-    },
-  });
+  useEffect(() => {
+    const data = JobsListQuery.data?.data;
+    if (!activeJobListId && data) {
+      const orderedJobList = data.sort((a, b) => a.order - b.order);
+      const firstJobList = orderedJobList?.[0]?.id;
+      // list should not be empty, but adding if condition to avoid errors
+      if (firstJobList) setActiveJobListId(firstJobList);
+    }
+  }, [JobsListQuery.isSuccess]);
 
   const jobsQueryFilters = { jobListId: activeJobListId || undefined };
   const jobsQuery = useQuery({

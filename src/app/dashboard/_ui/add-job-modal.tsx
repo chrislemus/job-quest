@@ -1,11 +1,12 @@
 import { formValidator } from '@common/utils';
 import { jobService } from '@app/dashboard/job/_services';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@app/dashboard/job/_dto';
 import { ApiErrorRes } from '@common/api/job-quest/interface';
 import { queryClient } from '@common/query-client';
+import { useJobListQuery } from '../job-list/_query-hooks';
 import {
   Button,
   SelectField,
@@ -13,7 +14,6 @@ import {
   TextField,
   Typography,
 } from '@common/ui/atoms';
-import { jobListService } from '@app/dashboard/job-list/_services';
 import {
   Form,
   Modal,
@@ -34,10 +34,7 @@ export function AddJobModal(p: NewJobModalContentProps) {
     resolver: formValidator(CreateJobDto),
   });
 
-  const JobsListQuery = useQuery({
-    queryKey: ['jobList'],
-    queryFn: jobListService.getAll,
-  });
+  const JobsListQuery = useJobListQuery();
 
   const addJobMutation = useMutation({
     mutationFn: jobService.createJob,

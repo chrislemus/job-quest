@@ -1,5 +1,5 @@
 import { Box, Skeleton, Tab, Tabs } from '@common/ui/atoms';
-import { JobListEntity } from '@app/dashboard/job/_entities';
+import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import { PropsWithoutRef, SyntheticEvent, useMemo } from 'react';
 
 interface JobListMainNavProps {
@@ -13,6 +13,7 @@ export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
   const sortedJobList = useMemo(() => {
     return p.jobList.sort((a, b) => a.order - b.order);
   }, [p.jobList]);
+
   return (
     <Box
       sx={{

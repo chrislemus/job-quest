@@ -1,6 +1,6 @@
 import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
 import { ApiPageRes } from '@common/api/job-quest/interface';
-import { JobListEntity } from '@app/dashboard/job/_entities';
+import { JobListEntity } from '@app/dashboard/job-list/_entities';
 
 /** Fetch all Job Lists */
 async function getAll() {

@@ -7,20 +7,14 @@ import Link from 'next/link';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ApiError } from 'next/dist/server/api-utils';
 import { useBoolean } from '@common/hooks';
 import { useRouter } from 'next/navigation';
 import { jobService } from '@app/dashboard/job/_services';
 import { JobEntity } from '@app/dashboard/job/_entities';
-import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
-import { jobListService } from '@app/dashboard/job-list/_services';
-import {
-  ApiErrorRes,
-  ApiOkRes,
-  ApiPageRes,
-} from '@common/api/job-quest/interface';
+import { useJobListQuery } from '@app/dashboard/job-list/_query-hooks';
+import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
 import {
   Button,
   Container,
@@ -86,10 +80,7 @@ export default function Job(p: JobProps) {
     resolver: formValidator(UpdateJobDto),
   });
 
-  const JobsListQuery = useQuery<ApiPageRes<JobListEntity>, ApiError>({
-    queryKey: ['jobList'],
-    queryFn: jobListService.getAll,
-  });
+  const JobsListQuery = useJobListQuery();
 
   const editJobMutation = useMutation({
     mutationFn: (job: UpdateJobDto) => {
