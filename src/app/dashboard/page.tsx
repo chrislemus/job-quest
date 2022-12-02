@@ -18,6 +18,7 @@ export default function Dashboard() {
     }
   }, [JobsListQuery.isSuccess]);
 
+  // TODO: implement logic to only fetch if jobList is present
   const jobsQuery = useJobsQuery({ jobListId: activeJobListId || undefined });
 
   return (

@@ -1,7 +1,7 @@
 'use client';
 import { Form } from '@common/ui/molecules';
 import { UserLogin } from '@app/auth/_dto';
-import { useLogin } from '@app/auth/_mutation-hooks';
+import { useLogin } from '@app/auth/_hooks';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import {
@@ -15,21 +15,21 @@ import {
 export default function Login() {
   const formId = 'login';
   const form = useForm<UserLogin>({ resolver: formValidator(UserLogin) });
-  const loginMutation = useLogin();
+  const login = useLogin();
 
   return (
     <Form
       id={formId}
       formMethods={form}
       onValidSubmit={(data) => {
-        loginMutation.mutate(data);
+        login.mutate(data);
       }}
     >
       <Stack spacing={3}>
         <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
           Log In
         </Typography>
-        <FormErrors errors={loginMutation?.error?.messages} />
+        <FormErrors errors={login?.error?.messages} />
 
         <TextField
           name="email"
@@ -53,8 +53,8 @@ export default function Login() {
           type="submit"
           variant="contained"
           form={formId}
-          disabled={form.formState.isSubmitting || loginMutation.isLoading}
-          loading={form.formState.isSubmitting || loginMutation.isLoading}
+          disabled={form.formState.isSubmitting || login.isLoading}
+          loading={form.formState.isSubmitting || login.isLoading}
         >
           Log In
         </Button>

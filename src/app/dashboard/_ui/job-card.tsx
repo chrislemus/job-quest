@@ -1,4 +1,5 @@
-import { JobEntity, JobListEntity } from '@app/dashboard/job/_entities';
+import { JobEntity } from '@app/dashboard/job/_entities';
+import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import Link from 'next/link';
 import { MoveUpIcon } from '@common/ui/icons';
 import { useMutation } from '@tanstack/react-query';
