@@ -2,7 +2,7 @@
 import { queryClient } from '@common/query-client';
 import { Form, Modal } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
-import { jobBackgroundColors } from '@app/dashboard/job/_ constants';
+import { jobColors } from '@app/dashboard/job/_ constants';
 import Link from 'next/link';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
@@ -10,10 +10,12 @@ import { useForm } from 'react-hook-form';
 import { ApiError } from 'next/dist/server/api-utils';
 import { useBoolean } from '@common/hooks';
 import { useRouter } from 'next/navigation';
-import { jobListService, jobService } from '@app/dashboard/job/_services';
-import { JobEntity, JobListEntity } from '@app/dashboard/job/_entities';
+import { jobService } from '@app/dashboard/job/_services';
+import { JobEntity } from '@app/dashboard/job/_entities';
+import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
+import { jobListService } from '@app/dashboard/job-list/_services';
 import {
   ApiErrorRes,
   ApiOkRes,
@@ -219,7 +221,7 @@ export default function Job(p: JobProps) {
                   name="color"
                   label="Color"
                   defaultValue={jobQueryData?.color}
-                  options={jobBackgroundColors.map((color) => {
+                  options={jobColors.map((color) => {
                     return {
                       value: color,
                       label: (

@@ -3,7 +3,7 @@
  * This is a temp. solution and where the data
  * will be pulled from the API instead.
  */
-export const jobBackgroundColors = [
+export const jobColors: string[] = [
   '#e91e63',
   '#f44336',
   '#ff5722',

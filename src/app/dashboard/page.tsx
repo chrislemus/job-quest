@@ -1,8 +1,9 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { jobListService, jobService } from '@app/dashboard/job/_services';
+import { jobService } from '@app/dashboard/job/_services';
 import { JobListMainNav, JobListPanel, JobListSubNav } from './_ui';
+import { jobListService } from './job-list/_services';
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();

@@ -1,6 +1,6 @@
 import { JobEntity } from '@app/dashboard/job/_entities';
 import { CreateJobDto, UpdateJobDto } from '@app/dashboard/job/_dto';
-import { jobBackgroundColors } from '@app/dashboard/job/_ constants';
+import { jobColors } from '@app/dashboard/job/_ constants';
 import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
 import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/interface';
 
@@ -33,9 +33,7 @@ async function createJob(job: CreateJobDto) {
       ...job,
       color: job.color
         ? job.color
-        : jobBackgroundColors[
-            Math.round(Math.random() * jobBackgroundColors.length)
-          ],
+        : jobColors[Math.round(Math.random() * jobColors.length)],
     }
   );
 

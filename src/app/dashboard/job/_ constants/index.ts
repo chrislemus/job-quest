@@ -1,1 +1,1 @@
-export * from './job-background-colors';
+export * from './job-colors';

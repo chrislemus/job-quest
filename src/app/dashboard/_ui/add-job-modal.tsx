@@ -1,5 +1,5 @@
 import { formValidator } from '@common/utils';
-import { jobListService, jobService } from '@app/dashboard/job/_services';
+import { jobService } from '@app/dashboard/job/_services';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
 } from '@common/ui/atoms';
+import { jobListService } from '@app/dashboard/job-list/_services';
 import {
   Form,
   Modal,
