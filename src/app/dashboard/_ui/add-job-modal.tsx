@@ -1,12 +1,12 @@
 import { formValidator } from '@common/utils';
-import { jobService } from '@app/dashboard/job/_services';
-import { useMutation } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@app/dashboard/job/_dto';
 import { ApiErrorRes } from '@common/api/job-quest/interface';
 import { queryClient } from '@common/query-client';
 import { useJobListQuery } from '../job-list/_query-hooks';
+import { useCreateJob } from '../job/_hooks';
+import { jobQueryKeyFactory } from '../job/factories';
 import {
   Button,
   SelectField,
@@ -36,16 +36,7 @@ export function AddJobModal(p: NewJobModalContentProps) {
 
   const JobsListQuery = useJobListQuery();
 
-  const addJobMutation = useMutation({
-    mutationFn: jobService.createJob,
-    onSuccess(res) {
-      queryClient.invalidateQueries({
-        queryKey: ['jobs', { jobListId: res.data.jobListId }],
-      });
-      formMethods.reset();
-      p.toggleActive();
-    },
-  });
+  const addJobMutation = useCreateJob();
 
   const jobListOptions = useMemo(() => {
     return JobsListQuery.data?.data?.map((j) => ({
@@ -63,8 +54,19 @@ export function AddJobModal(p: NewJobModalContentProps) {
       <Form
         formMethods={formMethods}
         id={formId}
-        onValidSubmit={(job) => {
-          addJobMutation.mutate(job);
+        onValidSubmit={async (job) => {
+          await addJobMutation.mutateAsync(job, {
+            // TODO: move this logic within create job query.
+            // but handle case where user wants to edit right away.
+            // eg. how would routing work? /job/:ID?
+            onSuccess: async () => {
+              await queryClient.invalidateQueries({
+                queryKey: jobQueryKeyFactory.all({ jobListId: job.jobListId }),
+              });
+              formMethods.reset();
+              p.toggleActive();
+            },
+          });
         }}
       >
         <ModalTitle>Add a Job</ModalTitle>

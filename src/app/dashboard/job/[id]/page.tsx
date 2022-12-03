@@ -28,6 +28,7 @@ import {
   InputAdornment,
   Box,
 } from '@common/ui/atoms';
+import { useUpdateJob } from '../_hooks';
 
 interface JobProps {
   params: { id: string };
@@ -57,14 +58,6 @@ export default function Job(p: JobProps) {
       return jobService.deleteJob(jobId);
     },
     onSuccess(data: ApiOkRes<JobEntity>) {
-      queryClient.invalidateQueries({
-        queryKey: ['job', jobId],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ['jobs', { jobListId: data.data.jobListId }],
-      });
-
       router.push('/dashboard');
     },
   });
@@ -79,21 +72,22 @@ export default function Job(p: JobProps) {
 
   const JobsListQuery = useJobListQuery();
 
-  const editJobMutation = useMutation({
-    mutationFn: (job: UpdateJobDto) => {
-      return jobService.updateJob(jobId, job);
-    },
-    onSuccess(data: ApiOkRes<JobEntity>) {
-      setSuccessCount((count) => count + 1);
-      queryClient.invalidateQueries({
-        queryKey: ['job', jobId],
-      });
+  // const editJobMutation = useMutation({
+  //   mutationFn: (job: UpdateJobDto) => {
+  //     return jobService.updateJob(jobId, job);
+  //   },
+  //   onSuccess(data: ApiOkRes<JobEntity>) {
+  //     setSuccessCount((count) => count + 1);
+  //     queryClient.invalidateQueries({
+  //       queryKey: ['job', jobId],
+  //     });
 
-      queryClient.invalidateQueries({
-        queryKey: ['jobs', { jobListId: data.data.jobListId }],
-      });
-    },
-  });
+  //     queryClient.invalidateQueries({
+  //       queryKey: ['jobs', { jobListId: data.data.jobListId }],
+  //     });
+  //   },
+  // });
+  const editJobMutation = useUpdateJob();
 
   const jobListOptions = useMemo(() => {
     return JobsListQuery.data?.data?.map((j) => ({
@@ -129,7 +123,7 @@ export default function Job(p: JobProps) {
             formMethods={formMethods}
             id={formId}
             onValidSubmit={(data) => {
-              editJobMutation.mutate(data);
+              editJobMutation.mutate({ jobId, data });
             }}
           >
             <Grid container paddingTop={2} spacing={3}>

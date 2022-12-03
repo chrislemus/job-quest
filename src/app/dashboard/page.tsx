@@ -20,6 +20,9 @@ export default function Dashboard() {
 
   // TODO: implement logic to only fetch if jobList is present
   const jobsQuery = useJobsQuery({ jobListId: activeJobListId || undefined });
+  useEffect(() => {
+    console.log(jobsQuery.data?.data);
+  }, [jobsQuery.data?.data]);
 
   return (
     <>

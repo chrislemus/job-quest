@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@common/theme';
 import { queryClient } from '@common/query-client';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default function RootLayout(p: PropsWithChildren<{}>) {
   return (
@@ -19,7 +19,7 @@ export default function RootLayout(p: PropsWithChildren<{}>) {
         <ThemeProvider theme={theme}>
           <CssBaseline>
             <QueryClientProvider client={queryClient}>
-              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+              <ReactQueryDevtools initialIsOpen={false} />
               {p.children}
             </QueryClientProvider>
           </CssBaseline>
