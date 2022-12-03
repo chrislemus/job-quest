@@ -9,28 +9,21 @@ import { queryClient } from '@common/query-client';
 
 type UpdatedJobContext = {
   queryKey: ReturnType<typeof jobQueryKeyFactory.detail>;
-  prevJobData: JobEntity;
-  newJobData: JobEntity;
+  prevJobData: ApiOkRes<JobEntity>;
+  newJobData: ApiOkRes<JobEntity>;
 };
+
 type JobListContext = {
   queryKey: ReturnType<typeof jobQueryKeyFactory.all>;
   prevJobList: ApiPageRes<JobEntity>;
   newJobList: ApiPageRes<JobEntity>;
-};
+}[];
 
 type MutationVariables = { jobId: number; data: UpdateJobDto };
 
 type MutationContext = {
   updatedJob: UpdatedJobContext;
-  filteredJobListCurrent?: JobListContext;
-};
-
-type MutationOptionsCustomOnMutate<T extends keyof MutationContext> = Required<
-  Pick<MutationOptions, 'onError' | 'onSettled'>
-> & {
-  onMutate: (
-    variables: MutationVariables
-  ) => Promise<MutationContext[T] | undefined> | MutationContext[T] | undefined;
+  filteredJobLists: JobListContext;
 };
 
 type MutationOptions = UseMutationOptions<
@@ -40,27 +33,38 @@ type MutationOptions = UseMutationOptions<
   MutationContext
 >;
 
-const jobDetailMutateOptions: MutationOptionsCustomOnMutate<'updatedJob'> = {
+const jobDetailMutateOptions: Required<
+  Pick<MutationOptions, 'onError' | 'onSettled'>
+> & {
+  onMutate: (
+    variables: MutationVariables
+  ) => Promise<MutationContext['updatedJob'] | undefined>;
+} = {
   onMutate: async (variables) => {
     const jobId = variables.jobId;
     const updateJob = variables.data;
     const jobDetailQueryKey = jobQueryKeyFactory.detail(jobId);
-    // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-    await queryClient.cancelQueries({
-      queryKey: jobDetailQueryKey,
-    });
 
     // Snapshot the previous value
-    const prevJobData =
-      queryClient.getQueryData<ApiOkRes<JobEntity>>(jobDetailQueryKey)?.data;
+    let prevJobData: ApiOkRes<JobEntity> | undefined =
+      queryClient.getQueryData<ApiOkRes<JobEntity>>(jobDetailQueryKey);
 
+    console.log('prevJobData', prevJobData);
     if (prevJobData) {
-      const newJobData: JobEntity = { ...prevJobData, ...updateJob };
+      // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({
+        queryKey: jobDetailQueryKey,
+      });
+      const newJobData: ApiOkRes<JobEntity> = {
+        ...prevJobData,
+        data: { ...prevJobData.data, ...updateJob },
+      };
 
       // Optimistically update to the new value
-      queryClient.setQueryData<ApiOkRes<JobEntity>>(jobDetailQueryKey, {
-        data: newJobData,
-      });
+      queryClient.setQueryData<ApiOkRes<JobEntity>>(
+        jobDetailQueryKey,
+        newJobData
+      );
 
       // Return a context with the previous and new todo
       return { queryKey: jobDetailQueryKey, prevJobData, newJobData };
@@ -70,7 +74,7 @@ const jobDetailMutateOptions: MutationOptionsCustomOnMutate<'updatedJob'> = {
     if (context) {
       queryClient.setQueryData<ApiOkRes<JobEntity>>(
         context.updatedJob.queryKey,
-        { data: context.updatedJob.prevJobData }
+        context.updatedJob.prevJobData
       );
     }
   },
@@ -82,42 +86,115 @@ const jobDetailMutateOptions: MutationOptionsCustomOnMutate<'updatedJob'> = {
   },
 };
 
-async function onMutateJobList(
-  jobData: UpdatedJobContext
-): Promise<JobListContext | undefined> {
-  const filteredJobsQueryKey = jobQueryKeyFactory.all({
-    jobListId: jobData.newJobData.jobListId,
-  });
+const jobListMutationOptions: Required<
+  Pick<MutationOptions, 'onError' | 'onSettled'>
+> & {
+  onMutate: (
+    variables: MutationVariables
+  ) => Promise<MutationContext['filteredJobLists']>;
+} = {
+  onMutate: async (variables) => {
+    const filteredJobLists: JobListContext = [];
+    const updatedJobList =
+      Object.keys(variables.data).length === 1 && variables.data['jobListId'];
 
-  await queryClient.cancelQueries({
-    queryKey: filteredJobsQueryKey,
-  });
-  const prevJobList =
-    queryClient.getQueryData<ApiPageRes<JobEntity>>(filteredJobsQueryKey);
+    if (updatedJobList) {
+      // let prevJobData:  ApiPageRes<JobEntity>['data'][0] = jobData.prevJobData.data;
+      let prevJobData: ApiPageRes<JobEntity>['data'][0] | undefined;
+      const queryKey = jobQueryKeyFactory.all();
+      const queriesData = await queryClient.getQueriesData<
+        ApiPageRes<JobEntity>
+      >(queryKey);
 
-  if (prevJobList) {
-    const newJobList = {
-      pageInfo: prevJobList.pageInfo,
-      data: prevJobList.data.map((job) => {
-        if (job.id === jobData.newJobData.id) {
-          return jobData.newJobData;
+      queriesData?.forEach((res) => {
+        const [_queryKey, queryData] = res;
+        if (queryData) {
+          queryData.data.forEach((job) => {
+            if (job.id === variables.jobId) {
+              prevJobData = job;
+            }
+          });
         }
-        return job;
-      }),
-    };
+      });
+      if (prevJobData) {
+        const newJobData = {
+          ...prevJobData,
+          jobListId: variables.data.jobListId,
+        };
 
-    queryClient.setQueryData<ApiPageRes<JobEntity>>(
-      filteredJobsQueryKey,
-      newJobList
-    );
+        const jobListsToUpdate = [newJobData.jobListId];
+        if (updatedJobList) {
+          // make sure to update new list first, to display user changes immediately
+          jobListsToUpdate.push(prevJobData.jobListId);
+        }
 
-    return {
-      queryKey: filteredJobsQueryKey,
-      prevJobList,
-      newJobList,
-    };
-  }
-}
+        for (const jobListId of jobListsToUpdate) {
+          const queryKey = jobQueryKeyFactory.all({ jobListId });
+
+          await queryClient.cancelQueries({ queryKey: queryKey });
+
+          const prevJobList =
+            queryClient.getQueryData<ApiPageRes<JobEntity>>(queryKey);
+
+          if (prevJobList) {
+            const listData: JobEntity[] = [];
+            for (let i = 0; i < prevJobList.data.length; i++) {
+              const job = prevJobList.data[i];
+              if (updatedJobList) {
+                if (
+                  job.id === newJobData.id &&
+                  job.jobListId !== prevJobData.jobListId
+                ) {
+                  listData.push(newJobData);
+                }
+              } else {
+                listData.push(job);
+              }
+            }
+
+            const newJobList: ApiPageRes<JobEntity> = {
+              pageInfo: prevJobList.pageInfo,
+              data: listData,
+            };
+
+            queryClient.setQueryData<ApiPageRes<JobEntity>>(
+              queryKey,
+              newJobList
+            );
+
+            filteredJobLists.push({
+              queryKey: queryKey,
+              prevJobList,
+              newJobList,
+            });
+          }
+        }
+        console.log(filteredJobLists);
+      }
+    }
+    return filteredJobLists;
+  },
+  onError: (...args) => {
+    const [_err, _newTodo, context] = args;
+
+    if (context?.filteredJobLists) {
+      context.filteredJobLists.forEach((list) => {
+        queryClient.setQueryData<ApiPageRes<JobEntity>>(
+          list.queryKey,
+          list.prevJobList
+        );
+      });
+    }
+  },
+  // Always refetch after error or success:
+  onSettled: (_data, _error, variables, context) => {
+    if (context?.filteredJobLists) {
+      context.filteredJobLists.forEach((list) => {
+        queryClient.invalidateQueries(list.queryKey);
+      });
+    }
+  },
+};
 
 function useUpdateJob() {
   const options: MutationOptions = {
@@ -127,44 +204,24 @@ function useUpdateJob() {
     onMutate: async (variables) => {
       const updatedJob = await jobDetailMutateOptions.onMutate(variables);
       if (updatedJob) {
+        const filteredJobLists = await jobListMutationOptions.onMutate(
+          variables
+        );
+        console.log('filteredJobLists', filteredJobLists);
         return {
           updatedJob,
-          filteredJobListCurrent: await onMutateJobList(updatedJob),
+          filteredJobLists,
         };
       }
     }, // If the mutation fails, use the context we returned above
     onError: (...args) => {
-      const [_err, _newTodo, context] = args;
       jobDetailMutateOptions.onError(...args);
-
-      if (context) {
-        if (context.filteredJobListCurrent) {
-          queryClient.setQueryData<ApiPageRes<JobEntity>>(
-            context.filteredJobListCurrent?.queryKey,
-            context.filteredJobListCurrent?.prevJobList
-          );
-        }
-      }
+      jobListMutationOptions.onError(...args);
     },
     // Always refetch after error or success:
     onSettled: (...args) => {
-      const [_data, _error, variables, context] = args;
       jobDetailMutateOptions.onSettled(...args);
-
-      if (context?.updatedJob) {
-        const { newJobData } = context?.updatedJob;
-        queryClient.invalidateQueries({
-          queryKey: jobQueryKeyFactory.all({
-            jobListId: context?.updatedJob.newJobData.jobListId,
-          }),
-        });
-
-        queryClient.invalidateQueries({
-          queryKey: jobQueryKeyFactory.all({
-            jobListId: newJobData.jobListId,
-          }),
-        });
-      }
+      jobListMutationOptions.onSettled(...args);
     },
   };
 
