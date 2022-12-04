@@ -1,12 +1,10 @@
 import { formValidator } from '@common/utils';
-import { jobService } from '@app/dashboard/job/_services';
-import { useMutation } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@app/dashboard/job/_dto';
 import { ApiErrorRes } from '@common/api/job-quest/interface';
-import { queryClient } from '@common/query-client';
 import { useJobListQuery } from '../job-list/_query-hooks';
+import { useCreateJob } from '@app/dashboard/job/_hooks';
 import {
   Button,
   SelectField,
@@ -36,16 +34,7 @@ export function AddJobModal(p: NewJobModalContentProps) {
 
   const JobsListQuery = useJobListQuery();
 
-  const addJobMutation = useMutation({
-    mutationFn: jobService.createJob,
-    onSuccess(res) {
-      queryClient.invalidateQueries({
-        queryKey: ['jobs', { jobListId: res.data.jobListId }],
-      });
-      formMethods.reset();
-      p.toggleActive();
-    },
-  });
+  const addJobMutation = useCreateJob();
 
   const jobListOptions = useMemo(() => {
     return JobsListQuery.data?.data?.map((j) => ({
@@ -64,7 +53,12 @@ export function AddJobModal(p: NewJobModalContentProps) {
         formMethods={formMethods}
         id={formId}
         onValidSubmit={(job) => {
-          addJobMutation.mutate(job);
+          addJobMutation.mutate(job, {
+            onSuccess: () => {
+              formMethods.reset();
+              p.toggleActive();
+            },
+          });
         }}
       >
         <ModalTitle>Add a Job</ModalTitle>

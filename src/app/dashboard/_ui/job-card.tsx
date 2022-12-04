@@ -2,10 +2,6 @@ import { JobEntity } from '@app/dashboard/job/_entities';
 import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import Link from 'next/link';
 import { MoveUpIcon } from '@common/ui/icons';
-import { useMutation } from '@tanstack/react-query';
-import { jobService } from '@app/dashboard/job/_services';
-import { ApiOkRes } from '@common/api/job-quest/interface';
-import { queryClient } from '@common/query-client';
 import { theme } from '@common/theme';
 import { PropsWithoutRef, useMemo, useState } from 'react';
 import {
@@ -17,6 +13,7 @@ import {
   MenuItem,
   Typography,
 } from '@common/ui/atoms';
+import { useUpdateJob } from '../job/_hooks';
 
 interface JobCardProps {
   job: JobEntity;
@@ -40,20 +37,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
     setAnchorEl(null);
   };
 
-  const editJobMutation = useMutation({
-    mutationFn: (jobListId: number) => {
-      return jobService.updateJob(p.job.id, { jobListId });
-    },
-
-    onSuccess(_data: ApiOkRes<JobEntity>) {
-      queryClient.invalidateQueries({
-        queryKey: ['job', p.job.id],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ['jobs', { jobListId: p.job.jobListId }],
-      });
-    },
-  });
+  const editJobMutation = useUpdateJob();
 
   return (
     <Card sx={{ minWidth: 275 }} style={{ backgroundColor }}>
@@ -86,9 +70,18 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
               <MenuItem
                 key={list.id}
                 disabled={p.job.jobListId === list.id}
-                onClick={async () => {
-                  await editJobMutation.mutateAsync(list.id);
-                  handleClose();
+                onClick={() => {
+                  editJobMutation.mutate(
+                    {
+                      jobId: p.job.id,
+                      data: { jobListId: list.id },
+                    },
+                    {
+                      onSuccess: () => {
+                        handleClose();
+                      },
+                    }
+                  );
                 }}
               >
                 {list.label}
