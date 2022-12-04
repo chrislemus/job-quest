@@ -1,17 +1,13 @@
 'use client';
-import { queryClient } from '@common/query-client';
 import { Form, Modal } from '@common/ui/molecules';
 import { formValidator } from '@common/utils';
 import { jobColors } from '@app/dashboard/job/_ constants';
 import Link from 'next/link';
-import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useBoolean } from '@common/hooks';
 import { useRouter } from 'next/navigation';
-import { jobService } from '@app/dashboard/job/_services';
 import { useJobQuery } from '@app/dashboard/job/_query-hooks';
-import { JobEntity } from '@app/dashboard/job/_entities';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
 import { useJobListQuery } from '@app/dashboard/job-list/_query-hooks';
@@ -28,7 +24,7 @@ import {
   InputAdornment,
   Box,
 } from '@common/ui/atoms';
-import { useUpdateJob } from '../_hooks';
+import { useDeleteJob, useUpdateJob } from '../_hooks';
 
 interface JobProps {
   params: { id: string };
@@ -53,22 +49,7 @@ export default function Job(p: JobProps) {
 
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useBoolean();
 
-  const deleteJobMutation = useMutation({
-    mutationFn: () => {
-      return jobService.deleteJob(jobId);
-    },
-    onSuccess(data: ApiOkRes<JobEntity>) {
-      queryClient.invalidateQueries({
-        queryKey: ['job', jobId],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ['jobs', { jobListId: data.data.jobListId }],
-      });
-
-      router.push('/dashboard');
-    },
-  });
+  const deleteJobMutation = useDeleteJob();
 
   const jobQuery = useJobQuery(jobId);
 
@@ -319,7 +300,11 @@ export default function Job(p: JobProps) {
                     disabled={deleteJobMutation.isLoading}
                     loading={deleteJobMutation.isLoading}
                     onClick={() => {
-                      deleteJobMutation.mutate();
+                      deleteJobMutation.mutate(jobId, {
+                        onSuccess: () => {
+                          router.push('/dashboard');
+                        },
+                      });
                     }}
                   >
                     Delete
