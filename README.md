@@ -47,7 +47,7 @@ All jobs are categorized by **Job List** type (ie. Queue, Applied, Interview, Of
 
 ## Live Preview
 
-[Check out the live demo here!](https://job-quest.vercel.app/auth/login)
+[Check out the live demo here!](http://localhost:3002/projects/8/demo)
 
 ## Screenshots
 
