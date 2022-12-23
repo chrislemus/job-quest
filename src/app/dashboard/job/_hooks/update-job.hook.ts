@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { jobService } from '@app/dashboard/job/_services';
 import { queryClient } from '@common/query-client';
-import { jobQueryKeyFactory } from '../_factories';
-import { UpdateJobDto } from '../_dto';
+import { jobQueryKeyFactory } from '@app/dashboard/job/_factories';
+import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { ApiPageRes } from '@common/api/job-quest/interface';
-import { JobEntity } from '../_entities';
+import { JobEntity } from '@app/dashboard/job/_entities';
 
 export function useUpdateJob() {
   const mutation = useMutation({

@@ -24,7 +24,7 @@ import {
   InputAdornment,
   Box,
 } from '@common/ui/atoms';
-import { useDeleteJob, useUpdateJob } from '../_hooks';
+import { useDeleteJob, useUpdateJob } from '@app/dashboard/job/_hooks';
 
 interface JobProps {
   params: { id: string };
