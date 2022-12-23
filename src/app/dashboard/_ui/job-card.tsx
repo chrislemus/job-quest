@@ -13,7 +13,7 @@ import {
   MenuItem,
   Typography,
 } from '@common/ui/atoms';
-import { useUpdateJob } from '../job/_hooks';
+import { useUpdateJob } from '@app/dashboard/job/_hooks';
 
 interface JobCardProps {
   job: JobEntity;
