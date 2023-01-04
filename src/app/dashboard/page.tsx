@@ -1,9 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { JobListMainNav, JobListPanel, JobListSubNav } from './_ui';
 import { useJobListQuery } from './job-list/_query-hooks';
 import { useJobsQuery } from './job/_query-hooks';
 import { Grid } from '@common/ui/atoms';
+
+function GridItem(p: PropsWithChildren<{}>) {
+  return <Grid xs={5}>{p.children}</Grid>;
+}
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
@@ -34,47 +38,46 @@ export default function Dashboard() {
       />
 
       <JobListSubNav />
-      <div>
-        <Grid
-          container
-          style={{
-            backgroundColor: 'red',
-            overflowX: 'scroll',
-            width: '100%',
-            height: 'fit-content',
-          }}
-          wrap="nowrap"
-          justifyContent="space-around"
-        >
-          <Grid xs={5}>
-            <JobListPanel
-              loading={
-                JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
-              }
-              jobs={jobsQuery.data?.data || []}
-              jobLists={JobsListQuery.data?.data || []}
-            />
-          </Grid>
-          <Grid xs={5}>
-            <JobListPanel
-              loading={
-                JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
-              }
-              jobs={jobsQuery.data?.data || []}
-              jobLists={JobsListQuery.data?.data || []}
-            />
-          </Grid>
-          <Grid xs={5}>
-            <JobListPanel
-              loading={
-                JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
-              }
-              jobs={jobsQuery.data?.data || []}
-              jobLists={JobsListQuery.data?.data || []}
-            />
-          </Grid>
-        </Grid>
-      </div>
+
+      <Grid
+        container
+        style={{
+          backgroundColor: 'red',
+          overflowX: 'scroll',
+          width: '100%',
+          height: 'fit-content',
+        }}
+        wrap="nowrap"
+        justifyContent="space-around"
+      >
+        <GridItem>
+          <JobListPanel
+            loading={
+              JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
+            }
+            jobs={jobsQuery.data?.data || []}
+            jobLists={JobsListQuery.data?.data || []}
+          />
+        </GridItem>
+        <GridItem>
+          <JobListPanel
+            loading={
+              JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
+            }
+            jobs={jobsQuery.data?.data || []}
+            jobLists={JobsListQuery.data?.data || []}
+          />
+        </GridItem>
+        <GridItem>
+          <JobListPanel
+            loading={
+              JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
+            }
+            jobs={jobsQuery.data?.data || []}
+            jobLists={JobsListQuery.data?.data || []}
+          />
+        </GridItem>
+      </Grid>
     </>
   );
 }
