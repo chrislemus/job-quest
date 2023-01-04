@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { JobListMainNav, JobListPanel, JobListSubNav } from './_ui';
 import { useJobListQuery } from './job-list/_query-hooks';
 import { useJobsQuery } from './job/_query-hooks';
+import { Grid } from '@common/ui/atoms';
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
@@ -33,12 +34,47 @@ export default function Dashboard() {
       />
 
       <JobListSubNav />
-
-      <JobListPanel
-        loading={JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined}
-        jobs={jobsQuery.data?.data || []}
-        jobLists={JobsListQuery.data?.data || []}
-      />
+      <div>
+        <Grid
+          container
+          style={{
+            backgroundColor: 'red',
+            overflowX: 'scroll',
+            width: '100%',
+            height: 'fit-content',
+          }}
+          wrap="nowrap"
+          justifyContent="space-around"
+        >
+          <Grid xs={5}>
+            <JobListPanel
+              loading={
+                JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
+              }
+              jobs={jobsQuery.data?.data || []}
+              jobLists={JobsListQuery.data?.data || []}
+            />
+          </Grid>
+          <Grid xs={5}>
+            <JobListPanel
+              loading={
+                JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
+              }
+              jobs={jobsQuery.data?.data || []}
+              jobLists={JobsListQuery.data?.data || []}
+            />
+          </Grid>
+          <Grid xs={5}>
+            <JobListPanel
+              loading={
+                JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined
+              }
+              jobs={jobsQuery.data?.data || []}
+              jobLists={JobsListQuery.data?.data || []}
+            />
+          </Grid>
+        </Grid>
+      </div>
     </>
   );
 }

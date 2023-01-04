@@ -11,11 +11,7 @@ interface JobListPanelProps {
 }
 
 function GridItem(p: PropsWithChildren<{}>) {
-  return (
-    <Grid xs={12} sm={6} md={4} lg={3}>
-      {p.children}
-    </Grid>
-  );
+  return <Grid xs={12}>{p.children}</Grid>;
 }
 
 export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
