@@ -25,14 +25,13 @@ export default function Dashboard() {
 
   return (
     <>
+      <JobListSubNav />
       <JobListMainNav
         jobList={JobsListQuery.data?.data || []}
         setActiveJobList={(a: number) => setActiveJobListId(a)}
         activeJobListId={activeJobListId}
         loading={JobsListQuery.isLoading}
       />
-
-      <JobListSubNav />
 
       <JobListPanel
         loading={JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined}
