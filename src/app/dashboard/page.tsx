@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { JobListMainNav, JobListPanel, JobListSubNav } from './_ui';
+import { JobListMainNav, JobListPanel, DashboardActionButtons } from './_ui';
 import { useJobListQuery } from './job-list/_query-hooks';
 import { useJobsQuery } from './job/_query-hooks';
 
@@ -25,7 +25,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <JobListSubNav />
+      <DashboardActionButtons />
       <JobListMainNav
         jobList={JobsListQuery.data?.data || []}
         setActiveJobList={(a: number) => setActiveJobListId(a)}
