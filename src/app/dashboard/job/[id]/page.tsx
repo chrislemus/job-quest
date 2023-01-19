@@ -1,12 +1,8 @@
 'use client';
-
 import { useEffect, useState } from 'react';
-import { DeleteJobButton, JobMain } from './_ui';
+import { DeleteJobButton, JobLog, JobMain } from './_ui';
 import { useJobQuery } from '@app/dashboard/job/_query-hooks';
-import { useUserProfile } from '@app/user/_query-hooks';
 import {
-  Avatar,
-  Box,
   Container,
   Divider,
   Grid,
@@ -34,7 +30,6 @@ export default function Job(p: JobProps) {
   }, [successCount]);
 
   const jobQuery = useJobQuery(jobId);
-
   const jobQueryData = jobQuery?.data?.data;
 
   if (jobQuery.isLoading)
@@ -55,7 +50,7 @@ export default function Job(p: JobProps) {
             <JobMain job={jobQueryData} />
           </Grid>
           <Divider />
-          <JobLogContainer />
+          <JobLog />
           <Divider />
 
           <Grid xs={12} paddingTop={6}>
@@ -64,22 +59,5 @@ export default function Job(p: JobProps) {
         </>
       )}
     </Container>
-  );
-}
-
-function JobLogContainer() {
-  const user = useUserProfile();
-  const firstNameInitial = user.data?.firstName?.[0] || '?';
-
-  return (
-    <Grid container paddingY={6}>
-      <Grid container rowSpacing={1} columnSpacing={1}>
-        <Grid>
-          <Avatar sx={{ width: 24, height: 24 }}>{firstNameInitial}</Avatar>
-        </Grid>
-        <Grid flexGrow={1}>Cdwedwe</Grid>
-      </Grid>
-      <Box>dwe</Box>
-    </Grid>
   );
 }
