@@ -44,9 +44,9 @@ export function SelectField(p: SelectFieldProps) {
             }}
             ref={ref}
           >
-            {p.options?.map((o, idx) => {
+            {p.options?.map((o) => {
               return (
-                <MenuItem value={o.value} key={idx}>
+                <MenuItem value={o.value} key={`${o.value}`}>
                   {o.label}
                 </MenuItem>
               );
