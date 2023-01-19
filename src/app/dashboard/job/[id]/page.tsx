@@ -46,14 +46,13 @@ export default function Job(p: JobProps) {
           <Typography variant="h4">{jobQueryData.title}</Typography>
           <Typography variant="subtitle1">{jobQueryData.company}</Typography>
 
-          <Grid container paddingBottom={6}>
+          <Grid container>
             <JobMain job={jobQueryData} />
           </Grid>
-          <Divider />
+          <Divider sx={{ marginY: 6 }} />
           <JobLog />
-          <Divider />
-
-          <Grid xs={12} paddingTop={6}>
+          <Divider sx={{ marginY: 6 }} />
+          <Grid xs={12}>
             <DeleteJobButton jobId={jobQueryData.id} />
           </Grid>
         </>
