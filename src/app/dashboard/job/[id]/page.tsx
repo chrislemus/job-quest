@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DeleteJobButton, JobLog, JobMain } from './_ui';
+import { DeleteJobButton, JobLogSection, JobMain } from './_ui';
 import { useJobQuery } from '@app/dashboard/job/_query-hooks';
 import {
   Container,
@@ -50,7 +50,7 @@ export default function Job(p: JobProps) {
             <JobMain job={jobQueryData} />
           </Grid>
           <Divider sx={{ marginY: 6 }} />
-          <JobLog />
+          <JobLogSection jobId={jobQueryData.id} />
           <Divider sx={{ marginY: 6 }} />
           <Grid xs={12}>
             <DeleteJobButton jobId={jobQueryData.id} />
