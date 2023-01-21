@@ -1,6 +1,7 @@
 export class JobLogEntity {
-  /** ID of the Job */
+  id: number;
   jobId: number;
-  /** Job log content */
   content: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
