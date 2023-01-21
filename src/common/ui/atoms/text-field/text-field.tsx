@@ -39,7 +39,6 @@ export function TextField(p: TextFieldProps) {
   return (
     <_TextField
       variant={p.variant}
-      margin="dense"
       InputProps={{
         endAdornment: p.endAdornment,
       }}
