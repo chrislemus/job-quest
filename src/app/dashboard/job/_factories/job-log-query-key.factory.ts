@@ -7,4 +7,8 @@ function all(jobId: number) {
   return [..._base, 'all', { jobId }] as const;
 }
 
-export const jobLogQueryKeyFactory = { _base, all };
+function detail(jobLogId: number) {
+  return [..._base, 'detail', jobLogId] as const;
+}
+
+export const jobLogQueryKeyFactory = { _base, all, detail };
