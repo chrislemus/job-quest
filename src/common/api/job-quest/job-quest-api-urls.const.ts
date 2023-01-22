@@ -16,6 +16,11 @@ export const jobQuestApiUrls = {
     update: (id: number) => `/job/${id}`,
     delete: (id: number) => `/job/${id}`,
   },
+  jobLog: {
+    root: '/job-log',
+    update: (id: number) => `/job-log/${id}`,
+    delete: (id: number) => `/job-log/${id}`,
+  },
   jobList: {
     root: '/job-list',
   },

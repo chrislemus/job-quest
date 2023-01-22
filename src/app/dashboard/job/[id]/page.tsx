@@ -1,9 +1,14 @@
 'use client';
-
 import { useEffect, useState } from 'react';
-import { DeleteJobButton, JobMain } from './_ui';
+import { DeleteJobButton, JobLogSection, JobMain } from './_ui';
 import { useJobQuery } from '@app/dashboard/job/_query-hooks';
-import { Container, Grid, Skeleton, Typography } from '@common/ui/atoms';
+import {
+  Container,
+  Divider,
+  Grid,
+  Skeleton,
+  Typography,
+} from '@common/ui/atoms';
 
 interface JobProps {
   params: { id: string };
@@ -25,7 +30,6 @@ export default function Job(p: JobProps) {
   }, [successCount]);
 
   const jobQuery = useJobQuery(jobId);
-
   const jobQueryData = jobQuery?.data?.data;
 
   if (jobQuery.isLoading)
@@ -41,10 +45,14 @@ export default function Job(p: JobProps) {
         <>
           <Typography variant="h4">{jobQueryData.title}</Typography>
           <Typography variant="subtitle1">{jobQueryData.company}</Typography>
-          <Grid container paddingBottom={6}>
+
+          <Grid container>
             <JobMain job={jobQueryData} />
           </Grid>
-          <Grid xs={12} paddingTop={6}>
+          <Divider sx={{ marginY: 6 }} />
+          <JobLogSection jobId={jobQueryData.id} />
+          <Divider sx={{ marginY: 6 }} />
+          <Grid xs={12}>
             <DeleteJobButton jobId={jobQueryData.id} />
           </Grid>
         </>

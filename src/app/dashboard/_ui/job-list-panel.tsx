@@ -42,14 +42,10 @@ export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
       {p.loading ? (
         <>{loadingCards}</>
       ) : (
-        p.jobs.map((job, idx) => {
+        p.jobs.map((job) => {
           return (
-            <GridItem key={idx}>
-              <JobCard
-                job={job}
-                key={idx + job.title + job.jobListId}
-                jobLists={p.jobLists}
-              />
+            <GridItem key={job.id}>
+              <JobCard job={job} jobLists={p.jobLists} />
             </GridItem>
           );
         })

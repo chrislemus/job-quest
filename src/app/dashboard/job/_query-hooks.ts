@@ -4,9 +4,9 @@ import {
   ApiOkRes,
 } from '@common/api/job-quest/interface';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { JobEntity } from './_entities';
-import { jobQueryKeyFactory } from './_factories';
-import { jobService } from './_services';
+import { JobEntity, JobLogEntity } from './_entities';
+import { jobLogQueryKeyFactory, jobQueryKeyFactory } from './_factories';
+import { jobLogService, jobService } from './_services';
 
 /**
  * Get data for multiple jobs.
@@ -39,4 +39,17 @@ function useJobQuery(
   return query;
 }
 
-export { useJobsQuery, useJobQuery };
+function useJobLogsQuery(
+  jobId: number
+): UseQueryResult<ApiPageRes<JobLogEntity>, ApiErrorRes> {
+  const query = useQuery<ApiPageRes<JobLogEntity>, ApiErrorRes>({
+    queryKey: jobLogQueryKeyFactory.all(jobId),
+    queryFn: () => {
+      return jobLogService.getAll(jobId);
+    },
+  });
+
+  return query;
+}
+
+export { useJobsQuery, useJobQuery, useJobLogsQuery };
