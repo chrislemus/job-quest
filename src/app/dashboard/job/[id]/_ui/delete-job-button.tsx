@@ -31,7 +31,7 @@ export function DeleteJobButton(p: DeleteJobButtonProps) {
       >
         <Box padding={4}>
           <Typography id="modal-modal-description">
-            Are you sure you want to this Job?
+            Are you sure you want to delete this Job?
           </Typography>
           {/* 
               TODO: add error response messages 
