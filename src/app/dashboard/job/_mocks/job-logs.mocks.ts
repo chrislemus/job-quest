@@ -1,4 +1,4 @@
-import { JobLogEntity } from '../../_entities';
+import { JobLogEntity } from '../_entities';
 
 export const jobLogs: JobLogEntity[] = [
   {
