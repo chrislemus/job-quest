@@ -5,9 +5,16 @@ import {
   jobLogQueryKeyFactory,
   jobQueryKeyFactory,
 } from '@app/dashboard/job/_factories';
+import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
+import { JobLogEntity } from '../_entities';
 
 export function useDeleteJobLog() {
-  const mutation = useMutation({
+  const mutation = useMutation<
+    ApiOkRes<JobLogEntity>,
+    ApiErrorRes,
+    number,
+    unknown
+  >({
     mutationFn: (jobLogId: number) => {
       return jobLogService.deleteJobLog(jobLogId);
     },

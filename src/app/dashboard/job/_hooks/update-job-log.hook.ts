@@ -3,10 +3,21 @@ import { jobLogService } from '@app/dashboard/job/_services';
 import { queryClient } from '@common/query-client';
 import { jobLogQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { UpdateJobLogDto } from '@app/dashboard/job/_dto';
+import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
+import { JobLogEntity } from '../_entities';
+
+type UpdateJobLogMutationVariables = {
+  jobLogId: number;
+  data: UpdateJobLogDto;
+};
 
 export function useUpdateJobLog() {
-  const mutation = useMutation({
-    mutationFn: (args: { jobLogId: number; data: UpdateJobLogDto }) => {
+  const mutation = useMutation<
+    ApiOkRes<JobLogEntity>,
+    ApiErrorRes,
+    UpdateJobLogMutationVariables
+  >({
+    mutationFn: (args) => {
       return jobLogService.update(args.jobLogId, args.data);
     },
     onSuccess(res) {
