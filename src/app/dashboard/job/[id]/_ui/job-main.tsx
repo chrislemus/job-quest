@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
 import { useJobListQuery } from '@app/dashboard/job-list/_query-hooks';
+import { useUpdateJob } from '@app/dashboard/job/_hooks';
+import { JobEntity } from '@app/dashboard/job/_entities';
 import {
   Button,
   Grid,
@@ -17,8 +19,6 @@ import {
   Typography,
   InputAdornment,
 } from '@common/ui/atoms';
-import { useUpdateJob } from '@app/dashboard/job/_hooks';
-import { JobEntity } from '../../_entities';
 
 interface JobMainProps {
   job: JobEntity;

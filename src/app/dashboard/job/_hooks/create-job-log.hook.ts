@@ -3,8 +3,8 @@ import { jobLogService } from '@app/dashboard/job/_services';
 import { queryClient } from '@common/query-client';
 import { jobLogQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
-import { JobLogEntity } from '../_entities';
-import { CreateJobLogDto } from '../_dto';
+import { JobLogEntity } from '@app/dashboard/job/_entities';
+import { CreateJobLogDto } from '@app/dashboard/job/_dto';
 
 export function useCreateJobLog() {
   const mutation = useMutation<

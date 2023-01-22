@@ -1,5 +1,3 @@
-import { jobLogService } from '../_services';
-
 const _base = ['job'] as const;
 
 // TODO: create generic pagination filter util function/type

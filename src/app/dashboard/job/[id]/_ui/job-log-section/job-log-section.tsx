@@ -1,6 +1,6 @@
 import { useUserProfile } from '@app/user/_query-hooks';
 import { PropsWithChildren, useMemo } from 'react';
-import { useJobLogsQuery } from '../../../_query-hooks';
+import { useJobLogsQuery } from '@app/dashboard/job/_query-hooks';
 import { JobLogItem } from './job-log-item';
 import { AddJobLogForm } from './add-job-log-form';
 import { Avatar, Grid } from '@common/ui/atoms';

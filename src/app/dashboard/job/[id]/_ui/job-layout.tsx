@@ -3,7 +3,7 @@ import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
 import { Container, Grid, Typography } from '@common/ui/atoms';
 import { UseQueryResult } from '@tanstack/react-query';
 import { PropsWithChildren } from 'react';
-import { JobEntity } from '../../_entities';
+import { JobEntity } from '@app/dashboard/job/_entities';
 
 export function JobLayout(
   p: PropsWithChildren<{

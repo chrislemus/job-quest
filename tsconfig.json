@@ -16,6 +16,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": "./",
     "paths": {
       "@app/*": ["./src/app/*"],
       "@common/*": ["./src/common/*"]
