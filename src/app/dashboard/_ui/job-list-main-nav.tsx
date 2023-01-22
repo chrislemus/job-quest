@@ -22,7 +22,10 @@ export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
       }}
     >
       {p.loading || !p.activeJobListId ? (
-        <Skeleton variant="rectangular" height={60} />
+        <>
+          <br />
+          <Skeleton variant="rectangular" height={500} />
+        </>
       ) : (
         <Tabs
           onChange={(_e: SyntheticEvent, newValue: number) => {

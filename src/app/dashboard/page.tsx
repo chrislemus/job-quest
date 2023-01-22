@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { JobListMainNav, JobListPanel, DashboardActionButtons } from './_ui';
 import { useJobListQuery } from './job-list/_query-hooks';
-import { useJobsQuery } from './job/_query-hooks';
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
@@ -21,8 +20,6 @@ export default function Dashboard() {
   // TODO: implement logic to only fetch if jobList is present
   // or leave optional, provided that all jobs will eventually be displayed.
 
-  const jobsQuery = useJobsQuery({ jobListId: activeJobListId || undefined });
-
   return (
     <>
       <DashboardActionButtons />
@@ -33,11 +30,12 @@ export default function Dashboard() {
         loading={JobsListQuery.isLoading}
       />
 
-      <JobListPanel
-        loading={JobsListQuery.isLoading || jobsQuery.isLoading ? 3 : undefined}
-        jobs={jobsQuery.data?.data || []}
-        jobLists={JobsListQuery.data?.data || []}
-      />
+      {activeJobListId && (
+        <JobListPanel
+          activeJobListId={activeJobListId}
+          jobLists={JobsListQuery.data?.data || []}
+        />
+      )}
     </>
   );
 }

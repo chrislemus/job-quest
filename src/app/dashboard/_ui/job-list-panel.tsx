@@ -1,14 +1,8 @@
 import { Grid, Skeleton } from '@common/ui/atoms';
-import { JobEntity } from '@app/dashboard/job/_entities';
 import { JobListEntity } from '@app/dashboard/job-list/_entities';
-import { PropsWithChildren, PropsWithoutRef, useMemo } from 'react';
+import { PropsWithChildren, PropsWithoutRef } from 'react';
 import { JobCard } from './job-card';
-
-interface JobListPanelProps {
-  jobs: JobEntity[];
-  jobLists: JobListEntity[];
-  loading?: number;
-}
+import { useJobsQuery } from '@app/dashboard/job/_query-hooks';
 
 function GridItem(p: PropsWithChildren<{}>) {
   return (
@@ -18,17 +12,25 @@ function GridItem(p: PropsWithChildren<{}>) {
   );
 }
 
-export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
-  const loadingCards = useMemo(
-    () =>
-      p.loading &&
-      Array.from({ length: p.loading }, (_v, i) => (
+function LoadingCards() {
+  return (
+    <>
+      {Array.from({ length: 8 }, (_v, i) => (
         <GridItem key={i}>
           <Skeleton variant="rectangular" height={150} />
         </GridItem>
-      )),
-    [p.loading]
+      ))}
+    </>
   );
+}
+
+interface JobListPanelProps {
+  jobLists: JobListEntity[];
+  activeJobListId: number;
+}
+
+export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
+  const jobsQuery = useJobsQuery({ jobListId: p.activeJobListId });
 
   return (
     <Grid
@@ -39,17 +41,14 @@ export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
       paddingTop={3}
     >
       {/* TODO: add error boundary */}
-      {p.loading ? (
-        <>{loadingCards}</>
-      ) : (
-        p.jobs.map((job) => {
-          return (
-            <GridItem key={job.id}>
-              <JobCard job={job} jobLists={p.jobLists} />
-            </GridItem>
-          );
-        })
-      )}
+      {jobsQuery.isLoading && <LoadingCards />}
+      {jobsQuery.data?.data.map((job) => {
+        return (
+          <GridItem key={job.id}>
+            <JobCard job={job} jobLists={p.jobLists} />
+          </GridItem>
+        );
+      })}
     </Grid>
   );
 }
