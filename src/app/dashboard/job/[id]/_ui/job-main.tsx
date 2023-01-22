@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
 import { useJobListQuery } from '@app/dashboard/job-list/_query-hooks';
-import { ApiErrorRes } from '@common/api/job-quest/interface';
 import {
   Button,
   Grid,
@@ -61,11 +60,7 @@ export function JobMain(p: JobMainProps) {
     }
   }, [successCount]);
 
-  let errorMsgs: undefined | string[];
-  const editJobMutationErrors = editJobMutation.error as
-    | ApiErrorRes
-    | undefined;
-  errorMsgs = editJobMutationErrors?.messages;
+  const errorMsgs = editJobMutation.error?.messages;
 
   return (
     <Grid>

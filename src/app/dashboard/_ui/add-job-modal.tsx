@@ -2,7 +2,6 @@ import { formValidator } from '@common/utils';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@app/dashboard/job/_dto';
-import { ApiErrorRes } from '@common/api/job-quest/interface';
 import { useJobListQuery } from '@app/dashboard/job-list/_query-hooks';
 import { useCreateJob } from '@app/dashboard/job/_hooks';
 import {
@@ -43,9 +42,7 @@ export function AddJobModal(p: NewJobModalContentProps) {
     }));
   }, [JobsListQuery.data]);
 
-  let errorMsgs: undefined | string[];
-  const addJobMutationErrors = addJobMutation.error as ApiErrorRes | undefined;
-  errorMsgs = addJobMutationErrors?.messages;
+  const errorMsgs = addJobMutation.error?.messages;
 
   return (
     <Modal active={p.active} toggleActive={p.toggleActive}>

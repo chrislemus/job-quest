@@ -3,11 +3,22 @@ import { jobService } from '@app/dashboard/job/_services';
 import { queryClient } from '@common/query-client';
 import { jobQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
-import { ApiPageRes } from '@common/api/job-quest/interface';
+import {
+  ApiErrorRes,
+  ApiOkRes,
+  ApiPageRes,
+} from '@common/api/job-quest/interface';
 import { JobEntity } from '@app/dashboard/job/_entities';
 
 export function useUpdateJob() {
-  const mutation = useMutation({
+  const mutation = useMutation<
+    ApiOkRes<JobEntity>,
+    ApiErrorRes,
+    {
+      jobId: number;
+      data: UpdateJobDto;
+    }
+  >({
     mutationFn: (args: { jobId: number; data: UpdateJobDto }) => {
       return jobService.updateJob(args.jobId, args.data);
     },
