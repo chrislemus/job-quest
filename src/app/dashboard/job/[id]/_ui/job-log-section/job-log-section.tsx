@@ -3,7 +3,7 @@ import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogsQuery } from '@app/dashboard/job/_query-hooks';
 import { JobLogItem } from './job-log-item';
 import { AddJobLogForm } from './add-job-log-form';
-import { Avatar, Grid } from '@common/ui/atoms';
+import { Avatar, Grid, Typography } from '@common/ui/atoms';
 
 function JobLogContainer(p: PropsWithChildren<{}>) {
   const user = useUserProfile();
@@ -41,6 +41,11 @@ export function JobLogSection(p: JobLogSectionProps) {
 
   return (
     <Grid container rowSpacing={2}>
+      <Grid xs={12} paddingTop={0} paddingBottom={4}>
+        <Typography variant="h5" textAlign="center">
+          Logs
+        </Typography>
+      </Grid>
       {logs}
       <JobLogContainer>
         <AddJobLogForm jobId={p.jobId} />
