@@ -4,9 +4,11 @@ import {
   ApiOkRes,
 } from '@common/api/job-quest/interface';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { JobEntity, JobLogEntity } from './_entities';
+import { jobLogService } from '@app/dashboard/job-log/_services';
+import { JobLogEntity } from '@app/dashboard/job-log/_entities';
+import { JobEntity } from './_entities';
 import { jobLogQueryKeyFactory, jobQueryKeyFactory } from './_factories';
-import { jobLogService, jobService } from './_services';
+import { jobService } from './_services';
 
 /**
  * Get data for multiple jobs.

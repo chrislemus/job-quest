@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import { jobLogService } from '@app/dashboard/job/_services';
+import { jobLogService } from '@app/dashboard/job-log/_services';
 import { queryClient } from '@common/query-client';
 import { jobLogQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
-import { JobLogEntity } from '@app/dashboard/job/_entities';
+import { JobLogEntity } from '@app/dashboard/job-log/_entities';
 
 export function useDeleteJobLog() {
   const mutation = useMutation<

@@ -1,11 +1,11 @@
 import { UpdateJobLogDto } from '@app/dashboard/job/_dto';
-import { JobLogEntity } from '@app/dashboard/job/_entities';
+import { JobLogEntity } from '@app/dashboard/job-log/_entities';
 import { Grid, IconButton, TextField, Typography } from '@common/ui/atoms';
 import { CancelIcon, ExpandCircleDownRoundedIcon } from '@common/ui/icons';
 import { Form } from '@common/ui/molecules';
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
-import { useUpdateJobLog } from '@app/dashboard/job/_hooks';
+import { useUpdateJobLog } from '@app/dashboard/job-log/_hooks';
 
 export interface UpdateJobLogFormProps {
   jobLog: JobLogEntity;

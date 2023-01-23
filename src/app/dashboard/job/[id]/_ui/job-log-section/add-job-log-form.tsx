@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import { CreateJobLogDto } from '@app/dashboard/job/_dto';
-import { useCreateJobLog } from '@app/dashboard/job/_hooks';
+import { useCreateJobLog } from '@app/dashboard/job-log/_hooks';
 import { Form } from '@common/ui/molecules';
 import { Grid, IconButton, TextField, Typography } from '@common/ui/atoms';
 import { ExpandCircleDownRoundedIcon } from '@common/ui/icons';

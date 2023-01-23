@@ -1,5 +1,5 @@
-import { JobLogEntity } from '@app/dashboard/job/_entities';
-import { useDeleteJobLog } from '@app/dashboard/job/_hooks';
+import { JobLogEntity } from '@app/dashboard/job-log/_entities';
+import { useDeleteJobLog } from '@app/dashboard/job-log/_hooks';
 import { useMemo, useState } from 'react';
 import { useBoolean } from '@common/hooks';
 import { MoreHorizIcon } from '@common/ui/icons';
