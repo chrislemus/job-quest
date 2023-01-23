@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { jobLogService } from '@app/dashboard/job-log/_services';
 import { queryClient } from '@common/query-client';
-import { jobLogQueryKeyFactory } from '@app/dashboard/job/_factories';
+import { jobLogQueryKeyFactory } from '@app/dashboard/job-log/_factories';
 import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
 import { JobLogEntity } from '@app/dashboard/job-log/_entities';
 import { CreateJobLogDto } from '@app/dashboard/job/_dto';

@@ -2,8 +2,9 @@ import { ApiPageRes, ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { jobLogService } from '@app/dashboard/job-log/_services';
 import { JobLogEntity } from '@app/dashboard/job-log/_entities';
+import { jobLogQueryKeyFactory } from '@app/dashboard/job-log/_factories';
 import { JobEntity } from './_entities';
-import { jobLogQueryKeyFactory, jobQueryKeyFactory } from './_factories';
+import { jobQueryKeyFactory } from './_factories';
 import { jobService } from './_services';
 
 /**
