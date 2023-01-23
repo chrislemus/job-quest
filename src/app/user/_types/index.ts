@@ -1,1 +1,1 @@
-export * from './user-profile-res.interface';
+export * from './user-profile-res.type';
