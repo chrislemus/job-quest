@@ -1,5 +1,5 @@
 /** API Paginated Response Information */
-export interface PageInfo {
+export type PageInfo = {
   /** Current page number */
   currentPage: number;
   /** Requested page size */
@@ -10,10 +10,10 @@ export interface PageInfo {
   totalPageCount?: number;
   /** Total item count ([pageTotalCount] query param must be set to `true` within your request) */
   totalCount?: number;
-}
+};
 
 /** Job Quest API paginated response format */
-export interface ApiPageRes<Data extends any> {
+export type ApiPageRes<Data extends any> = {
   data: Data[];
   pageInfo: PageInfo;
-}
+};

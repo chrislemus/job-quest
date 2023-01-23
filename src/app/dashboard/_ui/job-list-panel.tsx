@@ -24,10 +24,10 @@ function LoadingCards() {
   );
 }
 
-interface JobListPanelProps {
+type JobListPanelProps = {
   jobLists: JobListEntity[];
   activeJobListId: number;
-}
+};
 
 export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
   const jobsQuery = useJobsQuery({ jobListId: p.activeJobListId });

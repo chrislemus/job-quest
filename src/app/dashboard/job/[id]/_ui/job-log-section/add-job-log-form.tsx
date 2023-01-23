@@ -6,9 +6,9 @@ import { Form } from '@common/ui/molecules';
 import { Grid, IconButton, TextField, Typography } from '@common/ui/atoms';
 import { ExpandCircleDownRoundedIcon } from '@common/ui/icons';
 
-interface AddJobLogFormProps {
+type AddJobLogFormProps = {
   jobId: number;
-}
+};
 
 export function AddJobLogForm(p: AddJobLogFormProps) {
   const formMethods = useForm<CreateJobLogDto>({

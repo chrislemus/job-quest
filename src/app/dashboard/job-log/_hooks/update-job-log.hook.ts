@@ -3,7 +3,7 @@ import { jobLogService } from '@app/dashboard/job-log/_services';
 import { queryClient } from '@common/query-client';
 import { jobLogQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { UpdateJobLogDto } from '@app/dashboard/job/_dto';
-import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
+import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
 import { JobLogEntity } from '@app/dashboard/job-log/_entities';
 
 type UpdateJobLogMutationVariables = {

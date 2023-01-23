@@ -1,6 +1,6 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { authLocalStore, authService } from '@app/auth/_services';
-import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
+import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
 
 /** User Logout hook */
 export function useLogout(): UseMutationResult<

@@ -15,10 +15,10 @@ import {
 } from '@common/ui/molecules';
 import { UserSignUp } from '@app/auth/_dto';
 
-interface LoginModalProps {
+type LoginModalProps = {
   active: boolean;
   toggleActive: () => void;
-}
+};
 
 export function SignUpModal(p: PropsWithoutRef<LoginModalProps>) {
   const formId = 'signup';

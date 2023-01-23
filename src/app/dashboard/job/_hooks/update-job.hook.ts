@@ -3,11 +3,7 @@ import { jobService } from '@app/dashboard/job/_services';
 import { queryClient } from '@common/query-client';
 import { jobQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
-import {
-  ApiErrorRes,
-  ApiOkRes,
-  ApiPageRes,
-} from '@common/api/job-quest/interface';
+import { ApiErrorRes, ApiOkRes, ApiPageRes } from '@common/api/job-quest/types';
 import { JobEntity } from '@app/dashboard/job/_entities';
 
 export function useUpdateJob() {

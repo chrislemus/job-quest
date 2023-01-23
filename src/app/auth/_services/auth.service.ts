@@ -1,7 +1,7 @@
 import { jobQuestApiService } from '@common/api/job-quest';
 import { UserSignUp } from '@app/auth/_dto';
 import { JWT } from '@app/auth/_types';
-import { ApiOkRes } from '@common/api/job-quest/interface';
+import { ApiOkRes } from '@common/api/job-quest/types';
 
 // TODO: Add error response handlers. Including NETWORK error.
 // NETWORK axios error occurs on mobile device when trying to call localhost

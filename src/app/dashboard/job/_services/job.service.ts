@@ -2,7 +2,7 @@ import { JobEntity } from '@app/dashboard/job/_entities';
 import { CreateJobDto, UpdateJobDto } from '@app/dashboard/job/_dto';
 import { jobColors } from '@app/dashboard/job/_ constants';
 import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
-import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/interface';
+import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/types';
 
 /** Fetch all Jobs */
 async function getAll(filters?: { jobListId?: number }) {

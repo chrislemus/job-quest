@@ -2,9 +2,9 @@ import { useBoolean } from '@common/hooks';
 import { Grid, Skeleton, Button } from '@common/ui/atoms';
 import { AddJobModal } from './add-job-modal';
 
-interface DashboardActionButtonsProps {
+type DashboardActionButtonsProps = {
   loading?: boolean;
-}
+};
 
 export function DashboardActionButtons(p: DashboardActionButtonsProps) {
   const [activeModal, setActiveModal] = useBoolean();

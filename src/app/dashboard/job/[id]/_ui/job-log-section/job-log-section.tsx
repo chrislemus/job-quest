@@ -23,9 +23,9 @@ function JobLogContainer(p: PropsWithChildren<{}>) {
   );
 }
 
-interface JobLogSectionProps {
+type JobLogSectionProps = {
   jobId: number;
-}
+};
 
 export function JobLogSection(p: JobLogSectionProps) {
   const jobLogsQuery = useJobLogsQuery(p.jobId);

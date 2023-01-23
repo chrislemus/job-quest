@@ -1,5 +1,5 @@
 import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
-import { ApiPageRes } from '@common/api/job-quest/interface';
+import { ApiPageRes } from '@common/api/job-quest/types';
 import { JobListEntity } from '@app/dashboard/job-list/_entities';
 
 /** Fetch all Job Lists */

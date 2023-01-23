@@ -5,14 +5,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-interface SelectFieldProps {
+type SelectFieldProps = {
   name: string;
   label: string;
   options: { value: any; label: ReactNode }[];
   defaultValue?: any;
   onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   variant?: 'outlined' | 'filled' | 'standard';
-}
+};
 
 export function SelectField(p: SelectFieldProps) {
   const { control, setValue } = useFormContext(); // retrieve all hook methods

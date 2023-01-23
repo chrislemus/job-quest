@@ -4,7 +4,7 @@ import _TextField, {
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-interface TextFieldProps {
+type TextFieldProps = {
   name: string;
   type?: 'text' | 'email' | 'password';
   helperText?: string;
@@ -21,7 +21,7 @@ interface TextFieldProps {
   valueAsNumber?: boolean;
   setValueAs?: (value: any) => any;
   endAdornment?: JSX.Element;
-}
+};
 
 export function TextField(p: TextFieldProps) {
   const { register, getValues, setValue } = useFormContext(); // retrieve all hook methods

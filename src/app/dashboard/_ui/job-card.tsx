@@ -15,10 +15,10 @@ import {
 } from '@common/ui/atoms';
 import { useUpdateJob } from '@app/dashboard/job/_hooks';
 
-interface JobCardProps {
+type JobCardProps = {
   job: JobEntity;
   jobLists: JobListEntity[];
-}
+};
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
   const backgroundColor = p.job.color || '#ffff';

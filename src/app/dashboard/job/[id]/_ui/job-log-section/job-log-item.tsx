@@ -32,9 +32,9 @@ function useActionMenu() {
   return { anchorEl, isOpen, open, close, onSelect };
 }
 
-interface JobLogItemProps {
+type JobLogItemProps = {
   jobLog: JobLogEntity;
-}
+};
 
 export function JobLogItem(p: JobLogItemProps) {
   const updatedDate = useMemo(

@@ -10,9 +10,9 @@ import {
   Typography,
 } from '@common/ui/atoms';
 
-interface JobProps {
+type JobProps = {
   params: { id: string };
-}
+};
 
 export default function Job(p: JobProps) {
   const jobId = parseInt(p.params.id);

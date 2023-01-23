@@ -20,9 +20,9 @@ import {
   InputAdornment,
 } from '@common/ui/atoms';
 
-interface JobMainProps {
+type JobMainProps = {
   job: JobEntity;
-}
+};
 
 export function JobMain(p: JobMainProps) {
   const formId = 'edit-job';

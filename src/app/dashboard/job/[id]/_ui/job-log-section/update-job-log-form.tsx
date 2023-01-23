@@ -7,10 +7,10 @@ import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import { useUpdateJobLog } from '@app/dashboard/job-log/_hooks';
 
-export interface UpdateJobLogFormProps {
+export type UpdateJobLogFormProps = {
   jobLog: JobLogEntity;
   disableForm: () => void;
-}
+};
 
 export function UpdateJobLogForm(p: UpdateJobLogFormProps) {
   const formMethods = useForm<UpdateJobLogDto>({

@@ -1,8 +1,4 @@
-import {
-  ApiPageRes,
-  ApiErrorRes,
-  ApiOkRes,
-} from '@common/api/job-quest/interface';
+import { ApiPageRes, ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { jobLogService } from '@app/dashboard/job-log/_services';
 import { JobLogEntity } from '@app/dashboard/job-log/_entities';

@@ -4,7 +4,7 @@ import { queryClient } from '@common/query-client';
 import { jobQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { CreateJobDto } from '@app/dashboard/job/_dto';
 import { JobEntity } from '@app/dashboard/job/_entities';
-import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/interface';
+import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
 
 export function useCreateJob() {
   const mutation = useMutation<ApiOkRes<JobEntity>, ApiErrorRes, CreateJobDto>({

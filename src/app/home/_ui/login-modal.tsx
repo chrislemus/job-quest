@@ -15,10 +15,10 @@ import {
   ModalTitle,
 } from '@common/ui/molecules';
 
-interface LoginModalProps {
+type LoginModalProps = {
   active: boolean;
   toggleActive: () => void;
-}
+};
 
 export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
   const formId = 'login';

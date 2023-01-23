@@ -1,5 +1,5 @@
 import { jobQuestApiService, jobQuestApiUrls } from '@common/api';
-import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/interface';
+import { ApiOkRes, ApiPageRes } from '@common/api/job-quest/types';
 import { CreateJobLogDto, UpdateJobLogDto } from '@app/dashboard/job/_dto';
 import { JobLogEntity } from '@app/dashboard/job-log/_entities';
 

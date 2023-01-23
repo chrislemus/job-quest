@@ -20,10 +20,10 @@ import {
   ModalTitle,
 } from '@common/ui/molecules';
 
-interface NewJobModalContentProps {
+type NewJobModalContentProps = {
   active: boolean;
   toggleActive: () => void;
-}
+};
 
 export function AddJobModal(p: NewJobModalContentProps) {
   const formId = 'new-job';
