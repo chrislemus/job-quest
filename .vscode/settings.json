@@ -31,6 +31,16 @@
       "icon": "services",
       "extensions": ["_services"],
       "format": "svg"
+    },
+    {
+      "icon": "typings",
+      "extensions": ["_types"],
+      "format": "svg"
+    },
+    {
+      "icon": "interfaces",
+      "extensions": ["_interfaces"],
+      "format": "svg"
     }
   ]
 }
