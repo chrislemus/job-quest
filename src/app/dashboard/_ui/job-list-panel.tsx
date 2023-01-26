@@ -4,21 +4,13 @@ import { PropsWithChildren, PropsWithoutRef } from 'react';
 import { JobCard } from './job-card';
 import { useJobsQuery } from '@app/dashboard/job/_query-hooks';
 
-function GridItem(p: PropsWithChildren<{}>) {
-  return (
-    <Grid xs={12} sm={6} md={4} lg={3}>
-      {p.children}
-    </Grid>
-  );
-}
-
 function LoadingCards() {
   return (
     <>
-      {Array.from({ length: 8 }, (_v, i) => (
-        <GridItem key={i}>
+      {Array.from({ length: 5 }, (_v, i) => (
+        <div key={i}>
           <Skeleton variant="rectangular" height={150} />
-        </GridItem>
+        </div>
       ))}
     </>
   );
@@ -33,22 +25,22 @@ export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
   const jobsQuery = useJobsQuery({ jobListId: p.activeJobListId });
 
   return (
-    <Grid
-      container
-      rowSpacing={6}
-      columnSpacing={3}
-      justifyContent={{ xs: 'center', sm: 'flex-start' }}
-      paddingTop={3}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+      }}
     >
       {/* TODO: add error boundary */}
       {jobsQuery.isLoading && <LoadingCards />}
       {jobsQuery.data?.data.map((job) => {
         return (
-          <GridItem key={job.id}>
+          <div key={job.id}>
             <JobCard job={job} jobLists={p.jobLists} />
-          </GridItem>
+          </div>
         );
       })}
-    </Grid>
+    </div>
   );
 }

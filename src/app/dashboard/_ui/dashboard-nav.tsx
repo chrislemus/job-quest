@@ -38,7 +38,7 @@ export function DashboardNav() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ height: '54px' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <HistoryEduIcon sx={{ display: { xs: 'flex' }, mr: 1 }} />

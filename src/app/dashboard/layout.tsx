@@ -1,5 +1,5 @@
 'use client';
-import { Button, Container } from '@common/ui/atoms';
+import { Button } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@app/auth/_ui';
 import { PropsWithChildren } from 'react';
 import { usePathname } from 'next/navigation';
@@ -12,25 +12,17 @@ export default function Layout(p: PropsWithChildren<{}>) {
 
   return (
     <RouterAuthGuard>
-      <div>
-        <DashboardNav />
-        <Container
-          maxWidth={false}
-          component="main"
-          style={{ paddingTop: '1rem' }}
+      <DashboardNav />
+      {pathName !== '/dashboard' && (
+        <Button
+          href="/dashboard"
+          startIcon={<ArrowBackIosIcon />}
+          LinkComponent={Link}
         >
-          {pathName !== '/dashboard' && (
-            <Button
-              href="/dashboard"
-              startIcon={<ArrowBackIosIcon />}
-              LinkComponent={Link}
-            >
-              Back
-            </Button>
-          )}
-          {p.children}
-        </Container>
-      </div>
+          Back
+        </Button>
+      )}
+      {p.children}
     </RouterAuthGuard>
   );
 }

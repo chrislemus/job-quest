@@ -18,7 +18,9 @@ export function useUpdateJob() {
     mutationFn: (args: { jobId: number; data: UpdateJobDto }) => {
       return jobService.updateJob(args.jobId, args.data);
     },
-    onSuccess(res) {
+    onSuccess(res, v, cont) {
+      console.log('cont', cont);
+      console.log('v', v);
       const newJobData = res.data;
 
       queryClient.invalidateQueries({
@@ -51,6 +53,9 @@ export function useUpdateJob() {
         }
       }
 
+      queryClient.invalidateQueries({
+        queryKey: jobQueryKeyFactory.all({ jobListId: newJobData.jobListId }),
+      });
       queryClient.invalidateQueries({
         queryKey: jobQueryKeyFactory.all({ jobListId: newJobData.jobListId }),
       });

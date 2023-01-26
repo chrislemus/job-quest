@@ -20,6 +20,7 @@ type LoginModalProps = {
   toggleActive: () => void;
 };
 
+// Components to be added in landing page (pending)
 export function LoginModal(p: PropsWithoutRef<LoginModalProps>) {
   const formId = 'login';
   const form = useForm<UserLogin>({
