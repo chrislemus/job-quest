@@ -1,0 +1,44 @@
+version: '3.9'
+services:
+  # ====== API ======
+  api-local:
+    container_name: api-local
+    build:
+      context: .
+      target: development
+    restart: always
+    ports:
+      - 3001:3001
+    env_file:
+      - .env
+    command: 'npm run start:dev'
+    volumes:
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+      - /app/node_modules
+    depends_on:
+      - db-local
+  api-prod:
+    container_name: api-prod
+    build:
+      context: .
+      target: production
+    restart: always
+    ports:
+      - 3001:3001
+    depends_on:
+      - db-local
+  # ====== DB ======
+  db-local:
+    image: postgres:13
+    container_name: db-local
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - db-local:/var/lib/postgresql/data
+volumes:
+  db-local:
+    driver: local
