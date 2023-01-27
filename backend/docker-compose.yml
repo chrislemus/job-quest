@@ -40,5 +40,6 @@ services:
     volumes:
       - db-local:/var/lib/postgresql/data
 volumes:
+  # persit local DB storage
   db-local:
     driver: local
