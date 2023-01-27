@@ -8,12 +8,12 @@ jobs:
   deploy-app:
     runs-on: ubuntu-latest
     steps:
-      - run: pwd
-      - run: ls
-      - run: cd ./backend
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server"
       - name: Check out repository code
         uses: actions/checkout@v3
+      - run: pwd
+      - run: ls
+      - run: cd ./backend
       - name: Setup Node 16.10.0
         uses: actions/setup-node@v3
         with:
