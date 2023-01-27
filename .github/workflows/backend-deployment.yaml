@@ -7,6 +7,10 @@ on:
 jobs:
   deploy-app:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        # default working-directory will not work on "uses" steps below
+        working-directory: ./backend
     steps:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server"
       - name: Check out repository code
@@ -15,11 +19,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.10.0
-      - run: pwd
-      - run: ls
-      - run: cd backend
-      - run: pwd
-      - run: ls
       - run: npm install -g serverless
       - run: npm ci
       - run: npx prisma generate --data-proxy
