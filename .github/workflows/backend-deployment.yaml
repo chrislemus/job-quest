@@ -10,7 +10,7 @@ jobs:
     defaults:
       run:
         # default working-directory will not work on "uses" steps below
-        working-directory: ./backend
+        working-directory: backend
     steps:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server"
       - name: Check out repository code
