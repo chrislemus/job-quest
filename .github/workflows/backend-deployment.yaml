@@ -2,12 +2,13 @@ name: backend-deployment
 run-name: Backend Deployment 🚀
 on:
   push:
-    paths:
-      - backend/**
+    # paths:
+    #   - backend/**
 jobs:
   deploy-app:
     runs-on: ubuntu-latest
     steps:
+      - run: ls
       - run: cd ./backend
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server"
       - name: Check out repository code
