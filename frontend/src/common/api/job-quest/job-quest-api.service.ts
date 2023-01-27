@@ -25,7 +25,7 @@ jobQuestApiService.interceptors.request.use((config) => {
   }
 
   if (token) {
-    if (!config.headers) config['headers'] = {};
+    if (!config.headers) config['headers'] = {} as any;
     config.headers['Authorization'] = `Bearer ${token}`;
   }
 
