@@ -12,9 +12,9 @@ jobs:
         # default working-directory will not work on "uses" steps below
         working-directory: backend
     steps:
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server"
       - name: Check out repository code
         uses: actions/checkout@v3
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server"
       - name: Setup Node 16.10.0
         uses: actions/setup-node@v3
         with:
