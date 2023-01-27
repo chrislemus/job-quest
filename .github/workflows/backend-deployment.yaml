@@ -17,7 +17,8 @@ jobs:
           node-version: 16.10.0
       - run: pwd
       - run: ls
-      - run: cd ./backend
+      - run: cd backend
+      - run: pwd
       - run: ls
       - run: npm install -g serverless
       - run: npm ci
