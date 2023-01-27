@@ -1,0 +1,46 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "vsicons.associations.folders": [
+    {
+      "icon": "hook",
+      "extensions": ["_hooks"],
+      "format": "svg"
+    },
+    {
+      "icon": "component",
+      "extensions": ["_ui"],
+      "format": "svg"
+    },
+    {
+      "icon": "model",
+      "extensions": ["_entities"],
+      "format": "svg"
+    },
+    {
+      "icon": "mock",
+      "extensions": ["_mocks"],
+      "format": "svg"
+    },
+    {
+      "icon": "tools",
+      "extensions": ["_utils"],
+      "format": "svg"
+    },
+    {
+      "icon": "services",
+      "extensions": ["_services"],
+      "format": "svg"
+    },
+    {
+      "icon": "typings",
+      "extensions": ["_types"],
+      "format": "svg"
+    },
+    {
+      "icon": "interfaces",
+      "extensions": ["_interfaces"],
+      "format": "svg"
+    }
+  ]
+}
