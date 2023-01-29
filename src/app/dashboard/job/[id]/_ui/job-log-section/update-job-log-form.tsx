@@ -1,5 +1,5 @@
 import { UpdateJobLogDto } from '@app/dashboard/job/_dto';
-import { JobLogEntity } from '@app/dashboard/job-log/_entities';
+import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
 import { Grid, IconButton, TextField, Typography } from '@common/ui/atoms';
 import { CancelIcon, ExpandCircleDownRoundedIcon } from '@common/ui/icons';
 import { Form } from '@common/ui/molecules';

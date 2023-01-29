@@ -9,7 +9,7 @@ import { UpdateJobDto } from '@app/dashboard/job/_dto';
 import { CheckCircleOutlineIcon, OpenInNewIcon } from '@common/ui/icons';
 import { useJobListQuery } from '@app/dashboard/job-list/_query-hooks';
 import { useUpdateJob } from '@app/dashboard/job/_hooks';
-import { JobEntity } from '@app/dashboard/job/_entities';
+import { JobEntity } from '@api/job-quest/job/job.entity';
 import {
   Button,
   Grid,

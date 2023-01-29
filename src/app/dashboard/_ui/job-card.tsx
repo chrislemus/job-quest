@@ -1,5 +1,6 @@
-import { JobEntity } from '@app/dashboard/job/_entities';
-import { JobListEntity } from '@app/dashboard/job-list/_entities';
+import { useUpdateJob } from '@app/dashboard/job/_hooks';
+import { JobEntity } from '@api/job-quest/job/job.entity';
+import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 import Link from 'next/link';
 import { MoveUpIcon } from '@common/ui/icons';
 import { theme } from '@common/theme';
@@ -13,7 +14,6 @@ import {
   MenuItem,
   Typography,
 } from '@common/ui/atoms';
-import { useUpdateJob } from '@app/dashboard/job/_hooks';
 
 type JobCardProps = {
   job: JobEntity;

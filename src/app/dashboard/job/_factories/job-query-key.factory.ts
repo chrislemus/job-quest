@@ -1,4 +1,4 @@
-import { jobService } from '@app/dashboard/job/_services';
+import { jobService } from '@api/job-quest/job/job.service';
 
 const _base = ['job'] as const;
 
