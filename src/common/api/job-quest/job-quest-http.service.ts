@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { authLocalStore } from './auth-local-store.service';
 import { jobQuestApiUrls } from './job-quest-api-urls.const';
-import { authLocalStore } from '@app/auth/_services';
 
 /**
  * Job Quest API Http instance.

@@ -1,8 +1,8 @@
 import Dashboard from './page';
-import { render, screen } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient();
+import { screen, waitFor } from '@testing-library/react';
+import { renderWithQueryClient } from '@tests/query-client';
+import { jobMocks } from './job/_mocks';
+import { jobListMocks } from './job-list/_mocks';
 
 jest.mock('universal-cookie', () => {
   const mCookie = {
@@ -16,22 +16,23 @@ jest.mock('universal-cookie', () => {
 });
 
 test('contains add job button', () => {
-  render(
-    <QueryClientProvider client={queryClient}>
-      <Dashboard />
-    </QueryClientProvider>
-  );
+  renderWithQueryClient(<Dashboard />);
   const addJobBtn = screen.getByText('Add');
   expect(addJobBtn).toBeTruthy();
 });
 
-test('contains loading job cards', async () => {
-  const { container } = render(
-    <QueryClientProvider client={queryClient}>
-      <Dashboard />
-    </QueryClientProvider>
-  );
+test('contains job list menu', async () => {
+  await renderWithQueryClient(<Dashboard />);
+  await waitFor(() => {
+    const jobListName = screen.getByText(jobListMocks[0].label);
+    expect(jobListName).toBeTruthy();
+  });
+});
 
-  const loadingJobCards = container.querySelectorAll('.MuiSkeleton-root');
-  expect(loadingJobCards?.length).toBeGreaterThan(2);
+test('contains job cards', async () => {
+  await renderWithQueryClient(<Dashboard />);
+  await waitFor(() => {
+    const job = screen.getByText(jobMocks[0].title);
+    expect(job).toBeTruthy();
+  });
 });

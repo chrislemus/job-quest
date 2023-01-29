@@ -6,11 +6,11 @@ import { useJobListQuery } from './job-list/_query-hooks';
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
   const JobsListQuery = useJobListQuery();
+  const jobListsData = JobsListQuery.data?.data;
 
   useEffect(() => {
-    const data = JobsListQuery.data?.data;
-    if (!activeJobListId && data) {
-      const orderedJobList = data.sort((a, b) => a.order - b.order);
+    if (!activeJobListId && jobListsData) {
+      const orderedJobList = jobListsData.sort((a, b) => a.order - b.order);
       const firstJobList = orderedJobList?.[0]?.id;
       // list should not be empty, but adding if condition to avoid errors
       if (firstJobList) setActiveJobListId(firstJobList);
@@ -24,7 +24,7 @@ export default function Dashboard() {
     <>
       <DashboardActionButtons />
       <JobListMainNav
-        jobList={JobsListQuery.data?.data || []}
+        jobList={jobListsData || []}
         setActiveJobList={(a: number) => setActiveJobListId(a)}
         activeJobListId={activeJobListId}
         loading={JobsListQuery.isLoading}
@@ -33,7 +33,7 @@ export default function Dashboard() {
       {activeJobListId && (
         <JobListPanel
           activeJobListId={activeJobListId}
-          jobLists={JobsListQuery.data?.data || []}
+          jobLists={jobListsData || []}
         />
       )}
     </>

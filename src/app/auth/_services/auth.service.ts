@@ -1,4 +1,4 @@
-import { jobQuestApiService } from '@common/api/job-quest';
+import { jobQuestApiService, jobQuestApiUrls } from '@common/api/job-quest';
 import { UserSignUp } from '@app/auth/_dto';
 import { JWT } from '@app/auth/_types';
 import { ApiOkRes } from '@common/api/job-quest/types';
@@ -15,7 +15,7 @@ import { ApiOkRes } from '@common/api/job-quest/types';
  */
 async function signup(user: UserSignUp): Promise<ApiOkRes<JWT>> {
   const res = await jobQuestApiService.post<ApiOkRes<JWT>>(
-    '/auth/signup',
+    jobQuestApiUrls.auth.signup,
     user
   );
 
@@ -29,10 +29,13 @@ async function signup(user: UserSignUp): Promise<ApiOkRes<JWT>> {
  * @returns JWT on success or error details if failed
  */
 async function login(email: string, password: string): Promise<ApiOkRes<JWT>> {
-  const res = await jobQuestApiService.post<ApiOkRes<JWT>>('/auth/login', {
-    email,
-    password,
-  });
+  const res = await jobQuestApiService.post<ApiOkRes<JWT>>(
+    jobQuestApiUrls.auth.login,
+    {
+      email,
+      password,
+    }
+  );
 
   const data = res?.data;
   return data;
@@ -42,7 +45,9 @@ async function login(email: string, password: string): Promise<ApiOkRes<JWT>> {
  * Logout user
  */
 async function logout(): Promise<ApiOkRes<boolean>> {
-  const res = await jobQuestApiService.post<ApiOkRes<boolean>>('/auth/logout');
+  const res = await jobQuestApiService.post<ApiOkRes<boolean>>(
+    jobQuestApiUrls.auth.logout
+  );
 
   const data = res?.data;
   return data;

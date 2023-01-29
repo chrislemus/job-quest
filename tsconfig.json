@@ -19,7 +19,8 @@
     "baseUrl": "./",
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@common/*": ["./src/common/*"]
+      "@common/*": ["./src/common/*"],
+      "@tests/*": ["./src/tests/*"]
     },
     "plugins": [
       {

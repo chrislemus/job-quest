@@ -7,7 +7,6 @@ async function getAll() {
   const response = await jobQuestApiService.get<ApiPageRes<JobListEntity>>(
     jobQuestApiUrls.jobList.root
   );
-
   const data = response?.data;
   return data;
 }
