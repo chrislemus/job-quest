@@ -1,4 +1,4 @@
-let root = process.env.NEXT_PUBLIC_JOBQUEST_API_ROOT_URL;
+let root = process.env.NEXT_PUBLIC_JOB_QUEST_API_ROOT_URL;
 const url = (resource: string): string => `${root}${resource}`;
 
 /**
