@@ -1,0 +1,16 @@
+name: app-test
+run-name: App Test 🧪
+on: [push]
+jobs:
+  deploy-app:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server"
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Node 16.10.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.10.0
+      - run: npm ci
+      - run: npm run test

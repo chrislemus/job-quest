@@ -1,4 +1,5 @@
 ![Vercel](https://vercelbadge.vercel.app/api/chrislemus/job-quest)
+![app-test](https://github.com/chrislemus/job-quest/actions/workflows/test.yaml/badge.svg)
 
 # Job Quest
 
