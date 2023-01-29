@@ -3,6 +3,7 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,6 +20,7 @@
     "baseUrl": "./",
     "paths": {
       "@app/*": ["./src/app/*"],
+      "@api/*": ["./src/api/*"],
       "@common/*": ["./src/common/*"],
       "@tests/*": ["./src/tests/*"]
     },

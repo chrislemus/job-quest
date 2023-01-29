@@ -1,5 +1,5 @@
+import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 import { Box, Skeleton, Tab, Tabs } from '@common/ui/atoms';
-import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import { PropsWithoutRef, SyntheticEvent, useMemo } from 'react';
 
 type JobListMainNavProps = {

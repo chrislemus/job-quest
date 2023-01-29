@@ -1,22 +1,22 @@
-import { ApiPageRes, ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
+import { jobQuestApi } from '@api/job-quest';
+import { JobPageRes } from '@api/job-quest/job/dto';
+import { JobLogPageRes } from '@api/job-quest/job-log/dto';
+import { JobEntity } from '@api/job-quest/job/job.entity';
+import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { jobLogService } from '@app/dashboard/job-log/_services';
-import { JobLogEntity } from '@app/dashboard/job-log/_entities';
-import { jobLogQueryKeyFactory } from '@app/dashboard/job-log/_factories';
-import { JobEntity } from './_entities';
+import { jobLogQueryKeyFactory } from '../job-log/_factories';
 import { jobQueryKeyFactory } from './_factories';
-import { jobService } from './_services';
 
 /**
  * Get data for multiple jobs.
  */
 function useJobsQuery(
-  filters?: Parameters<typeof jobService.getAll>[0]
-): UseQueryResult<ApiPageRes<JobEntity>, ApiErrorRes> {
-  const query = useQuery<ApiPageRes<JobEntity>, ApiErrorRes>({
+  filters?: Parameters<typeof jobQuestApi.job.getAll>[0]
+): UseQueryResult<JobPageRes, ApiErrorRes> {
+  const query = useQuery<JobPageRes, ApiErrorRes>({
     queryKey: jobQueryKeyFactory.all(filters),
     queryFn: () => {
-      return jobService.getAll(filters);
+      return jobQuestApi.job.getAll(filters);
     },
   });
 
@@ -31,7 +31,7 @@ function useJobQuery(
 ): UseQueryResult<ApiOkRes<JobEntity>, ApiErrorRes> {
   const query = useQuery<ApiOkRes<JobEntity>, ApiErrorRes>({
     queryKey: jobQueryKeyFactory.detail(jobId),
-    queryFn: () => jobService.findById(jobId),
+    queryFn: () => jobQuestApi.job.findById(jobId),
     // TODO: add mutation logic using query client
     // enabled: !deleteJobMutation.isLoading && !deleteJobMutation.isSuccess,
   });
@@ -40,11 +40,11 @@ function useJobQuery(
 
 function useJobLogsQuery(
   jobId: number
-): UseQueryResult<ApiPageRes<JobLogEntity>, ApiErrorRes> {
-  const query = useQuery<ApiPageRes<JobLogEntity>, ApiErrorRes>({
+): UseQueryResult<JobLogPageRes, ApiErrorRes> {
+  const query = useQuery<JobLogPageRes, ApiErrorRes>({
     queryKey: jobLogQueryKeyFactory.all(jobId),
     queryFn: () => {
-      return jobLogService.getAll(jobId);
+      return jobQuestApi.jobLog.getAll(jobId);
     },
   });
 

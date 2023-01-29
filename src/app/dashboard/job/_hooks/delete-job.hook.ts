@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
-import { jobService } from '@app/dashboard/job/_services';
 import { queryClient } from '@common/query-client';
 import { jobQueryKeyFactory } from '@app/dashboard/job/_factories';
+import { jobQuestApi } from '@api/job-quest';
 
 export function useDeleteJob() {
   const mutation = useMutation({
     mutationFn: (jobId: number) => {
-      return jobService.deleteJob(jobId);
+      return jobQuestApi.job.deleteJob(jobId);
     },
     onSuccess(res) {
       // TODO: improve performance

@@ -1,6 +1,6 @@
-import { JobLogEntity } from '@app/dashboard/job-log/_entities';
 import { useDeleteJobLog } from '@app/dashboard/job-log/_hooks';
 import { useMemo, useState } from 'react';
+import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
 import { useBoolean } from '@common/hooks';
 import { MoreHorizIcon } from '@common/ui/icons';
 import { UpdateJobLogForm } from './update-job-log-form';

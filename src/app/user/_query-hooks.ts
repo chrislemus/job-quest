@@ -1,9 +1,9 @@
+import { jobQuestApi } from '@api/job-quest';
 import { useQuery } from '@tanstack/react-query';
-import { userService } from './_services';
 
 export const useUserProfile = () => {
   const profile = useQuery({
-    queryFn: userService.getProfile,
+    queryFn: jobQuestApi.user.profile,
     queryKey: ['user', 'profile'],
   });
 

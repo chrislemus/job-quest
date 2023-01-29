@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { jobLogService } from '@app/dashboard/job-log/_services';
 import { queryClient } from '@common/query-client';
 import { jobLogQueryKeyFactory } from '@app/dashboard/job-log/_factories';
-import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
-import { JobLogEntity } from '@app/dashboard/job-log/_entities';
+import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { CreateJobLogDto } from '@app/dashboard/job/_dto';
+import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
+import { jobQuestApi } from '@api/job-quest';
 
 export function useCreateJobLog() {
   const mutation = useMutation<
@@ -12,7 +12,7 @@ export function useCreateJobLog() {
     ApiErrorRes,
     CreateJobLogDto
   >({
-    mutationFn: jobLogService.create,
+    mutationFn: jobQuestApi.jobLog.create,
     onSuccess(res) {
       queryClient.invalidateQueries({
         queryKey: jobLogQueryKeyFactory._base,

@@ -1,10 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import { jobService } from '@app/dashboard/job/_services';
 import { queryClient } from '@common/query-client';
 import { jobQueryKeyFactory } from '@app/dashboard/job/_factories';
 import { UpdateJobDto } from '@app/dashboard/job/_dto';
-import { ApiErrorRes, ApiOkRes, ApiPageRes } from '@common/api/job-quest/types';
-import { JobEntity } from '@app/dashboard/job/_entities';
+import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
+import { JobEntity } from '@api/job-quest/job/job.entity';
+import { JobPageRes } from '@api/job-quest/job/dto';
+import { jobQuestApi } from '@api/job-quest';
 
 export function useUpdateJob() {
   const mutation = useMutation<
@@ -16,7 +17,7 @@ export function useUpdateJob() {
     }
   >({
     mutationFn: (args: { jobId: number; data: UpdateJobDto }) => {
-      return jobService.updateJob(args.jobId, args.data);
+      return jobQuestApi.job.updateJob(args.jobId, args.data);
     },
     onSuccess(res) {
       const newJobData = res.data;
@@ -25,7 +26,7 @@ export function useUpdateJob() {
         queryKey: jobQueryKeyFactory.detail(newJobData.id),
       });
 
-      const queriesData = queryClient.getQueriesData<ApiPageRes<JobEntity>>(
+      const queriesData = queryClient.getQueriesData<JobPageRes>(
         jobQueryKeyFactory.all()
       );
 

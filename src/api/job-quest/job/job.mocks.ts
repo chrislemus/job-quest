@@ -1,0 +1,53 @@
+import { jobListMocks } from '@api/job-quest/job-list/job-list.mocks';
+import { JobEntity } from '@api/job-quest/job/job.entity';
+
+export const jobMocks: JobEntity[] = [
+  {
+    id: 38,
+    title: 'Software Engineer',
+    company: 'WalMax',
+    location: 'Raleigh, NC',
+    url: 'chrislemus.io',
+    salary: '10k',
+    description: 'great place to work',
+    color: '#e91e63',
+    userId: 1,
+    jobListId: jobListMocks[0].id,
+  },
+  {
+    id: 51,
+    title: 'Janitor',
+    company: 'HomeShows',
+    location: 'San Diego, CA',
+    url: 'chrislemus.io',
+    salary: '120k',
+    description: null,
+    color: '#cddc39',
+    userId: 1,
+    jobListId: jobListMocks[1].id,
+  },
+  {
+    id: 53,
+    title: 'QA',
+    company: 'WalBlue',
+    location: null,
+    url: null,
+    salary: null,
+    description: null,
+    color: '#009688',
+    userId: 1,
+    jobListId: jobListMocks[2].id,
+  },
+  {
+    id: 57,
+    title: 'Supervisor',
+    company: 'SmartPet',
+    location: null,
+    url: null,
+    salary: null,
+    description: null,
+    color: '#03a9f4',
+    userId: 1,
+    jobListId: jobListMocks[3].id,
+  },
+];

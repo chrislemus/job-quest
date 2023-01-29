@@ -1,7 +1,7 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { authLocalStore } from '@app/auth/_services';
+import { jobQuestApi } from '@api/job-quest';
 
 /**
  * Wraps child components and verifies if user has access to routes.
@@ -13,7 +13,7 @@ export function RouterAuthGuard(p: PropsWithChildren<{}>) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const latestAuthStatus = !!authLocalStore.getTokens();
+      const latestAuthStatus = jobQuestApi.auth.isAuthenticated();
       if (latestAuthStatus !== isAuthenticated)
         setIsAuthenticated(latestAuthStatus);
     }, 500);

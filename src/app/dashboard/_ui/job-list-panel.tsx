@@ -1,8 +1,8 @@
 import { Grid, Skeleton } from '@common/ui/atoms';
-import { JobListEntity } from '@app/dashboard/job-list/_entities';
 import { PropsWithChildren, PropsWithoutRef } from 'react';
 import { JobCard } from './job-card';
 import { useJobsQuery } from '@app/dashboard/job/_query-hooks';
+import { JobListEntity } from '@api/job-quest/entities';
 
 function GridItem(p: PropsWithChildren<{}>) {
   return (

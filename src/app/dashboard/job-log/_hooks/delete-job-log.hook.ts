@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import { jobLogService } from '@app/dashboard/job-log/_services';
 import { queryClient } from '@common/query-client';
 import { jobLogQueryKeyFactory } from '@app/dashboard/job-log/_factories';
-import { ApiErrorRes, ApiOkRes } from '@common/api/job-quest/types';
-import { JobLogEntity } from '@app/dashboard/job-log/_entities';
+import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
+import { jobQuestApi } from '@api/job-quest';
+import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
 
 export function useDeleteJobLog() {
   const mutation = useMutation<
@@ -13,7 +13,7 @@ export function useDeleteJobLog() {
     unknown
   >({
     mutationFn: (jobLogId: number) => {
-      return jobLogService.deleteJobLog(jobLogId);
+      return jobQuestApi.jobLog.deleteJobLog(jobLogId);
     },
     onSuccess(res) {
       // TODO: improve performance
