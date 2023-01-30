@@ -1,10 +1,10 @@
 'use client';
 import { Button, Container } from '@common/ui/atoms';
-import { RouterAuthGuard } from '@app/auth/_ui';
+import { RouterAuthGuard } from '@app/auth/ui';
 import { PropsWithChildren } from 'react';
 import { usePathname } from 'next/navigation';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { DashboardNav } from './_ui';
+import { DashboardNav } from './ui';
 import Link from 'next/link';
 
 export default function Layout(p: PropsWithChildren<{}>) {

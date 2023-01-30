@@ -2,8 +2,8 @@
 import { PropsWithChildren } from 'react';
 import { theme } from '@common/theme';
 import { Box, Container, Grid, Stack } from '@common/ui/atoms';
-import { AuthFormGraphic, FormBottomText } from './_ui';
-import { RouterAuthGuard } from '@app/auth/_ui';
+import { AuthFormGraphic, FormBottomText } from './ui';
+import { RouterAuthGuard } from '@app/auth/ui';
 
 export default function AuthLayout(p: PropsWithChildren<{}>) {
   return (

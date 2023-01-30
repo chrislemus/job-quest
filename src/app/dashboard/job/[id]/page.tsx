@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { DeleteJobButton, JobLogSection, JobMain } from './_ui';
-import { useJobQuery } from '@app/dashboard/job/_query-hooks';
+import { DeleteJobButton, JobLogSection, JobMain } from './ui';
+import { useJob } from '@app/dashboard/job/hooks';
 import {
   Container,
   Divider,
@@ -29,7 +29,7 @@ export default function Job(p: JobProps) {
     }
   }, [successCount]);
 
-  const jobQuery = useJobQuery(jobId);
+  const jobQuery = useJob(jobId);
   const jobQueryData = jobQuery?.data?.data;
 
   if (jobQuery.isLoading)

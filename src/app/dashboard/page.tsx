@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { JobListMainNav, JobListPanel, DashboardActionButtons } from './_ui';
-import { useJobListQuery } from './job-list/_query-hooks';
+import { JobListMainNav, JobListPanel, DashboardActionButtons } from './ui';
+import { useJobLists } from '@app/dashboard/job-list/hooks';
 
 export default function Dashboard() {
   const [activeJobListId, setActiveJobListId] = useState<number>();
-  const JobsListQuery = useJobListQuery();
+  const JobsListQuery = useJobLists();
   const jobListsData = JobsListQuery.data?.data;
 
   useEffect(() => {
