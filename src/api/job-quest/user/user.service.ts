@@ -1,5 +1,5 @@
 import { jobQuestHttpService } from '../services/job-quest-http.service';
-import { UserProfile } from '@app/user/_types';
+import { UserProfile } from '@app/user/types';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 
 /** Fetch user profile data */
