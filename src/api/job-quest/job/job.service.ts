@@ -1,5 +1,5 @@
-import { CreateJobDto, UpdateJobDto } from '@app/dashboard/job/_dto';
-import { jobColors } from '@app/dashboard/job/_ constants';
+import { CreateJobDto, UpdateJobDto } from '@app/dashboard/job/dto';
+import { jobColors } from '@app/dashboard/job/constants';
 import { jobQuestHttpService } from '../services/job-quest-http.service';
 import { ApiOkRes } from '@api/job-quest/types';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';

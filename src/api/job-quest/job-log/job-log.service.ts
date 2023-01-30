@@ -1,6 +1,6 @@
 import { jobQuestHttpService } from '../services/job-quest-http.service';
 import { ApiOkRes } from '@api/job-quest/types';
-import { CreateJobLogDto, UpdateJobLogDto } from '@app/dashboard/job/_dto';
+import { CreateJobLogDto, UpdateJobLogDto } from '@app/dashboard/job/dto';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 import { ApiPageRes } from '../dto/api-page-res.dto';
 import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';

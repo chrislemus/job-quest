@@ -1,5 +1,5 @@
 import { jobQuestHttpService } from '@api/job-quest/services/job-quest-http.service';
-import { UserSignUp } from '@app/auth/_dto';
+import { UserSignUp } from '@app/auth/dto';
 import { ApiOkRes } from '@api/job-quest/types';
 import { JWT } from '@api/job-quest/auth/dto';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
