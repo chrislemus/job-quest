@@ -1,4 +1,4 @@
-import { useUserProfile } from '@app/user/_query-hooks';
+import { useUserProfile } from '@app/user/hooks';
 import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogs } from '@app/dashboard/job-log/hooks';
 import { JobLogItem } from './job-log-item';

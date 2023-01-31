@@ -15,7 +15,7 @@ test('contains valid global server handlers', async () => {
 test('validates response data', async () => {
   // invalid response data
   const data = {
-    data: [{ name: 'hi' }],
+    data: [{}],
     pageInfo: {},
   };
 

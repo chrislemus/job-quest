@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { rest } from '@tests/server';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 import { jobListMocks } from '@api/job-quest/job-list/job-list.mocks';
 import { jobQuestApi } from '@api/job-quest';
