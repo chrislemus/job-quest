@@ -8,7 +8,10 @@ export type UserProfileError = ApiErrorRes;
 
 export function useUserProfile() {
   return useQuery<UserProfileData, UserProfileError>({
-    queryFn: jobQuestApi.user.profile,
+    queryFn: async () => {
+      const res = await jobQuestApi.user.profile();
+      return res.data;
+    },
     queryKey: ['user', 'profile'],
   });
 }

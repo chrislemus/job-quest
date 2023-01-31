@@ -1,67 +1,77 @@
 import { jobQuestHttpService } from '@api/job-quest/services/job-quest-http.service';
-import { UserSignUp } from '@app/auth/dto';
-import { ApiOkRes } from '@api/job-quest/types';
-import { JWT } from '@api/job-quest/auth/dto';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 import { authLocalStore } from './auth-local-store.service';
+import { AuthSignUpArgs, AuthLogInArgs } from '@api/job-quest/auth/types';
+import { validateOrReject } from 'class-validator';
+import { plainToInstance } from 'class-transformer';
+import {
+  AuthSignUpRes,
+  AuthLogInRes,
+  AuthLogOutRes,
+  AuthRefreshJwtRes,
+} from '@api/job-quest/auth/dto';
 
-// TODO: Add error response handlers. Including NETWORK error.
-// NETWORK axios error occurs on mobile device when trying to call localhost
-// instead of actual IP address
+async function signup(user: AuthSignUpArgs): Promise<AuthSignUpRes> {
+  const res = await jobQuestHttpService
+    .post<AuthSignUpRes>(jobQuestApiUrls.auth.signup, user)
+    .then(async (res) => {
+      const data = plainToInstance(AuthSignUpRes, res?.data);
+      await validateOrReject(data);
+      return data;
+    });
 
-// TODO: add auth error res using API ERROR
-
-/**
- * Signup a new user
- * @returns JWT on success or error details if failed
- */
-async function signup(user: UserSignUp): Promise<ApiOkRes<JWT>> {
-  const res = await jobQuestHttpService.post<ApiOkRes<JWT>>(
-    jobQuestApiUrls.auth.signup,
-    user
-  );
-
-  const data = res?.data;
-  const tokens = data?.data;
-  if (tokens) authLocalStore.setTokens(tokens);
-
-  return data;
+  const tokens = res.data;
+  authLocalStore.setTokens(tokens);
+  return res;
 }
 
-/**
- *
- * User login
- * @returns JWT on success or error details if failed
- */
-async function login(email: string, password: string): Promise<ApiOkRes<JWT>> {
-  const res = await jobQuestHttpService.post<ApiOkRes<JWT>>(
-    jobQuestApiUrls.auth.login,
-    {
-      email,
-      password,
-    }
-  );
+async function login(credentials: AuthLogInArgs): Promise<AuthLogInRes> {
+  const res = await jobQuestHttpService
+    .post<AuthLogInRes>(jobQuestApiUrls.auth.login, credentials)
+    .then(async (res) => {
+      const data = plainToInstance(AuthLogInRes, res.data);
+      await validateOrReject(data);
+      return data;
+    });
 
-  const data = res?.data;
-  const tokens = data?.data;
-  if (tokens) authLocalStore.setTokens(tokens);
-  return data;
+  const tokens = res.data;
+  authLocalStore.setTokens(tokens);
+  return res;
 }
 
-/**
- * Logout user
- */
-async function logout(): Promise<ApiOkRes<boolean>> {
-  const res = await jobQuestHttpService.post<ApiOkRes<boolean>>(
-    jobQuestApiUrls.auth.logout
-  );
+async function refreshJwt(): Promise<AuthRefreshJwtRes> {
+  const refreshToken = authLocalStore.getTokens()?.refreshToken;
+  const res = await jobQuestHttpService
+    .post<AuthRefreshJwtRes>(
+      jobQuestApiUrls.auth.refresh,
+      {},
+      { headers: { Authorization: `Bearer ${refreshToken}` } }
+    )
+    .then(async (res) => {
+      const data = plainToInstance(AuthRefreshJwtRes, res.data);
+      await validateOrReject(data);
+      return data;
+    });
 
-  const data = res?.data;
+  const tokens = res.data;
+  authLocalStore.setTokens(tokens);
 
-  const logOutSuccess = data?.data;
+  return res;
+}
+
+async function logout(): Promise<AuthLogOutRes> {
+  const res = await jobQuestHttpService
+    .post<AuthLogOutRes>(jobQuestApiUrls.auth.logout)
+    .then(async (res) => {
+      const data = plainToInstance(AuthLogOutRes, res.data);
+      await validateOrReject(data);
+      return data;
+    });
+
+  const logOutSuccess = res.data;
   if (logOutSuccess) authLocalStore.removeTokens();
 
-  return data;
+  return res;
 }
 
 /** Check if currently authenticated */
@@ -72,6 +82,7 @@ function isAuthenticated(): boolean {
 export const authService = {
   signup,
   login,
+  refreshJwt,
   logout,
   isAuthenticated,
 };

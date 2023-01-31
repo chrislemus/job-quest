@@ -3,6 +3,7 @@ import { UserLogin } from '@app/auth/dto';
 import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { jobQuestApi } from '@api/job-quest';
 import { JWT } from '@api/job-quest/auth/dto';
+import { AuthLogInArgs } from '@api/job-quest/auth/types';
 
 /** User login */
 export function useLogin(): UseMutationResult<
@@ -11,8 +12,8 @@ export function useLogin(): UseMutationResult<
   UserLogin
 > {
   const mutation = useMutation<ApiOkRes<JWT>, ApiErrorRes, UserLogin>({
-    mutationFn: (user: UserLogin) => {
-      return jobQuestApi.auth.login(user.email, user.password);
+    mutationFn: (user: AuthLogInArgs) => {
+      return jobQuestApi.auth.login(user);
     },
   });
 
