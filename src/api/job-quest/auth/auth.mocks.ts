@@ -13,7 +13,7 @@ export const signUpMockCredentials: AuthSignUpArgs = {
   password: 'hello123',
 };
 
-export const LogInMockCredentials: AuthLogInArgs = {
+export const logInMockCredentials: AuthLogInArgs = {
   email: 'john@me.com',
   password: 'hello123',
 };

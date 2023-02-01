@@ -7,7 +7,10 @@ import { ThemeProvider } from '@mui/material';
 import { theme } from '@common/theme';
 import { server, rest } from '@tests/server';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
+import { useRouterMock } from '@tests/next-navigation.mock';
 
+// reference to mock nav router
+useRouterMock.push;
 it('should display field errors', async () => {
   renderWithQueryClient(
     <ThemeProvider theme={theme}>

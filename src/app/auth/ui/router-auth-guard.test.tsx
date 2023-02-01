@@ -47,6 +47,7 @@ describe('Router Auth Guard', () => {
 
     render(<RouterAuthGuard />);
     jest.advanceTimersByTime(intervalTime * 2.1);
-    expect(useRouterMock.push).toBeCalledTimes(3);
+    // should only push once when authentication changes
+    expect(useRouterMock.push).toBeCalledTimes(1);
   });
 });

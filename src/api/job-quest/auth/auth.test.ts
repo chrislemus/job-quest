@@ -3,7 +3,7 @@ import { validateOrReject } from 'class-validator';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 import { server, rest } from '@tests/server';
 import { authService } from './auth.service';
-import { signUpMockCredentials, LogInMockCredentials } from './auth.mocks';
+import { signUpMockCredentials, logInMockCredentials } from './auth.mocks';
 import { userService } from '../user/user.service';
 import { authLocalStore } from './auth-local-store.service';
 import { userProfileMock } from '@api/job-quest/user/user.mocks';
@@ -46,7 +46,7 @@ describe('AuthService', () => {
 
   test('login() contains valid global server handlers', async () => {
     const res = await authService
-      .login(LogInMockCredentials)
+      .login(logInMockCredentials)
       .then((res) => plainToInstance(AuthLogInRes, res));
 
     await validateOrReject(res);
@@ -62,7 +62,7 @@ describe('AuthService', () => {
 
     let error = false;
     await authService
-      .login(LogInMockCredentials)
+      .login(logInMockCredentials)
       .catch((_e: any) => (error = true));
 
     expect(error).toBeTruthy();
