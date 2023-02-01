@@ -1,27 +1,24 @@
-import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 import { Box, Skeleton, Tab, Tabs } from '@common/ui/atoms';
 import { PropsWithoutRef, SyntheticEvent, useMemo } from 'react';
+import { useJobLists } from '@app/dashboard/job-list/hooks';
 
 type JobListMainNavProps = {
   setActiveJobList: (a: number) => void;
-  jobList: JobListEntity[];
   activeJobListId?: number;
-  loading?: boolean;
 };
 
 export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
-  const sortedJobList = useMemo(() => {
-    return p.jobList.sort((a, b) => a.order - b.order);
-  }, [p.jobList]);
+  const JobsListQuery = useJobLists();
+  const jobLists = JobsListQuery.data?.data || [];
 
   return (
     <Box
       sx={{
         borderBottom: 1,
-        borderColor: p.loading ? 'transparent' : 'divider',
+        borderColor: JobsListQuery.isLoading ? 'transparent' : 'divider',
       }}
     >
-      {p.loading || !p.activeJobListId ? (
+      {JobsListQuery.isLoading || !p.activeJobListId ? (
         <>
           <br />
           <Skeleton variant="rectangular" height={500} />
@@ -36,7 +33,7 @@ export function JobListMainNav(p: PropsWithoutRef<JobListMainNavProps>) {
           variant="scrollable"
           scrollButtons="auto"
         >
-          {sortedJobList.map((j) => {
+          {jobLists.map((j) => {
             return <Tab label={j.label} value={j.id} key={j.id} />;
           })}
         </Tabs>

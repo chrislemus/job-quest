@@ -1,8 +1,8 @@
 import { Grid, Skeleton } from '@common/ui/atoms';
-import { PropsWithChildren, PropsWithoutRef } from 'react';
+import { PropsWithChildren, PropsWithoutRef, useMemo } from 'react';
 import { JobCard } from './job-card';
 import { useJobs } from '@app/dashboard/job/hooks';
-import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
+import { useJobLists } from '@app/dashboard/job-list/hooks';
 
 function GridItem(p: PropsWithChildren<{}>) {
   return (
@@ -12,25 +12,25 @@ function GridItem(p: PropsWithChildren<{}>) {
   );
 }
 
-function LoadingCards() {
-  return (
-    <>
-      {Array.from({ length: 8 }, (_v, i) => (
-        <GridItem key={i}>
-          <Skeleton variant="rectangular" height={150} />
-        </GridItem>
-      ))}
-    </>
-  );
-}
-
 type JobListPanelProps = {
-  jobLists: JobListEntity[];
   activeJobListId: number;
 };
 
 export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
   const jobsQuery = useJobs({ jobListId: p.activeJobListId });
+  const jobs = jobsQuery.data?.data;
+  const JobsListQuery = useJobLists();
+  const jobLists = JobsListQuery.data?.data || [];
+
+  const loadingCards = useMemo(() => {
+    if (jobsQuery.isLoading) {
+      return Array.from({ length: 8 }, (_v, i) => (
+        <GridItem key={i}>
+          <Skeleton variant="rectangular" height={150} />
+        </GridItem>
+      ));
+    }
+  }, [jobsQuery.isLoading]);
 
   return (
     <Grid
@@ -41,11 +41,11 @@ export function JobListPanel(p: PropsWithoutRef<JobListPanelProps>) {
       paddingTop={3}
     >
       {/* TODO: add error boundary */}
-      {jobsQuery.isLoading && <LoadingCards />}
-      {jobsQuery.data?.data.map((job) => {
+      {jobsQuery.isLoading && loadingCards}
+      {jobs?.map((job) => {
         return (
           <GridItem key={job.id}>
-            <JobCard job={job} jobLists={p.jobLists} />
+            <JobCard job={job} jobLists={jobLists} />
           </GridItem>
         );
       })}
