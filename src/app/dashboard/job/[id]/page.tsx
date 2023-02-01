@@ -39,7 +39,7 @@ export default function Job(p: JobProps) {
           <Divider sx={{ marginY: 6 }} />
           <JobLogSection jobId={jobQueryData.id} />
           <Divider sx={{ marginY: 6 }} />
-          <Grid xs={12}>
+          <Grid xs={12} paddingBottom={4}>
             <DeleteJobButton jobId={jobQueryData.id} />
           </Grid>
         </>
