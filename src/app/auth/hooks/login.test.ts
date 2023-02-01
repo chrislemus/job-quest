@@ -8,3 +8,4 @@ test('should use mutation', () => {
   expect(login).toBeTruthy();
   expect(typeof login.mutate).toBe('function');
 });
+test.skip('caching tests', () => {});

@@ -15,6 +15,7 @@ export function useLogin(): UseMutationResult<
     mutationFn: (user: AuthLogInArgs) => {
       return jobQuestApi.auth.login(user);
     },
+    cacheTime: 0,
   });
 
   return mutation;

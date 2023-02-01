@@ -12,6 +12,7 @@ export function useSignUp(): UseMutationResult<
 > {
   const mutation = useMutation<ApiOkRes<JWT>, ApiErrorRes, UserSignUp>({
     mutationFn: (user: UserSignUp) => jobQuestApi.auth.signup(user),
+    cacheTime: 0,
   });
 
   return mutation;

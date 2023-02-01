@@ -10,3 +10,4 @@ test('should use mutation', () => {
   expect(signUp).toBeTruthy();
   expect(typeof signUp.mutate).toBe('function');
 });
+test.skip('caching tests', () => {});
