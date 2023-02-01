@@ -16,19 +16,6 @@ type JobProps = {
 
 export default function Job(p: JobProps) {
   const jobId = parseInt(p.params.id);
-  const [successCount, setSuccessCount] = useState(0);
-
-  useEffect(() => {
-    if (successCount > 0) {
-      const timeOut = setTimeout(() => {
-        setSuccessCount((count) => count - 1);
-      }, 1000);
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
-  }, [successCount]);
-
   const jobQuery = useJob(jobId);
   const jobQueryData = jobQuery?.data?.data;
 

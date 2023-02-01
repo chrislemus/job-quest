@@ -9,10 +9,9 @@ export default function Dashboard() {
   const jobLists = JobsListQuery.data?.data;
 
   useEffect(() => {
-    if (!activeJobListId && jobLists) {
-      const firstJobList = jobLists?.[0]?.id;
-      // list should not be empty, but adding if condition to avoid errors
-      if (firstJobList) setActiveJobListId(firstJobList);
+    const firstJobList = jobLists?.[0];
+    if (!activeJobListId && firstJobList) {
+      setActiveJobListId(firstJobList.id);
     }
   }, [JobsListQuery.isSuccess]);
 
