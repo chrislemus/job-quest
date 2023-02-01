@@ -19,6 +19,7 @@ import {
   Typography,
   InputAdornment,
 } from '@common/ui/atoms';
+import { DeleteJobButton } from './delete-job-button';
 
 type JobMainProps = {
   job: JobEntity;
@@ -63,150 +64,150 @@ export function JobMain(p: JobMainProps) {
   const errorMsgs = editJobMutation.error?.messages;
 
   return (
-    <Grid>
-      <Grid xs={12}>
-        <Form
-          formMethods={formMethods}
-          id={formId}
-          onValidSubmit={(data) => {
-            editJobMutation.mutate({ jobId: p.job.id, data });
-          }}
-        >
-          <Grid container paddingTop={2} spacing={3}>
-            <Grid xs={12}>
-              {errorMsgs && (
-                <Typography paddingTop={1} color="error" variant="body1">
-                  {errorMsgs?.map((msg, idx) => {
-                    return <li key={idx}>{msg}</li>;
-                  }) || 'Error'}
-                </Typography>
-              )}
-            </Grid>
-            <Grid xs={12} sm={6}>
-              <TextField
-                name="title"
-                label="title"
-                defaultValue={p.job.title || undefined}
-                fullWidth
-                isInvalid={!!formErrors?.title?.message}
-                helperText={formErrors?.title?.message}
-              />
-            </Grid>
-            <Grid xs={12} sm={6}>
-              <TextField
-                name="company"
-                type="text"
-                label="Company"
-                fullWidth
-                defaultValue={p.job.company || undefined}
-                isInvalid={!!formErrors?.company?.message}
-                helperText={formErrors?.company?.message}
-              />
-            </Grid>
-            <Grid xs={8} sm={3} md={2}>
-              {jobListOptions && (
-                <SelectField
-                  name="jobListId"
-                  label="Job List"
-                  defaultValue={p.job.jobListId}
-                  options={jobListOptions}
-                />
-              )}
-            </Grid>
-            <Grid xs={4} sm={2}>
-              <SelectField
-                name="color"
-                label="Color"
-                defaultValue={p.job.color}
-                options={jobColors.map((color) => {
-                  return {
-                    value: color,
-                    label: (
-                      <div
-                        style={{
-                          height: '1rem',
-                          width: '100%',
-                          backgroundColor: color,
-                          color: '#ffff',
-                          padding: '2px',
-                        }}
-                      />
-                    ),
-                  };
-                })}
-              />
-            </Grid>
-            <Grid xs={0} sm={7} md={8} />
-            <Grid xs={12} sm={6}>
-              <TextField
-                name="url"
-                label="Job Url"
-                fullWidth
-                defaultValue={p.job.url || undefined}
-                setValueAs={(val) => {
-                  if (val?.length === 0) return '';
-                  if (shouldFormatJobUrl(val)) return `https://${val}`;
-                  return val;
-                }}
-                onBlur={(e) => {
-                  const value = e.target?.value;
-                  if (shouldFormatJobUrl(value)) {
-                    e.target.value = `https://${value}`;
-                  }
-                }}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="job url"
-                      href={p.job.url as any}
-                      disabled={!p.job.url}
-                      target="_blank"
-                      LinkComponent={Link}
-                      edge="end"
-                    >
-                      <OpenInNewIcon />
-                    </IconButton>
-                  </InputAdornment>
-                }
-                isInvalid={!!formErrors?.url?.message}
-                helperText={formErrors?.url?.message}
-              />
-            </Grid>
-            <Grid xs={12} sm={6}>
-              <TextField
-                name="location"
-                label="Location"
-                defaultValue={p.job.location || undefined}
-                fullWidth
-                isInvalid={!!formErrors?.location?.message}
-                helperText={formErrors?.location?.message}
-              />
-            </Grid>
+    <Form
+      formMethods={formMethods}
+      id={formId}
+      onValidSubmit={(data) => {
+        editJobMutation.mutate({ jobId: p.job.id, data });
+      }}
+    >
+      <Grid container spacing={3}>
+        <Grid xs={12}>
+          {errorMsgs && (
+            <Typography paddingTop={1} color="error" variant="body1">
+              {errorMsgs?.map((msg, idx) => {
+                return <li key={idx}>{msg}</li>;
+              }) || 'Error'}
+            </Typography>
+          )}
+        </Grid>
+        <Grid xs={12} sm={6}>
+          <TextField
+            name="title"
+            label="title"
+            defaultValue={p.job.title || undefined}
+            fullWidth
+            isInvalid={!!formErrors?.title?.message}
+            helperText={formErrors?.title?.message}
+          />
+        </Grid>
+        <Grid xs={12} sm={6}>
+          <TextField
+            name="company"
+            type="text"
+            label="Company"
+            fullWidth
+            defaultValue={p.job.company || undefined}
+            isInvalid={!!formErrors?.company?.message}
+            helperText={formErrors?.company?.message}
+          />
+        </Grid>
+        <Grid xs={8} sm={3} md={2}>
+          {jobListOptions && (
+            <SelectField
+              name="jobListId"
+              label="Job List"
+              defaultValue={p.job.jobListId}
+              options={jobListOptions}
+            />
+          )}
+        </Grid>
+        <Grid xs={4} sm={2}>
+          <SelectField
+            name="color"
+            label="Color"
+            defaultValue={p.job.color}
+            options={jobColors.map((color) => {
+              return {
+                value: color,
+                label: (
+                  <div
+                    style={{
+                      height: '1rem',
+                      width: '100%',
+                      backgroundColor: color,
+                      color: '#ffff',
+                      padding: '2px',
+                    }}
+                  />
+                ),
+              };
+            })}
+          />
+        </Grid>
+        <Grid xs={0} sm={7} md={8} />
+        <Grid xs={12} sm={6}>
+          <TextField
+            name="url"
+            label="Job Url"
+            fullWidth
+            defaultValue={p.job.url || undefined}
+            setValueAs={(val) => {
+              if (val?.length === 0) return '';
+              if (shouldFormatJobUrl(val)) return `https://${val}`;
+              return val;
+            }}
+            onBlur={(e) => {
+              const value = e.target?.value;
+              if (shouldFormatJobUrl(value)) {
+                e.target.value = `https://${value}`;
+              }
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="job url"
+                  href={p.job.url as any}
+                  disabled={!p.job.url}
+                  target="_blank"
+                  LinkComponent={Link}
+                  edge="end"
+                >
+                  <OpenInNewIcon />
+                </IconButton>
+              </InputAdornment>
+            }
+            isInvalid={!!formErrors?.url?.message}
+            helperText={formErrors?.url?.message}
+          />
+        </Grid>
+        <Grid xs={12} sm={6}>
+          <TextField
+            name="location"
+            label="Location"
+            defaultValue={p.job.location || undefined}
+            fullWidth
+            isInvalid={!!formErrors?.location?.message}
+            helperText={formErrors?.location?.message}
+          />
+        </Grid>
 
-            <Grid xs={8} sm={6} md={3}>
-              <TextField
-                name="salary"
-                label="Salary"
-                defaultValue={p.job.salary || undefined}
-                fullWidth
-                isInvalid={!!formErrors?.salary?.message}
-                helperText={formErrors?.salary?.message}
-              />
-            </Grid>
-            <Grid xs={4} sm={6} md={9} />
+        <Grid xs={8} sm={6} md={3}>
+          <TextField
+            name="salary"
+            label="Salary"
+            defaultValue={p.job.salary || undefined}
+            fullWidth
+            isInvalid={!!formErrors?.salary?.message}
+            helperText={formErrors?.salary?.message}
+          />
+        </Grid>
+        <Grid xs={4} sm={6} md={9} />
 
-            <Grid xs={12}>
-              <TextField
-                name="description"
-                label="Description"
-                defaultValue={p.job.description || undefined}
-                fullWidth
-                multiline
-                rows={4}
-                isInvalid={!!formErrors?.description?.message}
-                helperText={formErrors?.description?.message}
-              />
-            </Grid>
+        <Grid xs={12}>
+          <TextField
+            name="description"
+            label="Description"
+            defaultValue={p.job.description || undefined}
+            fullWidth
+            multiline
+            rows={4}
+            isInvalid={!!formErrors?.description?.message}
+            helperText={formErrors?.description?.message}
+          />
+        </Grid>
+        <Grid>
+          <Grid container>
             <Grid>
               <Button
                 variant="contained"
@@ -227,9 +228,12 @@ export function JobMain(p: JobMainProps) {
                 Save
               </Button>
             </Grid>
+            <Grid>
+              <DeleteJobButton jobId={p.job.id} />
+            </Grid>
           </Grid>
-        </Form>
+        </Grid>
       </Grid>
-    </Grid>
+    </Form>
   );
 }

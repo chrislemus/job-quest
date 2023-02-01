@@ -1,12 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { DeleteJobButton, JobLogSection, JobMain } from './ui';
+import { useState } from 'react';
+import { JobLogSection, JobMain } from './ui';
 import { useJob } from '@app/dashboard/job/hooks';
 import {
   Container,
-  Divider,
   Grid,
   Skeleton,
+  Tab,
+  Tabs,
   Typography,
 } from '@common/ui/atoms';
 
@@ -14,10 +15,18 @@ type JobProps = {
   params: { id: string };
 };
 
+const tabs = {
+  info: 'Info',
+  logs: 'Logs',
+} as const;
+
+type TabKeys = typeof tabs[keyof typeof tabs];
+
 export default function Job(p: JobProps) {
   const jobId = parseInt(p.params.id);
   const jobQuery = useJob(jobId);
   const jobQueryData = jobQuery?.data?.data;
+  const [activeTab, setActiveTab] = useState<TabKeys>(tabs.info);
 
   if (jobQuery.isLoading)
     return (
@@ -32,15 +41,25 @@ export default function Job(p: JobProps) {
         <>
           <Typography variant="h4">{jobQueryData.title}</Typography>
           <Typography variant="subtitle1">{jobQueryData.company}</Typography>
-
+          <Tabs
+            onChange={(_e, newValue: TabKeys) => {
+              setActiveTab(newValue);
+            }}
+            aria-label="Job Nav"
+            value={activeTab}
+            variant="scrollable"
+            scrollButtons="auto"
+          >
+            <Tab label={tabs.info} value={tabs.info} />
+            <Tab label={tabs.logs} value={tabs.logs} />
+          </Tabs>
           <Grid container>
-            <JobMain job={jobQueryData} />
-          </Grid>
-          <Divider sx={{ marginY: 6 }} />
-          <JobLogSection jobId={jobQueryData.id} />
-          <Divider sx={{ marginY: 6 }} />
-          <Grid xs={12} paddingBottom={4}>
-            <DeleteJobButton jobId={jobQueryData.id} />
+            <Grid xs={12} paddingY={2}>
+              {activeTab === 'Info' && <JobMain job={jobQueryData} />}
+              {activeTab === 'Logs' && (
+                <JobLogSection jobId={jobQueryData.id} />
+              )}
+            </Grid>
           </Grid>
         </>
       )}

@@ -3,14 +3,14 @@ import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogs } from '@app/dashboard/job-log/hooks';
 import { JobLogItem } from './job-log-item';
 import { AddJobLogForm } from './add-job-log-form';
-import { Avatar, Grid, Typography } from '@common/ui/atoms';
+import { Avatar, Grid } from '@common/ui/atoms';
 
 function JobLogContainer(p: PropsWithChildren<{}>) {
   const user = useUserProfile();
   const firstNameInitial = user.data?.firstName?.[0] || '?';
 
   return (
-    <Grid xs={12} paddingY={0}>
+    <Grid xs={12}>
       <Grid container columnSpacing={1} flexWrap="nowrap">
         <Grid>
           <Avatar sx={{ width: 24, height: 24 }}>{firstNameInitial}</Avatar>
@@ -41,11 +41,6 @@ export function JobLogSection(p: JobLogSectionProps) {
 
   return (
     <Grid container rowSpacing={2}>
-      <Grid xs={12} paddingTop={0} paddingBottom={4}>
-        <Typography variant="h5" textAlign="center">
-          Logs
-        </Typography>
-      </Grid>
       {logs}
       <JobLogContainer>
         <AddJobLogForm jobId={p.jobId} />
