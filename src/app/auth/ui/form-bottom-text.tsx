@@ -32,6 +32,8 @@ export function FormBottomText() {
     }
   }, [urlPath]);
 
+  if (!formBottomText) return <></>;
+
   return (
     <Typography variant="subtitle2">
       {formBottomText?.question + ' '}
