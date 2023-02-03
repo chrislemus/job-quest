@@ -1,9 +1,9 @@
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@app/store';
 import { currentToastDone } from '@app/toast/toast.slice';
+import { Alert } from '@common/ui/atoms/alert';
 
 export function Toast() {
   const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export function Toast() {
         autoHideDuration={6000}
         onClose={handleClose}
       >
-        <MuiAlert
+        <Alert
           elevation={6}
           variant="outlined"
           onClose={handleClose}
@@ -43,7 +43,7 @@ export function Toast() {
           sx={{ width: '100%' }}
         >
           {toast?.message}
-        </MuiAlert>
+        </Alert>
       </Snackbar>
     </Stack>
   );

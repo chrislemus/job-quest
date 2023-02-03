@@ -2,7 +2,10 @@
 import { useState } from 'react';
 import { JobLogSection, JobMain } from './ui';
 import { useJob } from '@app/dashboard/job/hooks';
+import { ArrowBackIosIcon } from '@common/ui/icons';
+import Link from 'next/link';
 import {
+  Button,
   Container,
   Grid,
   Skeleton,
@@ -34,34 +37,42 @@ export default function Job(p: JobProps) {
         <Skeleton height={500} />
       </Grid>
     );
-
   return (
     <Container>
       {jobQueryData && (
-        <>
-          <Typography variant="h4">{jobQueryData.title}</Typography>
-          <Typography variant="subtitle1">{jobQueryData.company}</Typography>
-          <Tabs
-            onChange={(_e, newValue: TabKeys) => {
-              setActiveTab(newValue);
-            }}
-            aria-label="Job Nav"
-            value={activeTab}
-            variant="scrollable"
-            scrollButtons="auto"
-          >
-            <Tab label={tabs.info} value={tabs.info} />
-            <Tab label={tabs.logs} value={tabs.logs} />
-          </Tabs>
-          <Grid container>
-            <Grid xs={12} paddingY={2}>
-              {activeTab === 'Info' && <JobMain job={jobQueryData} />}
-              {activeTab === 'Logs' && (
-                <JobLogSection jobId={jobQueryData.id} />
-              )}
-            </Grid>
+        <Grid container>
+          <Grid xs={12}>
+            <Button
+              href="/dashboard"
+              startIcon={<ArrowBackIosIcon />}
+              LinkComponent={Link}
+            >
+              Back
+            </Button>
           </Grid>
-        </>
+          <Grid xs={12}>
+            <Typography variant="h4">{jobQueryData.title}</Typography>
+            <Typography variant="subtitle1">{jobQueryData.company}</Typography>
+          </Grid>
+          <Grid xs={12}>
+            <Tabs
+              onChange={(_e, newValue: TabKeys) => {
+                setActiveTab(newValue);
+              }}
+              aria-label="Job Nav"
+              value={activeTab}
+              variant="scrollable"
+              scrollButtons="auto"
+            >
+              <Tab label={tabs.info} value={tabs.info} />
+              <Tab label={tabs.logs} value={tabs.logs} />
+            </Tabs>
+          </Grid>
+          <Grid xs={12} paddingY={2}>
+            {activeTab === 'Info' && <JobMain job={jobQueryData} />}
+            {activeTab === 'Logs' && <JobLogSection jobId={jobQueryData.id} />}
+          </Grid>
+        </Grid>
       )}
     </Container>
   );

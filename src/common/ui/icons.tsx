@@ -7,6 +7,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ExpandCircleDownRoundedIcon from '@mui/icons-material/ExpandCircleDownRounded';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export {
   MoreHorizIcon,
@@ -18,4 +19,5 @@ export {
   CheckCircleOutlineIcon,
   ExpandCircleDownRoundedIcon,
   CancelIcon,
+  ArrowBackIosIcon,
 };

@@ -1,9 +1,11 @@
+import { dashboardReducer } from '@app/dashboard/dashboard.slice';
 import { toastReducer } from '@app/toast/toast.slice';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
   reducer: {
     toast: toastReducer,
+    dashboard: dashboardReducer,
   },
 });
 

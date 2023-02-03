@@ -27,12 +27,11 @@ type NewJobModalContentProps = {
 
 export function AddJobModal(p: NewJobModalContentProps) {
   const formId = 'new-job';
-  const formMethods = useForm<CreateJobDto>({
+  const form = useForm<CreateJobDto>({
     resolver: formValidator(CreateJobDto),
   });
 
   const JobsListQuery = useJobLists();
-
   const addJobMutation = useCreateJob();
 
   const jobListOptions = useMemo(() => {
@@ -47,12 +46,12 @@ export function AddJobModal(p: NewJobModalContentProps) {
   return (
     <Modal active={p.active} toggleActive={p.toggleActive}>
       <Form
-        formMethods={formMethods}
+        formMethods={form}
         id={formId}
         onValidSubmit={(job) => {
           addJobMutation.mutate(job, {
             onSuccess: () => {
-              formMethods.reset();
+              form.reset();
               p.toggleActive();
             },
           });
@@ -78,16 +77,16 @@ export function AddJobModal(p: NewJobModalContentProps) {
               type="text"
               label="Company"
               fullWidth
-              isInvalid={!!formMethods.formState.errors?.company?.message}
-              helperText={formMethods.formState.errors?.company?.message}
+              isInvalid={!!form.formState.errors?.company?.message}
+              helperText={form.formState.errors?.company?.message}
             />
             <TextField
               name="title"
               type="text"
               label="Title"
               fullWidth
-              isInvalid={!!formMethods.formState.errors?.title?.message}
-              helperText={formMethods.formState.errors?.title?.message}
+              isInvalid={!!form.formState.errors?.title?.message}
+              helperText={form.formState.errors?.title?.message}
             />
             {jobListOptions && (
               <SelectField
@@ -105,12 +104,8 @@ export function AddJobModal(p: NewJobModalContentProps) {
             type="submit"
             variant="contained"
             form={formId}
-            disabled={
-              formMethods.formState.isSubmitting || addJobMutation.isLoading
-            }
-            loading={
-              formMethods.formState.isSubmitting || addJobMutation.isLoading
-            }
+            disabled={form.formState.isSubmitting || addJobMutation.isLoading}
+            loading={form.formState.isSubmitting || addJobMutation.isLoading}
           >
             Add
           </Button>

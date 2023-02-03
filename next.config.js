@@ -12,6 +12,11 @@ module.exports = {
         destination: '/auth/login',
         permanent: false,
       },
+      {
+        source: '/dashboard',
+        destination: '/dashboard/job-list',
+        permanent: false,
+      },
     ];
   },
 };
