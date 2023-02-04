@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { JobLogSection, JobMain } from './ui';
 import { useJob } from '@app/dashboard/job/hooks';
 import { ArrowBackIosIcon } from '@common/ui/icons';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   Button,
   Container,
@@ -26,6 +26,7 @@ const tabs = {
 type TabKeys = typeof tabs[keyof typeof tabs];
 
 export default function Job(p: JobProps) {
+  const router = useRouter();
   const jobId = parseInt(p.params.id);
   const jobQuery = useJob(jobId);
   const jobQueryData = jobQuery?.data?.data;
@@ -43,9 +44,10 @@ export default function Job(p: JobProps) {
         <Grid container>
           <Grid xs={12}>
             <Button
-              href="/dashboard"
               startIcon={<ArrowBackIosIcon />}
-              LinkComponent={Link}
+              onClick={() => {
+                router.push('/dashboard');
+              }}
             >
               Back
             </Button>
