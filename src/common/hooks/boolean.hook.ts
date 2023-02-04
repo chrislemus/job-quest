@@ -9,8 +9,10 @@ type useBooleanReturnType = [
   }
 ];
 
-export function useBoolean(): useBooleanReturnType {
-  const [state, setState] = useState<boolean>(false);
+export function useBoolean(
+  defaultValue: boolean = false
+): useBooleanReturnType {
+  const [state, setState] = useState<boolean>(defaultValue);
 
   const setter = {
     on: () => setState(true),
