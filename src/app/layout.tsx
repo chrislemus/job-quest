@@ -6,9 +6,6 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@common/theme';
 import { queryClient } from '@common/query-client';
 import 'reflect-metadata';
-import { Provider } from 'react-redux';
-import { store } from './store';
-import { Toast } from './toast/toast';
 
 export default function RootLayout(p: PropsWithChildren<{}>) {
   return (
@@ -20,16 +17,13 @@ export default function RootLayout(p: PropsWithChildren<{}>) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </head>
       <body>
-        <Provider store={store}>
-          <Toast />
-          <ThemeProvider theme={theme}>
-            <CssBaseline>
-              <QueryClientProvider client={queryClient}>
-                {p.children}
-              </QueryClientProvider>
-            </CssBaseline>
-          </ThemeProvider>
-        </Provider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <QueryClientProvider client={queryClient}>
+              {p.children}
+            </QueryClientProvider>
+          </CssBaseline>
+        </ThemeProvider>
       </body>
     </html>
   );

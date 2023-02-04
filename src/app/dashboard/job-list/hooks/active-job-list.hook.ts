@@ -1,5 +1,5 @@
-import { setActiveJobList as _setActiveJobList } from '@app/dashboard/dashboard.slice';
-import { useAppDispatch, useAppSelector } from '@app/store';
+import { setActiveJobList as _setActiveJobList } from '@app/dashboard/job-list/job-list.slice';
+import { useAppDispatch, useAppSelector } from '@app/dashboard/store';
 import { useEffect } from 'react';
 import { useJobLists } from './job-lists.hook';
 
@@ -9,9 +9,7 @@ export function useActiveJobList(): [
 ] {
   const jobListQuery = useJobLists();
   const dispatch = useAppDispatch();
-  const activeJobList = useAppSelector(
-    (state) => state.dashboard.jobListPanel.activeJobList
-  );
+  const activeJobList = useAppSelector((state) => state.jobList.activeJobList);
 
   const setActiveJobList = (jobListId: number) => {
     dispatch(_setActiveJobList(jobListId));

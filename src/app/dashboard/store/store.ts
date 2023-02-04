@@ -1,11 +1,11 @@
-import { dashboardReducer } from '@app/dashboard/dashboard.slice';
-import { toastReducer } from '@app/toast/toast.slice';
+import { jobListReducer } from '@app/dashboard/job-list/job-list.slice';
+import { toastReducer } from '@app/dashboard/toast/toast.slice';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
   reducer: {
     toast: toastReducer,
-    dashboard: dashboardReducer,
+    jobList: jobListReducer,
   },
 });
 

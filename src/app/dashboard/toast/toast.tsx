@@ -1,8 +1,8 @@
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@app/store';
-import { currentToastDone } from '@app/toast/toast.slice';
+import { useAppDispatch, useAppSelector } from '@app/dashboard/store';
+import { currentToastDone } from '@app/dashboard/toast/toast.slice';
 import { Alert } from '@common/ui/atoms/alert';
 
 export function Toast() {

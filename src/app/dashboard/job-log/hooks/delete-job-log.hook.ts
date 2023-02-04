@@ -4,8 +4,8 @@ import { jobLogQueryKeyFactory } from '@app/dashboard/job-log/factories';
 import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { jobQuestApi } from '@api/job-quest';
 import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
-import { useAppDispatch } from '@app/store';
-import { enqueueToast } from '@app/toast/toast.slice';
+import { useAppDispatch } from '@app/dashboard/store';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 
 export type DeleteJobLogData = ApiOkRes<JobLogEntity>;
 export type DeleteJobLogError = ApiErrorRes;
