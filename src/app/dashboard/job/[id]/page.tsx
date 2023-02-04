@@ -46,7 +46,7 @@ export default function Job(p: JobProps) {
             <Button
               startIcon={<ArrowBackIosIcon />}
               onClick={() => {
-                router.push('/dashboard');
+                router.push('/dashboard/job-list');
               }}
             >
               Back
