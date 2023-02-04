@@ -7,8 +7,10 @@ import { jobQueryKeyFactory } from '@app/dashboard/job/factories';
 export type JobsData = JobPageRes;
 export type JobsError = ApiErrorRes;
 
+export type JobFilters = Parameters<typeof jobQuestApi.job.getAll>[0];
+
 export function useJobs(
-  filters?: Parameters<typeof jobQuestApi.job.getAll>[0]
+  filters?: JobFilters
 ): UseQueryResult<JobsData, ApiErrorRes> {
   const query = useQuery<JobsData, ApiErrorRes>({
     queryKey: jobQueryKeyFactory.all(filters),
