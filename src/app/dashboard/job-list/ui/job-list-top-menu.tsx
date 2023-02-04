@@ -1,12 +1,8 @@
 import { useBoolean } from '@common/hooks';
-import { Grid, Skeleton, Button } from '@common/ui/atoms';
+import { Grid, Button } from '@common/ui/atoms';
 import { AddJobModal } from './add-job-modal';
 
-type JobListTopMenuProps = {
-  loading?: boolean;
-};
-
-export function JobListTopMenu(p: JobListTopMenuProps) {
+export function JobListTopMenu() {
   const [activeModal, setActiveModal] = useBoolean();
 
   return (

@@ -18,6 +18,7 @@ export function JobListTabs() {
 
   if (jobsListQuery.isLoading)
     return <Skeleton variant="rectangular" height={80} />;
+
   const noData = !jobLists || !activeJobList;
   if (jobsListQuery.isError || noData)
     return (
