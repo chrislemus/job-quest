@@ -1,11 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
+import { QueryState, useMutation } from '@tanstack/react-query';
 import { queryClient } from '@common/query-client';
 import { jobQueryKeyFactory } from '@app/dashboard/job/factories';
 import { UpdateJobDto } from '@app/dashboard/job/dto';
 import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { JobEntity } from '@api/job-quest/job/job.entity';
-import { JobPageRes } from '@api/job-quest/job/dto';
 import { jobQuestApi } from '@api/job-quest';
+import { JobsData, JobFilters } from './jobs.hook';
 
 export function useUpdateJob() {
   const mutation = useMutation<
@@ -19,41 +19,37 @@ export function useUpdateJob() {
     mutationFn: (args: { jobId: number; data: UpdateJobDto }) => {
       return jobQuestApi.job.updateJob(args.jobId, args.data);
     },
-    onSuccess(res) {
-      const newJobData = res.data;
+    onSuccess: async (res) => {
+      const updatedJob = res.data;
 
       queryClient.invalidateQueries({
-        queryKey: jobQueryKeyFactory.detail(newJobData.id),
+        // when job list is updated from job panel, we need to update detail query as well.
+        // Otherwise when user tries to update job in detail view(job/[id]), the dropdown menu will no be updated.
+        refetchType: 'all',
+        queryKey: jobQueryKeyFactory.detail(updatedJob.id),
       });
 
-      const queriesData = queryClient.getQueriesData<JobPageRes>(
-        jobQueryKeyFactory.all()
-      );
+      const [aK1, aK2] = jobQueryKeyFactory.all();
 
-      // TODO: improve performance
-      if (queriesData) {
-        let foundMatch = false;
-        for (const queryData of queriesData) {
-          if (foundMatch) return;
-          const [_queryKey, data] = queryData;
-          if (data) {
-            if (foundMatch) return;
-            for (const job of data.data) {
-              if (job.id === newJobData.id && job.id !== newJobData.jobListId) {
-                foundMatch = true;
-                queryClient.invalidateQueries({
-                  queryKey: jobQueryKeyFactory.all({
-                    jobListId: job.jobListId,
-                  }),
-                });
-              }
+      await queryClient.invalidateQueries({
+        refetchType: 'all',
+        predicate: (query) => {
+          const [k1, k2, k3] = query.queryKey;
+          if (k1 === aK1 && k2 === aK2) {
+            const jobFiltersKey = k3 as JobFilters | undefined;
+            // To ensure job appears on `job list` updates.
+            if (jobFiltersKey?.jobListId === updatedJob.jobListId) return true;
+
+            const state = query.state as QueryState<JobsData, unknown>;
+            const jobs = state.data?.data;
+            const hasJobListData = jobs?.[0] instanceof JobEntity;
+            if (hasJobListData) {
+              // To ensure job is updated or remove from lists where the job id matches.
+              return jobs.some((job) => job.id === updatedJob.id);
             }
           }
-        }
-      }
-
-      queryClient.invalidateQueries({
-        queryKey: jobQueryKeyFactory.all({ jobListId: newJobData.jobListId }),
+          return false;
+        },
       });
     },
   });

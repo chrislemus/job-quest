@@ -21,23 +21,17 @@ type JobCardProps = {
 };
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
+  const editJobMutation = useUpdateJob();
   const backgroundColor = p.job.color || '#ffff';
   const textColor = useMemo(() => {
     return theme.palette.getContrastText(backgroundColor);
   }, [backgroundColor]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const editJobMutation = useUpdateJob();
 
   return (
     <Card sx={{ minWidth: 275 }} style={{ backgroundColor }}>
@@ -51,12 +45,16 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <IconButton onClick={handleClick}>
+      <IconButton
+        onClick={(e) => {
+          setAnchorEl(e.currentTarget);
+        }}
+      >
         <MoveUpIcon />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
-        open={open}
+        open={!!anchorEl}
         onClose={handleClose}
         MenuListProps={{
           'aria-labelledby': 'basic-button',

@@ -7,20 +7,17 @@ type Toast = {
   type: 'error' | 'warning' | 'info' | 'success';
 };
 
-// Define a type for the slice state
 interface ToastState {
   toasts: Toast[];
   currentToast?: Toast;
 }
 
-// Define the initial state using that type
 const initialState: ToastState = {
   toasts: [],
 };
 
 const toastSlice = createSlice({
   name: 'toast',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     enqueueToast: (state, action: PayloadAction<Toast>) => {
