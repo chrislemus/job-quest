@@ -29,6 +29,13 @@ export default function Login() {
         <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
           Log In
         </Typography>
+        <Typography variant="subtitle2">
+          <strong>Demo Account</strong>
+          <br />
+          email: chris@jobquest.com
+          <br />
+          password: Jobs#365
+        </Typography>
         <FormErrors errors={login?.error?.messages} />
 
         <TextField
