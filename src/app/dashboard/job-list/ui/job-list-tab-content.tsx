@@ -18,10 +18,13 @@ function GridItem(p: PropsWithChildren<{}>) {
 export function JobListTabContent() {
   const [activeJobList] = useActiveJobList();
   const [activeModal, setActiveModal] = useBoolean();
-  const jobsQuery = useJobs({ jobListId: activeJobList });
-  const jobs = jobsQuery.data?.data;
   const JobsListQuery = useJobLists();
   const jobLists = JobsListQuery.data?.data || [];
+  const jobsQuery = useJobs(
+    { jobListId: activeJobList },
+    { enabled: activeJobList === 0 || !!activeJobList }
+  );
+  const jobs = jobsQuery.data?.data;
   const loadingCards = useMemo(() => {
     return Array.from({ length: 8 }, (_v, i) => (
       <GridItem key={i}>

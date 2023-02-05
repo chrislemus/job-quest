@@ -10,13 +10,17 @@ export type JobsError = ApiErrorRes;
 export type JobFilters = Parameters<typeof jobQuestApi.job.getAll>[0];
 
 export function useJobs(
-  filters?: JobFilters
+  filters?: JobFilters,
+  config?: {
+    enabled?: boolean;
+  }
 ): UseQueryResult<JobsData, ApiErrorRes> {
   const query = useQuery<JobsData, ApiErrorRes>({
     queryKey: jobQueryKeyFactory.all(filters),
     queryFn: () => {
       return jobQuestApi.job.getAll(filters);
     },
+    enabled: config?.enabled,
   });
 
   return query;

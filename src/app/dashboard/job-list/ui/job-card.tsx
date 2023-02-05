@@ -14,6 +14,7 @@ import {
   MenuItem,
   Typography,
 } from '@common/ui/atoms';
+import { useRouter } from 'next/navigation';
 
 type JobCardProps = {
   job: JobEntity;
@@ -21,6 +22,7 @@ type JobCardProps = {
 };
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
+  const router = useRouter();
   const editJobMutation = useUpdateJob();
   const backgroundColor = p.job.color || '#ffff';
   const textColor = useMemo(() => {
@@ -35,7 +37,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
 
   return (
     <Card sx={{ minWidth: 275 }} style={{ backgroundColor }}>
-      <CardActionArea href={`/dashboard/job/${p.job.id}`} component={Link}>
+      <CardActionArea onClick={() => router.push(`/dashboard/job/${p.job.id}`)}>
         <CardContent>
           <Typography variant="button" noWrap display="block" color={textColor}>
             <strong>{p.job.title}</strong>
@@ -46,6 +48,8 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
         </CardContent>
       </CardActionArea>
       <IconButton
+        role="button"
+        name="job list"
         onClick={(e) => {
           setAnchorEl(e.currentTarget);
         }}

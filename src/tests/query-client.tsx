@@ -22,6 +22,15 @@ const generateQueryClient = () =>
     },
   });
 
+export function QueryClientTestProvider(
+  p: PropsWithChildren<{ client?: QueryClient }>
+) {
+  const queryClient = p?.client || generateQueryClient();
+  return (
+    <QueryClientProvider client={queryClient}>{p.children}</QueryClientProvider>
+  );
+}
+
 export function renderWithQueryClient(ui: ReactElement, client?: QueryClient) {
   const queryClient = client ?? generateQueryClient();
 

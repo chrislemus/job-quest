@@ -3,13 +3,12 @@ import { Container } from '@common/ui/atoms';
 import { RouterAuthGuard } from '@app/auth/ui';
 import { PropsWithChildren } from 'react';
 import { DashboardNav } from './ui';
-import { Provider } from 'react-redux';
-import { store } from './store';
 import { Toast } from './toast/toast';
+import { DashboardStoreProvider } from './store/store.provider';
 
 export default function Layout(p: PropsWithChildren<{}>) {
   return (
-    <Provider store={store}>
+    <DashboardStoreProvider>
       <Toast />
       <RouterAuthGuard>
         <div>
@@ -23,6 +22,6 @@ export default function Layout(p: PropsWithChildren<{}>) {
           </Container>
         </div>
       </RouterAuthGuard>
-    </Provider>
+    </DashboardStoreProvider>
   );
 }
