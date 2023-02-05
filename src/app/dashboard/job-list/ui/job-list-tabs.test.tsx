@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { QueryClientTestProvider } from '@tests/query-client';
 import { PropsWithChildren } from 'react';
 import { DashboardStoreProvider } from '@app/dashboard/store';
-import { useRouterMock } from '@tests/next-navigation.mock';
 import { JobListTabs } from './job-list-tabs';
 import { jobListMocks } from '@api/job-quest/job-list/job-list.mocks';
 
@@ -13,9 +12,6 @@ function AllProviders(p: PropsWithChildren<{}>) {
     </DashboardStoreProvider>
   );
 }
-
-// reference for tests
-useRouterMock.push;
 
 describe('Job List Tabs', () => {
   test.each(jobListMocks.map((j) => j.label))(
