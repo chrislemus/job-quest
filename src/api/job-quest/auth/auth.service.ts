@@ -51,6 +51,10 @@ async function refreshJwt(): Promise<AuthRefreshJwtRes> {
       const data = plainToInstance(AuthRefreshJwtRes, res.data);
       await validateOrReject(data);
       return data;
+    })
+    .catch((e) => {
+      authLocalStore.removeTokens();
+      throw new Error(e);
     });
 
   const tokens = res.data;

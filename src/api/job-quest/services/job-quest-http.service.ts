@@ -63,11 +63,10 @@ jobQuestHttpService.interceptors.response.use(
     if (config && failedAuthReq) {
       try {
         await authService.refreshJwt();
-        // retry original request if jwt refresh works
+        // once request above completes(jwt refresh)
+        // retry original request (below)
         return jobQuestHttpService(config);
       } catch (error: any) {
-        // important to remove!!!!
-        authLocalStore.removeTokens();
         return Promise.reject(error);
       }
     }

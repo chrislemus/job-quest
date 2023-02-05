@@ -16,7 +16,7 @@ function getTokens(): JWT | null {
 }
 
 function removeTokens() {
-  cookies.remove(authCookieKey);
+  cookies.remove(authCookieKey, { path: '/' });
 }
 
 export const authLocalStore = {
