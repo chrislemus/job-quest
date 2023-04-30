@@ -4,16 +4,16 @@ import { JobListTopMenu, JobListTabContent, JobListTabs } from './ui';
 
 export default function JobListPage() {
   return (
-    <Grid container>
-      <Grid xs={12} paddingBottom={1}>
+    <div className="flex flex-col gap-3">
+      <div>
         <JobListTopMenu />
-      </Grid>
-      <Grid xs={12} paddingBottom={1}>
+      </div>
+      <div>
         <JobListTabs />
-      </Grid>
-      <Grid xs={12}>
+      </div>
+      <div>
         <JobListTabContent />
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 }
