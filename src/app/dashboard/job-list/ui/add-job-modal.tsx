@@ -44,11 +44,10 @@ export function AddJobModal(p: NewJobModalContentProps) {
       <div className="card w-96 bg-base-100 shadow-xl">
         <form
           id={formId}
-          onSubmit={form.handleSubmit((job) => {
-            addJobMutation.mutate(job, {
+          onSubmit={form.handleSubmit(async (job) => {
+            await addJobMutation.mutateAsync(job, {
               onSuccess: () => {
-                form.reset();
-                p.toggleActive();
+                if (p.active) p.toggleActive();
               },
             });
           })}
@@ -70,6 +69,7 @@ export function AddJobModal(p: NewJobModalContentProps) {
               </label>
               <input
                 type="text"
+                data-testid="input-company"
                 className={cn('input input-bordered w-full', {
                   'input-error': !!form.formState.errors?.company?.message,
                 })}
@@ -89,6 +89,7 @@ export function AddJobModal(p: NewJobModalContentProps) {
               </label>
               <input
                 type="text"
+                data-testid="input-title"
                 className={cn('input input-bordered w-full', {
                   'input-error': !!form.formState.errors?.title?.message,
                 })}
@@ -109,31 +110,37 @@ export function AddJobModal(p: NewJobModalContentProps) {
                 </label>
                 <select
                   className="select select-bordered"
+                  data-testid="input-job-list"
                   placeholder="Please select"
                   {...form.register('jobListId')}
                 >
                   {jobListOptions.map((opt) => {
+                    const { label, value } = opt;
                     return (
-                      <option key={opt.value} selected>
-                        {opt.label}
+                      <option key={value} value={value}>
+                        {label}
                       </option>
                     );
                   })}
                 </select>
+                {errors.jobListId?.message && (
+                  <label className="label">
+                    <span className="label-text-alt text-error">
+                      {errors.jobListId.message}
+                    </span>
+                  </label>
+                )}
               </div>
             )}
 
             <div className="card-actions justify-end pt-3">
               <button
                 className={cn('btn btn-primary', {
-                  loading:
-                    form.formState.isSubmitting || addJobMutation.isLoading,
+                  loading: form.formState.isSubmitting,
                 })}
                 type="submit"
                 form={formId}
-                disabled={
-                  form.formState.isSubmitting || addJobMutation.isLoading
-                }
+                disabled={form.formState.isSubmitting}
               >
                 Add
               </button>
