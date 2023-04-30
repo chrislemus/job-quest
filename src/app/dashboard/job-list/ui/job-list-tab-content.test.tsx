@@ -4,7 +4,6 @@ import { QueryClientTestProvider } from '@tests/query-client';
 import { PropsWithChildren } from 'react';
 import { JobListTabContent } from './job-list-tab-content';
 import { DashboardStoreProvider } from '@app/dashboard/store';
-import { useRouterMock } from '@tests/next-navigation.mock';
 
 function AllProviders(p: PropsWithChildren<{}>) {
   return (
@@ -13,9 +12,6 @@ function AllProviders(p: PropsWithChildren<{}>) {
     </DashboardStoreProvider>
   );
 }
-
-// reference for tests
-useRouterMock.push;
 
 describe('Job List Tab Content', () => {
   it('Displays job card', async () => {

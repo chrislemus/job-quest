@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .input:focus {
+  @apply ring-2 ring-inset ring-primary outline-none;
+}
+
+.input-error:focus {
+  @apply ring-2 ring-inset ring-error outline-none;
+}
+
+.input-warning:focus {
+  @apply ring-2 ring-inset ring-error outline-none;
+} */

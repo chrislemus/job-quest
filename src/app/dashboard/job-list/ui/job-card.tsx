@@ -1,7 +1,6 @@
 import { useUpdateJob } from '@app/dashboard/job/hooks';
 import { JobEntity } from '@api/job-quest/job/job.entity';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
-import Link from 'next/link';
 import { MoveUpIcon } from '@common/ui/icons';
 import { theme } from '@common/theme';
 import { PropsWithoutRef, useMemo, useState } from 'react';

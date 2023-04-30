@@ -2,81 +2,137 @@
 import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import { useSignUp } from '@app/auth/hooks';
-import { Form } from '@common/ui/molecules';
+import cn from 'classnames';
 import { UserSignUp } from '@app/auth/dto';
-import {
-  TextField,
-  Button,
-  Typography,
-  Stack,
-  FormErrors,
-} from '@common/ui/atoms';
 
 export default function SignUp() {
-  const formId = 'signup';
   const form = useForm<UserSignUp>({
     resolver: formValidator(UserSignUp),
   });
 
-  const signUpMutation = useSignUp();
+  const signUp = useSignUp();
+  const { errors } = form.formState;
 
   return (
-    <Form
-      id={formId}
-      formMethods={form}
-      onValidSubmit={async (data) => {
-        await signUpMutation.mutate(data);
-      }}
+    <form
+      onSubmit={form.handleSubmit((data) => {
+        signUp.mutate(data);
+      })}
     >
-      <Stack spacing={3}>
-        <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
-          Sign Up
-        </Typography>
-        <FormErrors errors={signUpMutation?.error?.messages} />
-        <TextField
-          name="firstName"
-          type="text"
-          label="First Name"
-          fullWidth
-          isInvalid={!!form.formState.errors?.firstName?.message}
-          helperText={form.formState.errors?.firstName?.message}
-        />
-        <TextField
-          name="lastName"
-          type="text"
-          label="Last Name"
-          fullWidth
-          isInvalid={!!form.formState.errors?.lastName?.message}
-          helperText={form.formState.errors?.lastName?.message}
-        />
-        <TextField
-          name="email"
-          type="email"
-          label="Email"
-          fullWidth
-          isInvalid={!!form.formState.errors?.email?.message}
-          helperText={form.formState.errors?.email?.message}
-        />
+      <h2 className="text-4xl sm:text-6xl font-bold pb-3">Sign Up</h2>
 
-        <TextField
-          name="password"
-          type="password"
-          label="Password"
-          fullWidth
-          isInvalid={!!form.formState.errors?.password?.message}
-          helperText={form.formState.errors?.password?.message}
-        />
-        <Button
-          color="primary"
+      <div className="pt-4 flex flex-col gap-5">
+        {signUp?.error?.messages && (
+          <ul className="text-error list-disc list-inside">
+            {signUp.error.messages.map((msg) => {
+              return <li>{msg}</li>;
+            })}
+          </ul>
+        )}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">First Name</span>
+          </label>
+          <input
+            type="text"
+            id="form-first-name"
+            data-testid="form-first-name"
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.firstName,
+            })}
+            {...form.register('firstName')}
+          />
+          {errors.firstName?.message && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors.firstName.message}
+              </span>
+            </label>
+          )}
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Last Name</span>
+          </label>
+          <input
+            type="text"
+            id="form-last-name"
+            data-testid="form-last-name"
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.lastName,
+            })}
+            {...form.register('lastName')}
+          />
+          {errors.lastName?.message && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors.lastName.message}
+              </span>
+            </label>
+          )}
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            id="form-email"
+            data-testid="form-email"
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.email,
+            })}
+            {...form.register('email')}
+          />
+          {errors.email?.message && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors.email.message}
+              </span>
+            </label>
+          )}
+        </div>
+
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Password</span>
+          </label>
+          <input
+            type="password"
+            id="form-password"
+            data-testid="form-password"
+            {...form.register('password')}
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.password,
+            })}
+          />
+          {errors.password?.message && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors.password.message}
+              </span>
+            </label>
+          )}
+        </div>
+
+        <button
           type="submit"
-          variant="contained"
-          form={formId}
-          disabled={form.formState.isSubmitting || signUpMutation.isLoading}
-          loading={form.formState.isSubmitting || signUpMutation.isLoading}
+          disabled={form.formState.isSubmitting || signUp.isLoading}
+          className={cn('btn btn-primary mt-4', {
+            loading: form.formState.isSubmitting || signUp.isLoading,
+          })}
         >
           Sign Up
-        </Button>
-      </Stack>
-    </Form>
+        </button>
+
+        <p>
+          Already have an account?
+          <a href="/auth/login" className="font-bold">
+            {' '}
+            Log in
+          </a>
+        </p>
+      </div>
+    </form>
   );
 }

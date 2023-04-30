@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithQueryClient } from '@tests/query-client';
 import { rest, server } from '@tests/server';
 import { JobCard } from './job-card';
-import { useRouterMock } from '@tests/next-navigation.mock';
+import { mockRouter } from '@tests/next-navigation.mock';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 
@@ -18,15 +18,10 @@ describe('Job Card', () => {
     await expect(screen.findByText(jobMock.company)).toBeTruthy();
   });
   it('redirects user to job page when clicked', async () => {
-    let pushUrl = '';
-    useRouterMock.push.mockImplementation((url) => {
-      pushUrl = url;
-    });
-
     renderWithQueryClient(<JobCard job={jobMock} jobLists={jobListMocks} />);
     const titleELement = await screen.findByText(jobMock.title);
     await userEvent.click(titleELement);
-    expect(pushUrl).toBe(`/dashboard/job/${jobMock.id}`);
+    expect(mockRouter.pathname).toBe(`/dashboard/job/${jobMock.id}`);
   });
   it('updates job list', async () => {
     // select a job list that is not currently linked to current job
