@@ -43,13 +43,9 @@ describe('Job Card', () => {
 
     renderWithQueryClient(<JobCard job={jobMock} jobLists={jobListMocks} />);
 
-    const jobListButton = await screen
-      .findAllByRole<HTMLButtonElement>('button')
-      .then((buttons) => {
-        const button = buttons.find((btn) => btn.name === 'job list');
-        if (!button) throw new Error('cannot find Job List button');
-        return button;
-      });
+    const jobListButton = await screen.findByTestId<HTMLButtonElement>(
+      'job-list-button'
+    );
 
     await userEvent.click(jobListButton);
 

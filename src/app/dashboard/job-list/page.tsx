@@ -1,5 +1,4 @@
 'use client';
-import { Grid } from '@common/ui/atoms';
 import { JobListTopMenu, JobListTabContent, JobListTabs } from './ui';
 
 export default function JobListPage() {
@@ -11,7 +10,7 @@ export default function JobListPage() {
       <div>
         <JobListTabs />
       </div>
-      <div>
+      <div className="pt-3">
         <JobListTabContent />
       </div>
     </div>

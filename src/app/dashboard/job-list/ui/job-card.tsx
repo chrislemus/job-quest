@@ -1,18 +1,9 @@
 import { useUpdateJob } from '@app/dashboard/job/hooks';
 import { JobEntity } from '@api/job-quest/job/job.entity';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
-import { MoveUpIcon } from '@common/ui/icons';
 import { theme } from '@common/theme';
-import { PropsWithoutRef, useMemo, useState } from 'react';
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@common/ui/atoms';
+import { PropsWithoutRef, useMemo } from 'react';
+import cn from 'classnames';
 import { useRouter } from 'next/navigation';
 
 type JobCardProps = {
@@ -28,69 +19,79 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
     return theme.palette.getContrastText(backgroundColor);
   }, [backgroundColor]);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
-    <Card sx={{ minWidth: 275 }} style={{ backgroundColor }}>
-      <CardActionArea onClick={() => router.push(`/dashboard/job/${p.job.id}`)}>
-        <CardContent>
-          <Typography variant="button" noWrap display="block" color={textColor}>
-            <strong>{p.job.title}</strong>
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color={textColor}>
-            {p.job.company}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <IconButton
-        role="button"
-        name="job list"
-        onClick={(e) => {
-          setAnchorEl(e.currentTarget);
-        }}
-      >
-        <MoveUpIcon />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={!!anchorEl}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        {editJobMutation.isLoading ? (
-          <MenuItem>Loading...</MenuItem>
-        ) : (
-          p.jobLists.map((list) => {
-            return (
-              <MenuItem
-                key={list.id}
-                disabled={p.job.jobListId === list.id}
-                onClick={() => {
-                  editJobMutation.mutate(
-                    {
-                      jobId: p.job.id,
-                      data: { jobListId: list.id },
-                    },
-                    {
-                      onSuccess: () => {
-                        handleClose();
-                      },
-                    }
-                  );
-                }}
+    <div
+      className="card bg-base-100 shadow-xl h-24"
+      style={{ backgroundColor }}
+    >
+      <div className="flex">
+        <a
+          className="flex-1 cursor-pointer text-left p-5"
+          onClick={() => router.push(`/dashboard/job/${p.job.id}`)}
+          href={`/dashboard/job/${p.job.id}`}
+          style={{ color: textColor }}
+        >
+          <p className=" font-bold">{p.job.title} </p>
+          <p>{p.job.company}</p>
+        </a>
+        <div className="p-2">
+          <div className="dropdown dropdown-left">
+            <label
+              tabIndex={0}
+              className="btn btn-square btn-sm btn-ghost text-zinc-200"
+              data-testid="job-list-button"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
               >
-                {list.label}
-              </MenuItem>
-            );
-          })
-        )}
-      </Menu>
-    </Card>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"
+                />
+              </svg>
+            </label>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box"
+            >
+              {editJobMutation.isLoading ? (
+                <li className="animate-pulse">
+                  <a>Loading...</a>
+                </li>
+              ) : (
+                p.jobLists.map((list) => {
+                  const disabled = p.job.jobListId === list.id;
+                  return (
+                    <li
+                      key={list.id}
+                      className={cn({ disabled: disabled })}
+                      onClick={() => {
+                        if (!disabled)
+                          editJobMutation.mutate({
+                            jobId: p.job.id,
+                            data: { jobListId: list.id },
+                          });
+                      }}
+                    >
+                      <a>{list.label}</a>
+                    </li>
+                  );
+                })
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   );
+}
+
+export function JobCardLoading() {
+  return <div className="h-24 w-full bg-gray-300 animate-pulse card" />;
 }
