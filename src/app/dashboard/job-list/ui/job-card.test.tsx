@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithQueryClient } from '@tests/query-client';
 import { rest, server } from '@tests/server';
 import { JobCard } from './job-card';
-import { mockRouter } from '@tests/next-navigation.mock';
+import { mockRouter, MemoryRouterProvider } from '@tests/next-navigation.mock';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 
@@ -17,12 +17,18 @@ describe('Job Card', () => {
     await expect(screen.findByText(jobMock.title)).toBeTruthy();
     await expect(screen.findByText(jobMock.company)).toBeTruthy();
   });
+
   it('redirects user to job page when clicked', async () => {
-    renderWithQueryClient(<JobCard job={jobMock} jobLists={jobListMocks} />);
+    renderWithQueryClient(
+      <MemoryRouterProvider>
+        <JobCard job={jobMock} jobLists={jobListMocks} />
+      </MemoryRouterProvider>
+    );
     const titleELement = await screen.findByText(jobMock.title);
     await userEvent.click(titleELement);
-    expect(mockRouter.pathname).toBe(`/dashboard/job/${jobMock.id}`);
+    expect(mockRouter.asPath).toBe(`/dashboard/job/${jobMock.id}`);
   });
+
   it('updates job list', async () => {
     // select a job list that is not currently linked to current job
     const jobListSelection = jobListMocks.find(
@@ -44,14 +50,21 @@ describe('Job Card', () => {
     renderWithQueryClient(<JobCard job={jobMock} jobLists={jobListMocks} />);
 
     const jobListButton = await screen.findByTestId<HTMLButtonElement>(
-      'job-list-button'
+      'job-list-menu'
     );
 
     await userEvent.click(jobListButton);
 
     await screen
-      .findByRole('menuitem', { name: jobListSelection.label })
-      .then((el) => userEvent.click(el));
+      .findAllByTestId('job-list-menu-item')
+      .then(async (menuItems) => {
+        const menuItem = menuItems.find((item) => {
+          return item.textContent === jobListSelection.label;
+        });
+        if (menuItem) {
+          await userEvent.click(menuItem);
+        }
+      });
 
     expect(postData).toEqual({ jobListId: jobListSelection.id });
   });

@@ -5,6 +5,7 @@ import { theme } from '@common/theme';
 import { PropsWithoutRef, useMemo } from 'react';
 import cn from 'classnames';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type JobCardProps = {
   job: JobEntity;
@@ -23,23 +24,24 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
     <div
       className="card bg-base-100 shadow-xl h-24"
       style={{ backgroundColor }}
+      data-testid="job-card"
     >
       <div className="flex">
-        <a
+        <Link
           className="flex-1 cursor-pointer text-left p-5"
-          onClick={() => router.push(`/dashboard/job/${p.job.id}`)}
+          // onClick={() => router.push(`/dashboard/job/${p.job.id}`)}
           href={`/dashboard/job/${p.job.id}`}
           style={{ color: textColor }}
         >
           <p className=" font-bold">{p.job.title} </p>
           <p>{p.job.company}</p>
-        </a>
+        </Link>
         <div className="p-2">
           <div className="dropdown dropdown-left">
             <label
               tabIndex={0}
               className="btn btn-square btn-sm btn-ghost text-zinc-200"
-              data-testid="job-list-button"
+              data-testid="job-list-menu"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,6 +72,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
                   return (
                     <li
                       key={list.id}
+                      data-testid="job-list-menu-item"
                       className={cn({ disabled: disabled })}
                       onClick={() => {
                         if (!disabled)

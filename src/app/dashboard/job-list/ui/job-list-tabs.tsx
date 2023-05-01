@@ -42,6 +42,7 @@ export function JobListTabs() {
             {jobLists.map(({ id, label }) => (
               <a
                 key={id}
+                data-testid="job-list-tab"
                 onClick={() => setActiveJobList(id)}
                 className={cn(
                   activeJobList == id
