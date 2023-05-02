@@ -29,7 +29,6 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
       <div className="flex">
         <Link
           className="flex-1 cursor-pointer text-left p-5"
-          // onClick={() => router.push(`/dashboard/job/${p.job.id}`)}
           href={`/dashboard/job/${p.job.id}`}
           style={{ color: textColor }}
         >

@@ -1,36 +1,36 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { JobLogSection, JobMain } from './ui';
 import { useJob } from '@app/dashboard/job/hooks';
-import { ArrowBackIosIcon } from '@common/ui/icons';
 import { useRouter } from 'next/navigation';
-import {
-  Button,
-  Container,
-  Grid,
-  Skeleton,
-  Tab,
-  Tabs,
-  Typography,
-} from '@common/ui/atoms';
-
-type JobProps = {
-  params: { id: string };
-};
+import { Grid, Skeleton } from '@common/ui/atoms';
+import { useParams, usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import cn from 'classnames';
 
 const tabs = {
   info: 'Info',
-  logs: 'Logs',
+  log: 'Log',
 } as const;
 
-type TabKeys = typeof tabs[keyof typeof tabs];
-
-export default function Job(p: JobProps) {
+export default function Job() {
   const router = useRouter();
-  const jobId = parseInt(p.params.id);
+  const jobId = +useParams().id;
+  const searchParams = useSearchParams();
+  const selectedTab = searchParams.get('tab') || tabs.info;
   const jobQuery = useJob(jobId);
   const jobQueryData = jobQuery?.data?.data;
-  const [activeTab, setActiveTab] = useState<TabKeys>(tabs.info);
+
+  const pathname = usePathname();
+
+  const qs = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   if (jobQuery.isLoading)
     return (
@@ -38,44 +38,63 @@ export default function Job(p: JobProps) {
         <Skeleton height={500} />
       </Grid>
     );
+
   return (
-    <Container>
+    <div className="container mx-auto">
       {jobQueryData && (
-        <Grid container>
-          <Grid xs={12}>
-            <Button
-              startIcon={<ArrowBackIosIcon />}
+        <div className="grid grid-cols-1 gap-4">
+          <div>
+            <button
+              className="btn btn-primary gap-2 btn-outline"
               onClick={() => {
-                router.push('/dashboard/job-list');
+                router.back();
               }}
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                />
+              </svg>
               Back
-            </Button>
-          </Grid>
-          <Grid xs={12}>
-            <Typography variant="h4">{jobQueryData.title}</Typography>
-            <Typography variant="subtitle1">{jobQueryData.company}</Typography>
-          </Grid>
-          <Grid xs={12}>
-            <Tabs
-              onChange={(_e, newValue: TabKeys) => {
-                setActiveTab(newValue);
-              }}
-              aria-label="Job Nav"
-              value={activeTab}
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              <Tab label={tabs.info} value={tabs.info} />
-              <Tab label={tabs.logs} value={tabs.logs} />
-            </Tabs>
-          </Grid>
-          <Grid xs={12} paddingY={2}>
-            {activeTab === 'Info' && <JobMain job={jobQueryData} />}
-            {activeTab === 'Logs' && <JobLogSection jobId={jobQueryData.id} />}
-          </Grid>
-        </Grid>
+            </button>
+          </div>
+          <div>
+            <h1 className="font-semibold text-3xl">{jobQueryData.title} </h1>
+            <p className="mt-1 max-w-2xl text-xl">{jobQueryData.company} </p>
+          </div>
+          <div className="tabs">
+            {Object.values(tabs).map((tab) => {
+              return (
+                <Link
+                  key={tab}
+                  className={cn('tab tab-bordered tab-lg', {
+                    'tab-active': selectedTab === tab,
+                  })}
+                  replace
+                  href={`${pathname}?${qs('tab', tab)}`}
+                >
+                  {tab}
+                </Link>
+              );
+            })}
+          </div>
+          <div>
+            {selectedTab === tabs.info && <JobMain job={jobQueryData} />}
+            {selectedTab === tabs.log && (
+              <JobLogSection jobId={jobQueryData.id} />
+            )}
+          </div>
+        </div>
       )}
-    </Container>
+    </div>
   );
 }
