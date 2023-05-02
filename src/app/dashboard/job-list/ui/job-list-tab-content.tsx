@@ -2,13 +2,10 @@ import { useMemo, useState } from 'react';
 import { JobCard, JobCardLoading } from './job-card';
 import { useJobs } from '@app/dashboard/job/hooks';
 import { useActiveJobList, useJobLists } from '@app/dashboard/job-list/hooks';
-import { useBoolean } from '@common/hooks';
-import { AddJobModal } from './add-job-modal';
 import cn from 'classnames';
 
-export function JobListTabContent() {
+export function JobListTabContent(p: { toggleAddJobModal: () => void }) {
   const [activeJobList] = useActiveJobList();
-  const [activeModal, setActiveModal] = useBoolean();
   const JobsListQuery = useJobLists();
   const jobLists = JobsListQuery.data?.data || [];
   const jobsQuery = useJobs(
@@ -45,17 +42,9 @@ export function JobListTabContent() {
         jobsElements
       ) : (
         <div>
-          <button
-            aria-label="add-job"
-            className="btn btn-primary"
-            onClick={setActiveModal.toggle}
-          >
+          <button className="btn btn-primary" onClick={p.toggleAddJobModal}>
             Add
           </button>
-          <AddJobModal
-            active={activeModal}
-            toggleActive={setActiveModal.toggle}
-          />
         </div>
       )}
     </div>

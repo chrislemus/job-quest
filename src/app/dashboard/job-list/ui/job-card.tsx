@@ -4,8 +4,8 @@ import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 import { theme } from '@common/theme';
 import { PropsWithoutRef, useMemo } from 'react';
 import cn from 'classnames';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 
 type JobCardProps = {
   job: JobEntity;
@@ -13,7 +13,6 @@ type JobCardProps = {
 };
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
-  const router = useRouter();
   const editJobMutation = useUpdateJob();
   const backgroundColor = p.job.color || '#ffff';
   const textColor = useMemo(() => {
@@ -39,23 +38,11 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
           <div className="dropdown dropdown-left">
             <label
               tabIndex={0}
-              className="btn btn-square btn-sm btn-ghost text-zinc-200"
+              className="btn btn-square btn-sm btn-ghost"
+              style={{ color: textColor }}
               data-testid="job-list-menu"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"
-                />
-              </svg>
+              <EllipsisVerticalIcon className="w-6 h-6" />
             </label>
             <ul
               tabIndex={0}
