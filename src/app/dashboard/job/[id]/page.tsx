@@ -1,12 +1,13 @@
 'use client';
-import { useCallback, useState } from 'react';
-import { JobLogSection, JobMain } from './ui';
+import { useCallback } from 'react';
+import { JobLogTab, JobInfoTab } from './ui';
 import { useJob } from '@app/dashboard/job/hooks';
 import { useRouter } from 'next/navigation';
 import { Grid, Skeleton } from '@common/ui/atoms';
 import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import cn from 'classnames';
+import { ChevronLeftIcon } from '@heroicons/react/20/solid';
 
 const tabs = {
   info: 'Info',
@@ -45,25 +46,12 @@ export default function Job() {
         <div className="grid grid-cols-1 gap-4">
           <div>
             <button
-              className="btn btn-primary gap-2 btn-outline"
+              className="btn btn-primary btn-outline btn-sm"
               onClick={() => {
                 router.back();
               }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 19.5L8.25 12l7.5-7.5"
-                />
-              </svg>
+              <ChevronLeftIcon className="w-6 h-6" />
               Back
             </button>
           </div>
@@ -88,10 +76,8 @@ export default function Job() {
             })}
           </div>
           <div>
-            {selectedTab === tabs.info && <JobMain job={jobQueryData} />}
-            {selectedTab === tabs.log && (
-              <JobLogSection jobId={jobQueryData.id} />
-            )}
+            {selectedTab === tabs.info && <JobInfoTab job={jobQueryData} />}
+            {selectedTab === tabs.log && <JobLogTab jobId={jobQueryData.id} />}
           </div>
         </div>
       )}

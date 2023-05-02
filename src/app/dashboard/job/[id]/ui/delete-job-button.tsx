@@ -1,9 +1,6 @@
 'use client';
-import { Modal } from '@common/ui/molecules';
-import { useBoolean } from '@common/hooks';
 import { useRouter } from 'next/navigation';
 import { useDeleteJob } from '@app/dashboard/job/hooks';
-import { Button, Grid, Box, Typography } from '@common/ui/atoms';
 import { useId } from 'react';
 import cn from 'classnames';
 
@@ -24,7 +21,7 @@ export function DeleteJobButton(p: DeleteJobButtonProps) {
 
       <input type="checkbox" id={modalId} className="modal-toggle" />
       <label htmlFor={modalId} className="modal cursor-pointer">
-        <label className="modal-box relative" htmlFor="">
+        <label className="modal-box relative" htmlFor={modalId}>
           <label
             htmlFor={modalId}
             className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"

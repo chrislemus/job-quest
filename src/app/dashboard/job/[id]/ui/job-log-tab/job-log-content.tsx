@@ -1,24 +1,15 @@
 import { useDeleteJobLog } from '@app/dashboard/job-log/hooks';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
 import { useBoolean } from '@common/hooks';
-import { MoreHorizIcon } from '@common/ui/icons';
 import { UpdateJobLogForm } from './update-job-log-form';
-import { Bars3Icon } from '@heroicons/react/20/solid';
-import {
-  Box,
-  Grid,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@common/ui/atoms';
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 
 type JobLogItemProps = {
   jobLog: JobLogEntity;
 };
 
-export function JobLogItem(p: JobLogItemProps) {
+export function JobLogContent(p: JobLogItemProps) {
   const updatedDate = useMemo(
     () => new Date(p.jobLog.updatedAt).toLocaleDateString(),
     [p.jobLog.updatedAt]
@@ -37,11 +28,8 @@ export function JobLogItem(p: JobLogItemProps) {
         </div>
         <div>
           <div className="dropdown dropdown-end">
-            <label
-              tabIndex={0}
-              className="h-6 w-6 hover:cursor-pointer hover:opacity-70"
-            >
-              <Bars3Icon className="h-5 w-5 text-gray-400" />
+            <label tabIndex={0} className="h-5 w-5 hover:cursor-pointer">
+              <EllipsisVerticalIcon className="h-5 w-5 text-gray-400" />
             </label>
             <ul
               tabIndex={0}

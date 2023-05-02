@@ -15,7 +15,7 @@ import React from 'react';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
 import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 
-type JobMainProps = {
+type JobInfoTabProps = {
   job: JobEntity;
 };
 
@@ -40,7 +40,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 );
 TextField.displayName = 'TextField';
 
-export function JobMain(p: JobMainProps) {
+export function JobInfoTab(p: JobInfoTabProps) {
   const dispatch = useAppDispatch();
   const displaySuccessToast = () => {
     dispatch(

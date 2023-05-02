@@ -1,22 +1,21 @@
 import { useUserProfile } from '@app/user/hooks';
 import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogs } from '@app/dashboard/job-log/hooks';
-import { JobLogItem } from './job-log-item';
+import { JobLogContent } from './job-log-content';
 import { AddJobLogForm } from './add-job-log-form';
-import { Avatar, Grid } from '@common/ui/atoms';
 
-type JobLogSectionProps = {
+type JobLogTabProps = {
   jobId: number;
 };
 
-export function JobLogSection(p: JobLogSectionProps) {
+export function JobLogTab(p: JobLogTabProps) {
   const jobLogsQuery = useJobLogs(p.jobId);
   const jobLogsQueryData = jobLogsQuery.data?.data;
 
   const logs = useMemo(() => {
     return jobLogsQueryData?.map((jobLog) => (
       <JobLogContainer key={jobLog.id}>
-        <JobLogItem jobLog={jobLog} />
+        <JobLogContent jobLog={jobLog} />
       </JobLogContainer>
     ));
   }, [jobLogsQueryData]);
@@ -39,7 +38,7 @@ function JobLogContainer(p: PropsWithChildren<{}>) {
     <div className="flex gap-2">
       <div>
         <div className="avatar placeholder">
-          <div className=" bg-gray-300  text-white rounded-full w-8">
+          <div className=" bg-gray-300  text-white rounded-full w-6">
             <span>{firstNameInitial}</span>
           </div>
         </div>
