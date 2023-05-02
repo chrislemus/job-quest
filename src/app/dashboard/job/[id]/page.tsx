@@ -40,7 +40,7 @@ export default function Job() {
     );
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto min-h-screen">
       {jobQueryData && (
         <div className="grid grid-cols-1 gap-4">
           <div>

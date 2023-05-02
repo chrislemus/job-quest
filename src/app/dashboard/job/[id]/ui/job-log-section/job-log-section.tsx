@@ -5,24 +5,6 @@ import { JobLogItem } from './job-log-item';
 import { AddJobLogForm } from './add-job-log-form';
 import { Avatar, Grid } from '@common/ui/atoms';
 
-function JobLogContainer(p: PropsWithChildren<{}>) {
-  const user = useUserProfile();
-  const firstNameInitial = user.data?.firstName?.[0] || '?';
-
-  return (
-    <Grid xs={12}>
-      <Grid container columnSpacing={1} flexWrap="nowrap">
-        <Grid>
-          <Avatar sx={{ width: 24, height: 24 }}>{firstNameInitial}</Avatar>
-        </Grid>
-        <Grid flexGrow={1} style={{ width: '100%' }}>
-          {p.children}
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-}
-
 type JobLogSectionProps = {
   jobId: number;
 };
@@ -40,11 +22,29 @@ export function JobLogSection(p: JobLogSectionProps) {
   }, [jobLogsQueryData]);
 
   return (
-    <Grid container rowSpacing={2}>
+    <div className="grid grid-cols-1 gap-4">
       {logs}
       <JobLogContainer>
         <AddJobLogForm jobId={p.jobId} />
       </JobLogContainer>
-    </Grid>
+    </div>
+  );
+}
+
+function JobLogContainer(p: PropsWithChildren<{}>) {
+  const user = useUserProfile();
+  const firstNameInitial = user.data?.firstName?.[0] || '?';
+
+  return (
+    <div className="flex gap-2">
+      <div>
+        <div className="avatar placeholder">
+          <div className=" bg-gray-300  text-white rounded-full w-8">
+            <span>{firstNameInitial}</span>
+          </div>
+        </div>
+      </div>
+      <div className="grow">{p.children}</div>
+    </div>
   );
 }
