@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { JobCard, JobCardLoading } from './job-card';
 import { useJobs } from '@app/dashboard/job/hooks';
 import { useActiveJobList, useJobLists } from '@app/dashboard/job-list/hooks';
-import cn from 'classnames';
 
 export function JobListTabContent(p: { toggleAddJobModal: () => void }) {
   const [activeJobList] = useActiveJobList();
@@ -75,7 +74,7 @@ function JobListTabContentError(p: { refetchFn: () => Promise<void> }) {
       </p>
       <div className="flex-none">
         <button
-          className={cn('btn btn-ghost', { loading: loading })}
+          className="btn btn-ghost disabled:loading"
           disabled={loading}
           onClick={async () => {
             setLoading(true);
