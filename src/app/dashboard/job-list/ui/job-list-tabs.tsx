@@ -1,4 +1,5 @@
 import { useActiveJobList, useJobLists } from '@app/dashboard/job-list/hooks';
+import { XCircleIcon } from '@heroicons/react/20/solid';
 import cn from 'classnames';
 
 export function JobListTabs() {
@@ -10,7 +11,8 @@ export function JobListTabs() {
     return <div className="h-14 w-full bg-gray-300 animate-pulse rounded" />;
 
   const noData = !jobLists || !activeJobList;
-  if (jobsListQuery.isError || noData) return <JobListTabsError />;
+  if (jobsListQuery.isError || noData)
+    return <JobListTabsError refetchFn={jobsListQuery.refetch} />;
 
   return (
     <div>
@@ -44,6 +46,7 @@ export function JobListTabs() {
                 key={id}
                 data-testid="job-list-tab"
                 onClick={() => setActiveJobList(id)}
+                aria-selected={activeJobList == id}
                 className={cn(
                   activeJobList == id
                     ? 'border-primary text-primary'
@@ -62,36 +65,19 @@ export function JobListTabs() {
   );
 }
 
-function JobListTabsError() {
-  const jobsListQuery = useJobLists();
-
+function JobListTabsError(p: { refetchFn: () => void }) {
   return (
     <div className="alert alert-error text-center shadow-lg text-error-content">
       <p>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="stroke-current flex-shrink-0 h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+        <XCircleIcon className="flex-shrink-0 h-6 w-6" />
         Failed to load job list nav.
         <br />
       </p>
       <div className="flex-none">
         <button
-          className={cn('btn btn-ghost', {
-            loading: jobsListQuery.isLoading,
-          })}
-          disabled={jobsListQuery.isLoading}
+          className="btn btn-ghost"
           onClick={() => {
-            jobsListQuery.refetch();
+            p.refetchFn();
           }}
         >
           Retry

@@ -9,11 +9,7 @@ import { useModal } from '@/common/hooks';
 
 export const MODAL_ID = 'addJob';
 
-type NewJobModalContentProps = {
-  modalId: string;
-};
-
-export function AddJobModal(p: NewJobModalContentProps) {
+export function AddJobModal() {
   const formId = 'new-job';
   const modal = useModal(MODAL_ID);
 

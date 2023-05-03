@@ -10,7 +10,7 @@ export default function JobListPage() {
     <div className="flex flex-col gap-3">
       {/* Top Nav */}
       <div className="flex justify-end">
-        <button className="btn btn-primary" onClick={toggleAddJobModal}>
+        <button className="btn btn-primary" onClick={() => modal.toggle()}>
           Add
         </button>
       </div>
@@ -20,7 +20,7 @@ export default function JobListPage() {
       <div className="pt-3">
         <JobListTabContent toggleAddJobModal={toggleAddJobModal} />
       </div>
-      <AddJobModal modalId={MODAL_ID} />
+      <AddJobModal />
     </div>
   );
 }
