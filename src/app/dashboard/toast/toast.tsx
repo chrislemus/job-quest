@@ -1,50 +1,60 @@
-import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@app/dashboard/store';
-import { currentToastDone } from '@app/dashboard/toast/toast.slice';
-import { Alert } from '@common/ui/atoms/alert';
+import { dequeueToast, ToastType } from '@app/dashboard/toast/toast.slice';
+import * as _Toast from '@radix-ui/react-toast';
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  XCircleIcon,
+  InformationCircleIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
+import cn from 'classnames';
+
+type Icon = typeof InformationCircleIcon;
+const ToastIcon: Record<ToastType, Icon> = {
+  info: InformationCircleIcon,
+  success: CheckCircleIcon,
+  warning: ExclamationCircleIcon,
+  error: XCircleIcon,
+};
 
 export function Toast() {
   const dispatch = useAppDispatch();
   const toast = useAppSelector((state) => state.toast.currentToast);
   const [open, setOpen] = useState(false);
+  const toastType = toast?.type ?? 'info';
+  const Icon = ToastIcon[toastType];
 
-  const handleClose = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') return;
-    setOpen(false);
-  };
-
-  // use effect logic below is to trigger close effect on Alert onCLose listener.
-  // If there are two notifications, by default the second toast would remain open until manually closes it
-  // `autoHideDuration` would not work
   useEffect(() => {
-    if (!open) dispatch(currentToastDone());
-  }, [open]);
-  useEffect(() => {
-    if (toast) setOpen(true);
-  }, [toast]);
+    if (toast && !open) setOpen(true);
+  }, [toast, open]);
 
   return (
-    <Stack spacing={2} sx={{ width: '100%' }}>
-      <Snackbar
-        open={open && !!toast}
-        autoHideDuration={6000}
-        onClose={handleClose}
+    <_Toast.Provider>
+      <_Toast.Root
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+          if (!isOpen) dispatch(dequeueToast());
+        }}
+        className={cn('alert shadow-lg', {
+          'alert-success': toastType === 'success',
+          'alert-info': toastType === 'info',
+          'alert-warning': toastType === 'warning',
+          'alert-error': toastType === 'error',
+        })}
       >
-        <Alert
-          elevation={6}
-          variant="outlined"
-          onClose={handleClose}
-          severity={toast?.type}
-          sx={{ width: '100%' }}
-        >
+        <_Toast.Description>
+          <Icon className="w-6 h-6 " />
           {toast?.message}
-        </Alert>
-      </Snackbar>
-    </Stack>
+        </_Toast.Description>
+        <_Toast.Close>
+          <XMarkIcon className="w-6 h-6" />
+        </_Toast.Close>
+      </_Toast.Root>
+
+      <_Toast.Viewport className="toast toast-start z-30" />
+    </_Toast.Provider>
   );
 }
