@@ -29,10 +29,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
       <div className="flex">
         <Link
           className="flex-1 cursor-pointer text-left p-5 "
-          href={{
-            pathname: '/dashboard/job/[id]',
-            query: { id: `${p.job.id}` },
-          }}
+          href={`/dashboard/job/${p.job.id}`}
         >
           <p className="font-bold">{p.job.title} </p>
           <p>{p.job.company}</p>
