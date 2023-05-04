@@ -1,11 +1,11 @@
 import { useUpdateJob } from '@app/dashboard/job/hooks';
 import { JobEntity } from '@api/job-quest/job/job.entity';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
-import { theme } from '@common/theme';
 import { PropsWithoutRef, useMemo } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
+import { getContrastText } from '@/common/utils';
 
 type JobCardProps = {
   job: JobEntity;
@@ -14,24 +14,24 @@ type JobCardProps = {
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
   const editJobMutation = useUpdateJob();
-  const backgroundColor = p.job.color || '#ffff';
+  const backgroundColor = p.job.color || '#fff';
+
   const textColor = useMemo(() => {
-    return theme.palette.getContrastText(backgroundColor);
+    return getContrastText(backgroundColor);
   }, [backgroundColor]);
 
   return (
     <div
-      className="card bg-base-100 shadow-xl h-24"
-      style={{ backgroundColor }}
+      className="card bg-base-100 shadow-xl h-24 overflow-clip"
+      style={{ backgroundColor, color: textColor }}
       data-testid="job-card"
     >
       <div className="flex">
         <Link
-          className="flex-1 cursor-pointer text-left p-5"
+          className="flex-1 cursor-pointer text-left p-5 "
           href={`/dashboard/job/${p.job.id}`}
-          style={{ color: textColor }}
         >
-          <p className=" font-bold">{p.job.title} </p>
+          <p className="font-bold">{p.job.title} </p>
           <p>{p.job.company}</p>
         </Link>
         <div className="p-2">
@@ -39,7 +39,6 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
             <label
               tabIndex={0}
               className="btn btn-square btn-sm btn-ghost"
-              style={{ color: textColor }}
               data-testid="job-list-menu"
             >
               <EllipsisVerticalIcon className="w-6 h-6" />

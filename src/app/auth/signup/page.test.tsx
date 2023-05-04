@@ -3,17 +3,11 @@ import SignUp from './page';
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from '@mui/material';
-import { theme } from '@common/theme';
 import { server, rest } from '@tests/server';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 
 it('should display field errors', async () => {
-  renderWithQueryClient(
-    <ThemeProvider theme={theme}>
-      <SignUp />
-    </ThemeProvider>
-  );
+  renderWithQueryClient(<SignUp />);
 
   await screen
     .findByRole('button', { name: /sign up/i })
@@ -32,11 +26,7 @@ it('should display field errors', async () => {
   });
 });
 it('should submit valid form', async () => {
-  renderWithQueryClient(
-    <ThemeProvider theme={theme}>
-      <SignUp />
-    </ThemeProvider>
-  );
+  renderWithQueryClient(<SignUp />);
 
   const data = {
     firstName: 'john',
