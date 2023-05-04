@@ -13,22 +13,12 @@ const tabs = {
 
 export default function JobPage() {
   const jobId = +useParams().id;
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const selectedTab = searchParams.get('tab') || tabs.info;
   const jobQuery = useJob(jobId);
 
   const jobQueryData = jobQuery?.data?.data;
-
-  const pathname = usePathname();
-
-  const qs = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set(name, value);
-      return params.toString();
-    },
-    [searchParams]
-  );
 
   if (jobQuery.isLoading)
     return <div className="h-screen w-full bg-gray-200 animate-pulse card" />;
@@ -50,7 +40,10 @@ export default function JobPage() {
               aria-selected={selectedTab === tab}
               className="tab tab-bordered tab-lg aria-selected:tab-active"
               replace
-              href={`${pathname}?${qs('tab', tab)}`}
+              href={{
+                pathname,
+                query: { tab },
+              }}
             >
               {tab}
             </Link>
