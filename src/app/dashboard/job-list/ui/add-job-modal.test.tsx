@@ -1,8 +1,7 @@
-import { renderHook, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithQueryClient } from '@tests/query-client';
 import { AddJobModal } from './add-job-modal';
 import userEvent from '@testing-library/user-event';
-import { useBoolean } from '@common/hooks';
 import { jobListMocks } from '@api/job-quest/job-list/job-list.mocks';
 import { rest, server } from '@tests/server';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
@@ -12,8 +11,6 @@ import { CreateJobDto } from '../../job/dto';
 
 describe('Add Job Modal', () => {
   test('On valid submit, modal sends post request', async () => {
-    const { result } = renderHook(() => useBoolean(true));
-    const [active, setActive] = result.current;
     const jobList = jobListMocks[0];
 
     let postData: Record<string, any> = {};
@@ -36,9 +33,7 @@ describe('Add Job Modal', () => {
       })
     );
 
-    renderWithQueryClient(
-      <AddJobModal active={active} toggleActive={setActive.toggle} />
-    );
+    renderWithQueryClient(<AddJobModal />);
 
     const data = {
       company: 'acme',
@@ -71,12 +66,7 @@ describe('Add Job Modal', () => {
   });
 
   test('On invalid submit, modal form displays error', async () => {
-    const { result } = renderHook(() => useBoolean(true));
-    const [active, setActive] = result.current;
-
-    renderWithQueryClient(
-      <AddJobModal active={active} toggleActive={setActive.toggle} />
-    );
+    renderWithQueryClient(<AddJobModal />);
 
     const submitButton = await screen.findByRole<HTMLButtonElement>('button', {
       name: /add/i,

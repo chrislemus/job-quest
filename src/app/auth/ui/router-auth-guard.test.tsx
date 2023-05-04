@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { jobQuestApi } from '@api/job-quest';
-import { mockRouter, mockUsePathName } from '@tests/next-navigation.mock';
+import { mockRouter, usePathnameMock } from '@tests/next-navigation.mock';
 import {
   RouterAuthGuard,
   intervalTime,
@@ -12,7 +12,7 @@ const authSpy = jest.spyOn(jobQuestApi.auth, 'isAuthenticated');
 describe('Router Auth Guard', () => {
   test('Unauthenticated user in /dashboard should be redirected to /auth/login ', async () => {
     authSpy.mockImplementation(() => false);
-    mockUsePathName.mockImplementation(() => '/dashboard');
+    usePathnameMock.mockImplementation(() => '/dashboard');
     mockRouter.setCurrentUrl('/dashboard');
 
     render(<RouterAuthGuard />);
@@ -24,7 +24,7 @@ describe('Router Auth Guard', () => {
     'authenticated user should be redirected to /dashboard when link is %s',
     (pathName) => {
       authSpy.mockImplementation(() => true);
-      mockUsePathName.mockImplementation(() => pathName);
+      usePathnameMock.mockImplementation(() => pathName);
 
       render(<RouterAuthGuard />);
       expect(mockRouter.pathname).toBe('/dashboard');
@@ -34,7 +34,7 @@ describe('Router Auth Guard', () => {
   test(`should continuously check for authentication `, async () => {
     jest.useFakeTimers();
     authSpy.mockImplementation(() => false);
-    mockUsePathName.mockImplementation(() => '/dashboard');
+    usePathnameMock.mockImplementation(() => '/dashboard');
 
     render(<RouterAuthGuard />);
     jest.advanceTimersByTime(intervalTime * 2.1);

@@ -1,8 +1,15 @@
 import mockRouter from 'next-router-mock';
-import { mockUsePathnameFactory } from './jest.setup';
+import { usePathnameMockFactory } from './jest.setup';
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 
-const mockUsePathName = jest.requireMock('next/navigation')
-  .usePathname as ReturnType<typeof mockUsePathnameFactory>;
+const usePathnameMock = jest.requireMock('next/navigation')
+  .usePathname as ReturnType<typeof usePathnameMockFactory>;
+const useSearchParamsMock = jest.requireMock('next/navigation')
+  .usePathname as ReturnType<typeof usePathnameMockFactory>;
 
-export { mockRouter, mockUsePathName, MemoryRouterProvider };
+export {
+  mockRouter,
+  usePathnameMock,
+  useSearchParamsMock,
+  MemoryRouterProvider,
+};

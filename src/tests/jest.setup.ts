@@ -6,14 +6,22 @@ import '@testing-library/jest-dom';
 import 'reflect-metadata';
 import { server } from './server';
 import { usePathname as _usePathname } from 'next/navigation';
-import { mockUsePathName } from './next-navigation.mock';
+import { useSearchParams as _useSearchParams } from 'next/navigation';
+import { usePathnameMock, useSearchParamsMock } from './next-navigation.mock';
 
 const defaultMockPath = '/defaultMockPath';
-export function mockUsePathnameFactory() {
+export function usePathnameMockFactory() {
   return jest.fn<
     ReturnType<typeof _usePathname>,
     Parameters<typeof _usePathname>
   >(() => defaultMockPath);
+}
+
+const useSearchParamsDefaultMock = '';
+export function useSearchParamsFactory() {
+  return jest.fn<string, Parameters<typeof _useSearchParams>>(
+    () => useSearchParamsDefaultMock
+  );
 }
 
 jest.mock('next/navigation', () => {
@@ -23,7 +31,8 @@ jest.mock('next/navigation', () => {
   return {
     __esModule: true,
     ...originalModule,
-    usePathname: mockUsePathnameFactory(),
+    usePathname: usePathnameMockFactory(),
+    useSearchParams: useSearchParamsFactory(),
   };
 });
 
@@ -36,7 +45,8 @@ beforeAll(() => {
 // so they don't affect other tests.
 afterEach(() => {
   server.resetHandlers();
-  mockUsePathName.mockImplementation(() => defaultMockPath);
+  usePathnameMock.mockImplementation(() => defaultMockPath);
+  useSearchParamsMock.mockImplementation(() => useSearchParamsDefaultMock);
 });
 
 // Clean up after the tests are finished.
