@@ -1,12 +1,11 @@
 'use client';
 import '../styles/global.css';
+import 'reflect-metadata';
 import * as React from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { PropsWithChildren } from 'react';
 import { queryClient } from '@common/query-client';
-import 'reflect-metadata';
 
-export default function RootLayout(p: PropsWithChildren<{}>) {
+export default function RootLayout(p: React.PropsWithChildren<{}>) {
   return (
     <html data-theme="emerald">
       <head>

@@ -1,6 +1,6 @@
 'use client';
-import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
+import { useForm } from 'react-hook-form';
 import { useSignUp } from '@app/auth/hooks';
 import cn from 'classnames';
 import { UserSignUp } from '@app/auth/dto';

@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { FieldErrors } from 'react-hook-form';
 import { toNestError, validateFieldsNatively } from '@hookform/resolvers';
 import { plainToInstance } from 'class-transformer';
