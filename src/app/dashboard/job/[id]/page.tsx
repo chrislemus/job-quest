@@ -16,6 +16,7 @@ export default function JobPage() {
   const searchParams = useSearchParams();
   const selectedTab = searchParams.get('tab') || tabs.info;
   const jobQuery = useJob(jobId);
+
   const jobQueryData = jobQuery?.data?.data;
 
   const pathname = usePathname();

@@ -22,7 +22,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
 
   return (
     <div
-      className="card bg-base-100 shadow-xl h-24 overflow-clip"
+      className="card bg-base-100 shadow-xl h-24"
       style={{ backgroundColor, color: textColor }}
       data-testid="job-card"
     >
@@ -45,7 +45,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
             </label>
             <ul
               tabIndex={0}
-              className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box"
+              className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box text-base-content"
             >
               {editJobMutation.isLoading ? (
                 <li className="animate-pulse">
