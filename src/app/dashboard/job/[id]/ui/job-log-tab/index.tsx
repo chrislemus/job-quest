@@ -1,4 +1,4 @@
-import { useUserProfile } from '@app/user/hooks';
+import { useUser } from '@app/user/hooks';
 import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogs } from '@app/dashboard/job-log/hooks';
 import { JobLogContent } from './job-log-content';
@@ -31,7 +31,7 @@ export function JobLogTab(p: JobLogTabProps) {
 }
 
 function JobLogContainer(p: PropsWithChildren<{}>) {
-  const user = useUserProfile();
+  const user = useUser();
   const firstNameInitial = user.data?.firstName?.[0] || '?';
 
   return (

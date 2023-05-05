@@ -1,10 +1,10 @@
 import { useLogout } from '@app/auth/hooks';
-import { useUserProfile } from '@app/user/hooks';
+import { useUser } from '@app/user/hooks';
 import { useMemo } from 'react';
 import Link from 'next/link';
 
 export function DashboardNav() {
-  const user = useUserProfile();
+  const user = useUser();
   const logoutStore = useLogout();
 
   const userInitials = useMemo(() => {

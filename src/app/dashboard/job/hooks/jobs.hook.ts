@@ -1,59 +1,51 @@
 import { jobQuestApi } from '@api/job-quest';
-import { JobPageRes } from '@api/job-quest/job/dto';
-import { ApiErrorRes } from '@api/job-quest/types';
-import {
-  QueryFunctionContext,
-  useQuery,
-  UseQueryResult,
-} from '@tanstack/react-query';
-import { jobKeys } from '@app/dashboard/job/factories';
+import { JobPageRes as JobsData } from '@api/job-quest/job/dto';
+import { ApiErrorRes as JobsError } from '@api/job-quest/types';
+import { jobQueryKey } from '@app/dashboard/job/constants';
 import { useEffect } from 'react';
 import { useActiveJobList, useJobLists } from '../../job-list/hooks';
 import { queryClient } from '@/common/query-client';
+import { useQuery, UseQueryResult, QueryFunction } from '@tanstack/react-query';
 
-export type JobsData = JobPageRes;
-export type JobsError = ApiErrorRes;
+export { JobsData, type JobsError };
 
-export type JobFilters = Parameters<typeof jobQuestApi.job.getAll>[0];
+export type JobsFilters = Parameters<typeof jobQuestApi.job.getAll>[0];
 
-// function queyFn({
-//   queryKey,
-// }: QueryFunctionContext<ReturnType<(typeof jobKeys)['all']>>) {
-//   const { jobListId } = queryKey[0];
-//   return jobQuestApi.job.getAll({ jobListId });
-// }
+export const jobsQueryKey = jobQueryKey.all;
+export type JobsQueryKey = ReturnType<typeof jobsQueryKey>;
+
+export const jobsQueryFn: QueryFunction<JobsData, JobsQueryKey> = (ctx) => {
+  const { queryKey } = ctx;
+  const [_pk, { jobListId }] = queryKey;
+  return jobQuestApi.job.getAll({ jobListId });
+};
 
 export function useJobs(
-  filters?: JobFilters,
+  filters?: JobsFilters,
   config?: {
     enabled?: boolean;
   }
-): UseQueryResult<JobsData, ApiErrorRes> {
-  const [activeJobList] = useActiveJobList();
-  const JobsListQuery = useJobLists();
-  const jobLists = JobsListQuery.data?.data || [];
-
-  const query = useQuery<JobsData, ApiErrorRes>({
-    queryKey: jobKeys.all(filters),
-    queryFn: ({ queryKey }) => {
-      queryKey;
-      return jobQuestApi.job.getAll(filters);
-    },
+): UseQueryResult<JobsData, JobsError> {
+  const query = useQuery<JobsData, JobsError, JobsData, JobsQueryKey>({
+    queryKey: jobsQueryKey(filters),
+    queryFn: jobsQueryFn,
     enabled: config?.enabled,
   });
 
+  // eventually all jobs will be displayed in same page.
+  // but for now we'll just prefetch other content to optimize UX
+  const [activeJobList] = useActiveJobList();
+  const JobsListQuery = useJobLists();
+  const jobLists = JobsListQuery.data?.data || [];
   const mainQueryComplete = query.isFetched;
   useEffect(() => {
     if (activeJobList !== null && jobLists && mainQueryComplete) {
       const prefetchList = jobLists.filter((list) => list.id !== activeJobList);
       Promise.all(
         prefetchList.map((list) => {
-          const filters = {
-            jobListId: list.id,
-          };
           return queryClient.prefetchQuery({
-            queryKey: jobKeys.all(filters),
-            queryFn: () => jobQuestApi.job.getAll(filters),
+            queryKey: jobsQueryKey({ jobListId: list.id }),
+            queryFn: jobsQueryFn,
           });
         })
       );

@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@common/query-client';
-import { jobLogQueryKeyFactory } from '@app/dashboard/job-log/factories';
 import { UpdateJobLogDto } from '@app/dashboard/job/dto';
 import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
 import { jobQuestApi } from '@api/job-quest';
+import { jobLogsQueryKey } from './job-logs.hook';
 
 export type UpdateJobLogData = ApiOkRes<JobLogEntity>;
 export type UpdateJobLogError = ApiErrorRes;
@@ -24,14 +24,8 @@ export function useUpdateJobLog() {
     },
     onSuccess(res) {
       const newJobLogData = res.data;
-
       queryClient.invalidateQueries({
-        queryKey: jobLogQueryKeyFactory.detail(newJobLogData.id),
-      });
-
-      // TODO: test all cases for invalidating this update
-      queryClient.invalidateQueries({
-        queryKey: jobLogQueryKeyFactory.all(newJobLogData.jobId),
+        queryKey: jobLogsQueryKey(newJobLogData.jobId),
       });
     },
   });
