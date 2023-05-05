@@ -4,7 +4,6 @@ import { JobListTabContent, JobListTabs, AddJobModal, MODAL_ID } from './ui';
 
 export default function JobListPage() {
   const modal = useModal(MODAL_ID);
-  const toggleAddJobModal = () => modal.toggle();
 
   return (
     <div className="flex flex-col gap-3">
@@ -18,7 +17,7 @@ export default function JobListPage() {
         <JobListTabs />
       </div>
       <div className="pt-3">
-        <JobListTabContent toggleAddJobModal={toggleAddJobModal} />
+        <JobListTabContent />
       </div>
       <AddJobModal />
     </div>

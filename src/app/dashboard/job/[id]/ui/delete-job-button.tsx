@@ -40,7 +40,7 @@ export function DeleteJobButton(p: DeleteJobButtonProps) {
               onClick={() => {
                 deleteJobMutation.mutate(p.jobId, {
                   onSuccess: () => {
-                    router.push('/dashboard');
+                    router.back();
                   },
                 });
               }}

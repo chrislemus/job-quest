@@ -1,23 +1,27 @@
+'use client';
 import { useMemo, useState } from 'react';
 import { JobCard, JobCardLoading } from './job-card';
 import { useJobs } from '@app/dashboard/job/hooks';
 import { useActiveJobList, useJobLists } from '@app/dashboard/job-list/hooks';
+import { useModal } from '@/common/hooks';
+import { MODAL_ID } from './add-job-modal';
 
-export function JobListTabContent(p: { toggleAddJobModal: () => void }) {
+export function JobListTabContent() {
+  const modal = useModal(MODAL_ID);
+
   const [activeJobList] = useActiveJobList();
   const JobsListQuery = useJobLists();
   const jobLists = JobsListQuery.data?.data || [];
   const jobsQuery = useJobs(
-    { jobListId: activeJobList },
-    { enabled: activeJobList === 0 || !!activeJobList }
+    { jobListId: activeJobList !== null ? activeJobList : undefined },
+    { enabled: activeJobList !== null }
   );
   const jobs = jobsQuery.data?.data;
   const loadingCards = useMemo(() => {
     return Array.from({ length: 8 }, (_v, i) => <JobCardLoading key={i} />);
   }, []);
 
-  const jobsElements = useMemo(() => {
-    if (!(jobs && jobs?.length >= 1)) return;
+  const jobCards = useMemo(() => {
     return jobs?.map((job) => {
       return <JobCard job={job} jobLists={jobLists} key={job.id} />;
     });
@@ -37,11 +41,11 @@ export function JobListTabContent(p: { toggleAddJobModal: () => void }) {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {jobsQuery.isLoading ? (
         loadingCards
-      ) : jobsElements ? (
-        jobsElements
+      ) : jobCards ? (
+        jobCards
       ) : (
         <div>
-          <button className="btn btn-primary" onClick={p.toggleAddJobModal}>
+          <button className="btn btn-primary" onClick={() => modal.toggle()}>
             Add
           </button>
         </div>

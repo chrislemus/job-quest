@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@common/query-client';
-import { jobQueryKeyFactory } from '@app/dashboard/job/factories';
+import { jobKeys } from '@app/dashboard/job/factories';
 import { CreateJobDto } from '@app/dashboard/job/dto';
 import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { JobEntity } from '@api/job-quest/job/job.entity';
@@ -11,10 +11,12 @@ export function useCreateJob() {
     mutationFn: jobQuestApi.job.createJob,
     onSuccess(res) {
       queryClient.invalidateQueries({
-        queryKey: jobQueryKeyFactory.detail(res.data.id),
+        refetchType: 'all',
+        queryKey: jobKeys.detail(res.data.id),
       });
       queryClient.invalidateQueries({
-        queryKey: jobQueryKeyFactory.all({ jobListId: res.data.jobListId }),
+        refetchType: 'all',
+        queryKey: jobKeys.all({ jobListId: res.data.jobListId }),
       });
     },
   });

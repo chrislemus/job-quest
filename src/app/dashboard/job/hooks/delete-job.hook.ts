@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@common/query-client';
-import { jobQueryKeyFactory } from '@app/dashboard/job/factories';
+import { jobKeys } from '@app/dashboard/job/factories';
 import { jobQuestApi } from '@api/job-quest';
+import { queryClient } from '@/common/query-client';
 
 export function useDeleteJob() {
   const mutation = useMutation({
@@ -13,11 +13,13 @@ export function useDeleteJob() {
       const newJobData = res.data;
 
       queryClient.invalidateQueries({
-        queryKey: jobQueryKeyFactory.detail(newJobData.id),
+        refetchType: 'all',
+        queryKey: jobKeys.detail(newJobData.id),
       });
 
       queryClient.invalidateQueries({
-        queryKey: jobQueryKeyFactory.all({
+        refetchType: 'all',
+        queryKey: jobKeys.all({
           jobListId: newJobData.jobListId,
         }),
       });
