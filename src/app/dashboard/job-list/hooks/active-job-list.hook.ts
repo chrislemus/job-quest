@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useJobLists } from './job-lists.hook';
 
 const QS_KEY = 'list';
@@ -11,37 +11,34 @@ export function useActiveJobList(): [
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const jobListQuery = useJobLists();
 
-  const activeJobList = useMemo(() => {
-    const params = new URLSearchParams(searchParams);
-    const activeJobList = params.get(QS_KEY);
-    const isNumberStr = activeJobList && /^\d+$/.test(activeJobList);
-    return isNumberStr ? +activeJobList : null;
-  }, [searchParams]);
+  const jobLists = jobListQuery.data?.data;
 
   /** Create a Link with updated query string value */
-  const qs = useCallback(
-    (value: string) => {
+  const setActiveJobList = useCallback(
+    (jobListId: number) => {
       const params = new URLSearchParams(searchParams);
-      params.set(QS_KEY, value);
-      return params.toString();
+      params.set(QS_KEY, `${jobListId}`);
+      const queryString = params.toString();
+      router.replace(`${pathname}?${queryString}`);
     },
     [searchParams]
   );
 
-  const setActiveJobList = (jobListId: number) => {
-    router.replace(pathname + '?' + qs(`${jobListId}`));
-  };
+  const activeJobList = useMemo(() => {
+    const params = new URLSearchParams(searchParams);
+    let activeJobList = params.get(QS_KEY);
 
-  const jobListQuery = useJobLists();
-  const jobLists = jobListQuery.data?.data;
-
-  useEffect(() => {
-    const firstList = jobLists?.[0];
-    if (activeJobList === null && firstList) {
-      setActiveJobList(firstList.id);
+    if (activeJobList === null) {
+      const firstList = jobLists?.[0];
+      if (firstList) activeJobList = `${firstList.id}`;
     }
-  }, [jobLists]);
+    if (activeJobList && /^\d+$/.test(activeJobList)) {
+      return +activeJobList;
+    }
+    return null;
+  }, [searchParams, jobLists]);
 
   return [activeJobList, setActiveJobList];
 }
