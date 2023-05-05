@@ -1,11 +1,16 @@
-import { useUpdateJob } from '@app/dashboard/job/hooks';
+import {
+  jobQueryFn,
+  jobQueryKey,
+  useUpdateJob,
+} from '@app/dashboard/job/hooks';
 import { JobEntity } from '@api/job-quest/job/job.entity';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
-import { PropsWithoutRef, useMemo } from 'react';
+import { PropsWithoutRef, useEffect, useMemo } from 'react';
 import cn from 'classnames';
 import Link from 'next/link';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import { getContrastText } from '@/common/utils';
+import { queryClient } from '@/common/query-client';
 
 type JobCardProps = {
   job: JobEntity;
@@ -15,6 +20,13 @@ type JobCardProps = {
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
   const editJobMutation = useUpdateJob();
   const backgroundColor = p.job.color || '#fff';
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: jobQueryKey(p.job.id),
+      queryFn: jobQueryFn,
+    });
+  }, []);
 
   const textColor = useMemo(() => {
     return getContrastText(backgroundColor);
@@ -53,14 +65,15 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
                 </li>
               ) : (
                 p.jobLists.map((list) => {
-                  const disabled = p.job.jobListId === list.id;
+                  const selected = p.job.jobListId === list.id;
                   return (
                     <li
                       key={list.id}
                       data-testid="job-list-menu-item"
-                      className={cn({ disabled: disabled })}
+                      aria-selected={selected}
+                      className={cn({ disabled: selected })}
                       onClick={() => {
-                        if (!disabled)
+                        if (!selected)
                           editJobMutation.mutate({
                             jobId: p.job.id,
                             data: { jobListId: list.id },

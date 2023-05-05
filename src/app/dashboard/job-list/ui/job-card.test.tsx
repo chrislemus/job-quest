@@ -7,7 +7,6 @@ import { rest, server } from '@tests/server';
 import { JobCard } from './job-card';
 import { mockRouter, MemoryRouterProvider } from '@tests/next-navigation.mock';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 
 const jobMock = jobMocks[0];
 
@@ -30,42 +29,30 @@ describe('Job Card', () => {
   });
 
   it('updates job list', async () => {
-    // select a job list that is not currently linked to current job
-    const jobListSelection = jobListMocks.find(
-      (jobList) => jobList.id !== jobMock.jobListId
-    ) as JobListEntity;
-
-    let postData;
+    const job = jobMock;
+    let postData: { jobListId?: number } = {};
 
     server.use(
-      rest.patch(
-        jobQuestApiUrls.job.update(jobMock.id),
-        async (req, res, ctx) => {
-          postData = await req.json();
-          return res(ctx.status(200));
-        }
-      )
+      rest.patch(jobQuestApiUrls.job.update(job.id), async (req, res, ctx) => {
+        postData = await req.json();
+        job.jobListId = postData.jobListId as any;
+        return res(ctx.status(201));
+      })
     );
 
-    renderWithQueryClient(<JobCard job={jobMock} jobLists={jobListMocks} />);
+    renderWithQueryClient(<JobCard job={job} jobLists={jobListMocks} />);
 
-    const jobListButton = await screen.findByTestId<HTMLButtonElement>(
-      'job-list-menu'
-    );
-
-    await userEvent.click(jobListButton);
-
-    await screen
+    const menuItem = await screen
       .findAllByTestId('job-list-menu-item')
-      .then(async (menuItems) => {
-        const menuItem = menuItems.find((item) => {
-          return item.textContent === jobListSelection.label;
-        });
-        if (menuItem) {
-          await userEvent.click(menuItem);
-        }
+      .then((menuItems) => {
+        return menuItems.find((item) => {
+          const selected = item.getAttribute('aria-selected');
+          return selected === 'false';
+        }) as HTMLElement;
       });
 
-    expect(postData).toEqual({ jobListId: jobListSelection.id });
+    expect(menuItem).toHaveAttribute('aria-selected', 'false');
+    await userEvent.click(menuItem);
+    expect(menuItem).toHaveAttribute('aria-selected', 'true');
   });
 });

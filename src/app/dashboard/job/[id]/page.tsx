@@ -5,6 +5,7 @@ import { useJob } from '@app/dashboard/job/hooks';
 import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { XCircleIcon } from '@heroicons/react/20/solid';
+import { useJobLogs } from '../../job-log/hooks';
 
 const tabs = {
   info: 'Info',
@@ -16,8 +17,10 @@ export default function JobPage() {
   const searchParams = useSearchParams();
   const selectedTab = searchParams.get('tab') || tabs.info;
   const jobQuery = useJob(jobId);
+  const job = jobQuery?.data?.data;
 
-  const jobQueryData = jobQuery?.data?.data;
+  const jobLogsQuery = useJobLogs(jobId);
+  const jobLogs = jobLogsQuery?.data?.data;
 
   const pathname = usePathname();
 
@@ -33,14 +36,14 @@ export default function JobPage() {
   if (jobQuery.isLoading)
     return <div className="h-screen w-full bg-gray-200 animate-pulse card" />;
 
-  if (jobQuery.isError || !jobQueryData)
+  if (jobQuery.isError || !job)
     return <JobPageError refetchFn={() => jobQuery.refetch()} />;
 
   return (
     <div className="grid grid-cols-1 gap-4">
       <div>
-        <h1 className="font-semibold text-3xl">{jobQueryData.title} </h1>
-        <p className="mt-1 max-w-2xl text-xl">{jobQueryData.company} </p>
+        <h1 className="font-semibold text-3xl">{job.title} </h1>
+        <p className="mt-1 max-w-2xl text-xl">{job.company} </p>
       </div>
       <div className="tabs">
         {Object.values(tabs).map((tab) => {
@@ -58,8 +61,10 @@ export default function JobPage() {
         })}
       </div>
       <div>
-        {selectedTab === tabs.info && <JobInfoTab job={jobQueryData} />}
-        {selectedTab === tabs.log && <JobLogTab jobId={jobQueryData.id} />}
+        {selectedTab === tabs.info && <JobInfoTab job={job} />}
+        {selectedTab === tabs.log && (
+          <JobLogTab jobId={job.id} jobLogs={jobLogs} />
+        )}
       </div>
     </div>
   );

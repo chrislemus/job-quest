@@ -3,9 +3,11 @@ import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogs } from '@app/dashboard/job-log/hooks';
 import { JobLogContent } from './job-log-content';
 import { AddJobLogForm } from './add-job-log-form';
+import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';
 
 type JobLogTabProps = {
   jobId: number;
+  jobLogs: JobLogEntity[] | undefined;
 };
 
 export function JobLogTab(p: JobLogTabProps) {
@@ -13,7 +15,7 @@ export function JobLogTab(p: JobLogTabProps) {
   const jobLogsQueryData = jobLogsQuery.data?.data;
 
   const logs = useMemo(() => {
-    return jobLogsQueryData?.map((jobLog) => (
+    return p.jobLogs?.map((jobLog) => (
       <JobLogContainer key={jobLog.id}>
         <JobLogContent jobLog={jobLog} />
       </JobLogContainer>

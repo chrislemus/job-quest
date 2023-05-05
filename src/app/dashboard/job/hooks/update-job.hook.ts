@@ -20,8 +20,8 @@ export function useUpdateJob() {
     onMutate: ({ jobId }) => {
       const all = queryClient.getQueriesData<JobsData>(jobsQueryKey());
       for (const [_queryKey, data] of all) {
-        if (data) {
-          for (const job of data.data) {
+        if (Array.isArray(data?.data)) {
+          for (const job of data!.data) {
             if (job.id === jobId) return { prevJob: job };
           }
         }
