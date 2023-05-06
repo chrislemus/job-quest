@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { FieldErrors } from 'react-hook-form';
 import { toNestError, validateFieldsNatively } from '@hookform/resolvers';
-import { plainToInstance } from 'class-transformer';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { validate, validateSync, ValidationError } from 'class-validator';
 import { FieldValues, ResolverOptions, ResolverResult } from 'react-hook-form';
 import { ValidatorOptions } from 'class-validator';
@@ -46,9 +46,12 @@ const parseErrors = (
   }, parsedErrors);
 };
 
-export const formValidator: Resolver =
-  (schema, schemaOptions = {}, resolverOptions = {}) =>
-  async (values, _, options) => {
+export const formValidator: Resolver = (
+  schema,
+  schemaOptions = {},
+  resolverOptions = {}
+) => {
+  return async (values, _, options) => {
     const user = plainToInstance(schema, values, {
       enableImplicitConversion: true,
     });
@@ -58,19 +61,19 @@ export const formValidator: Resolver =
       : validate)(user, schemaOptions);
 
     if (rawErrors.length) {
+      const parsedErrors = parseErrors(
+        rawErrors,
+        !options.shouldUseNativeValidation && options.criteriaMode === 'all'
+      );
+
       return {
         values: {},
-        errors: toNestError(
-          parseErrors(
-            rawErrors,
-            !options.shouldUseNativeValidation && options.criteriaMode === 'all'
-          ),
-          options
-        ),
+        errors: toNestError(parsedErrors, options),
       };
     }
 
     options.shouldUseNativeValidation && validateFieldsNatively({}, options);
 
-    return { values, errors: {} };
+    return { values: instanceToPlain(user), errors: {} };
   };
+};

@@ -13,7 +13,7 @@ import { useAppDispatch } from '@app/dashboard/store';
 import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 import React from 'react';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
-import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 
 type JobInfoTabProps = {
   job: JobEntity;
@@ -53,10 +53,6 @@ export function JobInfoTab(p: JobInfoTabProps) {
 
   const editJobMutation = useUpdateJob();
 
-  const shouldFormatJobUrl = (value: string) => {
-    return !value.startsWith('http') && value?.length > 0;
-  };
-
   const formMethods = useForm<UpdateJobDto>({
     resolver: formValidator(UpdateJobDto),
     defaultValues: {
@@ -81,19 +77,6 @@ export function JobInfoTab(p: JobInfoTabProps) {
       label: j.label,
     }));
   }, [JobsListQuery.data]);
-
-  const [successCount, setSuccessCount] = useState(0);
-
-  useEffect(() => {
-    if (successCount > 0) {
-      const timeOut = setTimeout(() => {
-        setSuccessCount((count) => count - 1);
-      }, 1000);
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
-  }, [successCount]);
 
   const errorMsgs = editJobMutation.error?.messages;
   const jobUrl = formMethods.watch('url');
@@ -201,23 +184,40 @@ export function JobInfoTab(p: JobInfoTabProps) {
           <div className="form-control w-full">
             <FieldLabel htmlFor="job-url">Job Url</FieldLabel>
             <div className="relative">
-              <TextField
-                id="job-url"
-                invalid={!!fieldErrors.url?.message}
-                {...formMethods.register('url', {
-                  setValueAs(value) {
-                    if (value?.trim()?.length === 0) return '';
-                    if (shouldFormatJobUrl(value)) return `https://${value}`;
-                    return value;
-                  },
-                  onBlur: (e) => {
-                    const displayedValue = e.target?.value;
-                    const registeredValue = formMethods.getValues('url');
-                    if (displayedValue !== registeredValue) {
-                      e.target.value = registeredValue;
-                    }
-                  },
-                })}
+              <Controller
+                control={formMethods.control}
+                name="url"
+                render={({
+                  field: { name, onBlur, onChange, value, ref },
+                  formState: { errors },
+                }) => {
+                  return (
+                    <TextField
+                      id="job-url"
+                      invalid={!!errors.url?.message}
+                      name={name}
+                      ref={ref}
+                      value={value}
+                      onChange={(e) => {
+                        let value = e.target.value ?? '';
+                        onChange(value.trim());
+                      }}
+                      onBlur={(e) => {
+                        let value = e.target.value ?? '';
+                        const empty = value.length === 0;
+                        const emptyAlt = /^(http|https):\/\/$/.test(value);
+                        const validPrefix = /^(http|https):\/\//.test(value);
+
+                        if (!validPrefix && !empty) {
+                          onChange(`https://${value}`);
+                        } else if (emptyAlt) {
+                          onChange('');
+                        }
+                        onBlur();
+                      }}
+                    />
+                  );
+                }}
               />
               {jobUrl && (
                 <Link

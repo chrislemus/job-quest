@@ -21,8 +21,6 @@ export function useUpdateJob() {
       const oldJob = getJobData(jobId);
       if (oldJob) {
         const newJob = { ...oldJob, ...data };
-        // TODO: debug why class transformer is not automatically converting values
-        newJob.jobListId = +newJob.jobListId;
 
         // Job Update
         await queryClient.cancelQueries({ queryKey: jobQueryKey(jobId) });
