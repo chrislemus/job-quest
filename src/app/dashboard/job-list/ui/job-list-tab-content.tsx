@@ -22,6 +22,7 @@ export function JobListTabContent() {
   }, []);
 
   const jobCards = useMemo(() => {
+    if (!(jobs && jobs.length > 0)) return;
     return jobs?.map((job) => {
       return <JobCard job={job} jobLists={jobLists} key={job.id} />;
     });
