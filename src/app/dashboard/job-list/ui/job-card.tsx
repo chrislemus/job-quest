@@ -7,12 +7,12 @@ import { JobEntity } from '@api/job-quest/job/job.entity';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 import { PropsWithoutRef, useEffect, useMemo } from 'react';
 import cn from 'classnames';
-import Link from 'next/link';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
 import { useAppDispatch } from '../../store';
 import { enqueueToast } from '@app/dashboard/toast/toast.slice';
+import { useRouter } from 'next/navigation';
 
 type JobCardProps = {
   job: JobEntity;
@@ -20,6 +20,7 @@ type JobCardProps = {
 };
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
+  const router = useRouter();
   const editJobMutation = useUpdateJob();
   const backgroundColor = p.job.color || '#fff';
   const dispatch = useAppDispatch();
@@ -42,13 +43,13 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
       data-testid="job-card"
     >
       <div className="flex">
-        <Link
+        <div
           className="flex-1 cursor-pointer text-left p-5 "
-          href={`/dashboard/job/${p.job.id}`}
+          onClick={() => router.push(`/dashboard/job/${p.job.id}`)}
         >
           <p className="font-bold">{p.job.title} </p>
           <p>{p.job.company}</p>
-        </Link>
+        </div>
         <div className="p-2">
           <div className="dropdown dropdown-left">
             <label
