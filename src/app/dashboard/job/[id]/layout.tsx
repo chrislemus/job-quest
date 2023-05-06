@@ -1,9 +1,9 @@
 'use client';
 
-import { ChevronLeftIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren } from 'react';
-
 export default function JobLayout(p: PropsWithChildren<{}>) {
   const router = useRouter();
 
@@ -17,7 +17,7 @@ export default function JobLayout(p: PropsWithChildren<{}>) {
               router.back();
             }}
           >
-            <ChevronLeftIcon className="w-6 h-6" />
+            <FontAwesomeIcon icon={faChevronLeft} className="w-4 h-4" />
             Back
           </button>
         </div>

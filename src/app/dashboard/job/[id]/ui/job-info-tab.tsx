@@ -12,7 +12,8 @@ import { Listbox } from '@headlessui/react';
 import { useAppDispatch } from '@app/dashboard/store';
 import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 import React from 'react';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PropsWithChildren, useMemo } from 'react';
 
 type JobInfoTabProps = {
@@ -225,7 +226,10 @@ export function JobInfoTab(p: JobInfoTabProps) {
                   target="_blank"
                   className="absolute inset-y-0 right-0 he flex items-center pr-3 hover:opacity-50"
                 >
-                  <ArrowTopRightOnSquareIcon className="h-2/3 text-gray-400" />
+                  <FontAwesomeIcon
+                    className="h-2/5 text-gray-400"
+                    icon={faArrowUpRightFromSquare}
+                  />
                 </Link>
               )}
             </div>

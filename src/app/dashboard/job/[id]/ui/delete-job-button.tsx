@@ -2,7 +2,6 @@
 import { useRouter } from 'next/navigation';
 import { useDeleteJob } from '@app/dashboard/job/hooks';
 import { useId } from 'react';
-import cn from 'classnames';
 import { useAppDispatch } from '@/app/dashboard/store';
 import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 
@@ -36,11 +35,9 @@ export function DeleteJobButton(p: DeleteJobButtonProps) {
           <p className="py-4">Are you sure you want to delete this Job?</p>
           <div className="flex gap-4 pt-6">
             <button
-              className={cn('btn btn-error', {
-                loading: deleteJobMutation.isLoading,
-              })}
-              type="button"
               disabled={deleteJobMutation.isLoading}
+              className="btn btn-error disabled:loading"
+              type="button"
               onClick={() => {
                 deleteJobMutation.mutate(p.jobId, {
                   onSuccess: () => {

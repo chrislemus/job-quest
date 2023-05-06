@@ -3,7 +3,6 @@ import { formValidator } from '@common/utils';
 import { UserLogin } from '@app/auth/dto';
 import { useLogin } from '@app/auth/hooks';
 import { useForm } from 'react-hook-form';
-import cn from 'classnames';
 
 export default function Login() {
   const form = useForm<UserLogin>({ resolver: formValidator(UserLogin) });
@@ -43,9 +42,8 @@ export default function Login() {
             type="email"
             id="form-email"
             data-testid="form-email"
-            className={cn('input input-bordered w-full', {
-              'input-error': !!form.formState.errors?.email,
-            })}
+            aria-invalid={!!emailError}
+            className="input input-bordered w-full aria-invalid:input-error"
             {...form.register('email')}
           />
           {emailError && (
@@ -63,10 +61,9 @@ export default function Login() {
             type="password"
             id="form-password"
             data-testid="form-password"
+            aria-invalid={!!passwordError}
             {...form.register('password')}
-            className={cn('input input-bordered w-full', {
-              'input-error': !!form.formState.errors?.password?.message,
-            })}
+            className="input input-bordered w-full aria-invalid:input-error"
           />
           {passwordError && (
             <label className="label">
@@ -78,9 +75,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={form.formState.isSubmitting || login.isLoading}
-          className={cn('btn btn-primary mt-4', {
-            loading: form.formState.isSubmitting || login.isLoading,
-          })}
+          className="btn btn-primary mt-4 disabled:loading"
         >
           Log In
         </button>

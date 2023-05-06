@@ -2,21 +2,23 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@app/dashboard/store';
 import { dequeueToast, ToastType } from '@app/dashboard/toast/toast.slice';
 import * as _Toast from '@radix-ui/react-toast';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  XCircleIcon,
-  InformationCircleIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
-import cn from 'classnames';
+  faCircleXmark,
+  IconDefinition,
+  faCircleCheck,
+} from '@fortawesome/free-regular-svg-icons';
+import {
+  faInfo,
+  faXmark,
+  faExclamationTriangle,
+} from '@fortawesome/free-solid-svg-icons';
 
-type Icon = typeof InformationCircleIcon;
-const ToastIcon: Record<ToastType, Icon> = {
-  info: InformationCircleIcon,
-  success: CheckCircleIcon,
-  warning: ExclamationCircleIcon,
-  error: XCircleIcon,
+const ToastIcon: Record<ToastType, IconDefinition> = {
+  info: faInfo,
+  success: faCircleCheck,
+  warning: faExclamationTriangle,
+  error: faCircleXmark,
 };
 
 export function Toast() {
@@ -38,19 +40,22 @@ export function Toast() {
           setOpen(isOpen);
           if (!isOpen) dispatch(dequeueToast());
         }}
-        className={cn('alert shadow-lg', {
-          'alert-success': toastType === 'success',
-          'alert-info': toastType === 'info',
-          'alert-warning': toastType === 'warning',
-          'alert-error': toastType === 'error',
-        })}
+        data-type={toastType}
+        className="group alert shadow-lg data-[type=info]:alert-info data-[type=success]:alert-success data-[type=warning]:alert-warning data-[type=error]:alert-error"
       >
         <_Toast.Description>
-          <Icon className="w-6 h-6 " />
+          <FontAwesomeIcon
+            data-type={toastType}
+            className="h-6 aspect-square data-[type=info]:border-current data-[type=info]:border-2 data-[type=info]:rounded-full data-[type=info]:p-1 data-[type=info]:h-3"
+            icon={Icon}
+          />
           {toast?.message}
         </_Toast.Description>
         <_Toast.Close>
-          <XMarkIcon className="w-6 h-6" />
+          <FontAwesomeIcon
+            className="w-6 h-6 btn btn-ghost btn-xs btn-circle"
+            icon={faXmark}
+          />
         </_Toast.Close>
       </_Toast.Root>
 

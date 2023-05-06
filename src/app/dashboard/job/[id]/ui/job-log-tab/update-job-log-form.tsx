@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import { useUpdateJobLog } from '@app/dashboard/job-log/hooks';
 import { useMemo } from 'react';
-import { ChevronUpIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 export type UpdateJobLogFormProps = {
   jobLog: JobLogEntity;
@@ -63,7 +64,7 @@ export function UpdateJobLogForm(p: UpdateJobLogFormProps) {
             className="btn btn-circle btn-xs btn-error"
             onClick={p.disableForm}
           >
-            <XMarkIcon />
+            <FontAwesomeIcon icon={faXmark} className="h-4" />
           </button>
         </div>
         <div>
@@ -72,7 +73,7 @@ export function UpdateJobLogForm(p: UpdateJobLogFormProps) {
             type="submit"
             className="btn btn-circle btn-primary btn-xs"
           >
-            <ChevronUpIcon />
+            <FontAwesomeIcon icon={faChevronUp} />
           </button>
         </div>
       </div>

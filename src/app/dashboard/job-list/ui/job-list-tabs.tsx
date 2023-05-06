@@ -1,5 +1,6 @@
 import { useActiveJobList, useJobLists } from '@app/dashboard/job-list/hooks';
-import { XCircleIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import cn from 'classnames';
 
 export function JobListTabs() {
@@ -69,7 +70,10 @@ function JobListTabsError(p: { refetchFn: () => void }) {
   return (
     <div className="alert alert-error text-center shadow-lg text-error-content">
       <p>
-        <XCircleIcon className="flex-shrink-0 h-6 w-6" />
+        <FontAwesomeIcon
+          icon={faCircleXmark}
+          className="flex-shrink-0 h-6 w-6"
+        />
         Failed to load job list nav.
         <br />
       </p>

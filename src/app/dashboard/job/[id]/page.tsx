@@ -4,7 +4,8 @@ import { JobLogTab, JobInfoTab } from './ui';
 import { useJob } from '@app/dashboard/job/hooks';
 import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { XCircleIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { useJobLogs } from '../../job-log/hooks';
 
 const tabs = {
@@ -75,7 +76,10 @@ function JobPageError(p: { refetchFn: () => void }) {
   return (
     <div className="alert alert-error shadow-lg">
       <div>
-        <XCircleIcon className="flex-shrink-0 h-6 w-6" />
+        <FontAwesomeIcon
+          className="flex-shrink-0 h-6 w-6"
+          icon={faCircleXmark}
+        />
         <span>Error! Failed to load job details.</span>
       </div>
       <div className="flex-none">

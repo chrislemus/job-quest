@@ -3,7 +3,8 @@ import { useMemo } from 'react';
 import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
 import { useBoolean } from '@common/hooks';
 import { UpdateJobLogForm } from './update-job-log-form';
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 type JobLogItemProps = {
   jobLog: JobLogEntity;
@@ -29,7 +30,10 @@ export function JobLogContent(p: JobLogItemProps) {
         <div>
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="h-5 w-5 hover:cursor-pointer">
-              <EllipsisVerticalIcon className="h-5 w-5 text-gray-400" />
+              <FontAwesomeIcon
+                className="h-5 w-5 text-gray-400"
+                icon={faEllipsisVertical}
+              />
             </label>
             <ul
               tabIndex={0}

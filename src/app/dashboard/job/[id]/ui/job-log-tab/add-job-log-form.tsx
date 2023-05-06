@@ -2,7 +2,8 @@ import { useForm } from 'react-hook-form';
 import { formValidator } from '@common/utils';
 import { CreateJobLogDto } from '@app/dashboard/job/dto';
 import { useCreateJobLog } from '@app/dashboard/job-log/hooks';
-import { ChevronUpIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';
 
 type AddJobLogFormProps = {
@@ -59,7 +60,7 @@ export function AddJobLogForm(p: AddJobLogFormProps) {
           type="submit"
           className="btn btn-circle btn-primary btn-xs"
         >
-          <ChevronUpIcon />
+          <FontAwesomeIcon icon={faChevronUp} />
         </button>
       </div>
     </form>

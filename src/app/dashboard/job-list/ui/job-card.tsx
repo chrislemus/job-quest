@@ -7,7 +7,8 @@ import { JobEntity } from '@api/job-quest/job/job.entity';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 import { PropsWithoutRef, useEffect, useMemo } from 'react';
 import cn from 'classnames';
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
 import { useAppDispatch } from '../../store';
@@ -57,7 +58,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
               className="btn btn-square btn-sm btn-ghost"
               data-testid="job-list-menu"
             >
-              <EllipsisVerticalIcon className="w-6 h-6" />
+              <FontAwesomeIcon icon={faEllipsisVertical} className="w-4 h-4" />
             </label>
             <ul
               tabIndex={0}
