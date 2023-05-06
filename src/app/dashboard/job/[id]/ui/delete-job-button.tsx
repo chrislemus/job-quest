@@ -3,12 +3,15 @@ import { useRouter } from 'next/navigation';
 import { useDeleteJob } from '@app/dashboard/job/hooks';
 import { useId } from 'react';
 import cn from 'classnames';
+import { useAppDispatch } from '@/app/dashboard/store';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 
 type DeleteJobButtonProps = {
   jobId: number;
 };
 
 export function DeleteJobButton(p: DeleteJobButtonProps) {
+  const dispatch = useAppDispatch();
   const modalId = useId();
   const router = useRouter();
   const deleteJobMutation = useDeleteJob();
@@ -36,11 +39,26 @@ export function DeleteJobButton(p: DeleteJobButtonProps) {
               className={cn('btn btn-error', {
                 loading: deleteJobMutation.isLoading,
               })}
+              type="button"
               disabled={deleteJobMutation.isLoading}
               onClick={() => {
                 deleteJobMutation.mutate(p.jobId, {
                   onSuccess: () => {
                     router.back();
+                    dispatch(
+                      enqueueToast({
+                        message: 'Job successfully deleted',
+                        type: 'success',
+                      })
+                    );
+                  },
+                  onError() {
+                    dispatch(
+                      enqueueToast({
+                        message: 'Failed to change delete job',
+                        type: 'error',
+                      })
+                    );
                   },
                 });
               }}

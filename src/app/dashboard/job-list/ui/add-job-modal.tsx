@@ -6,12 +6,15 @@ import { useJobLists } from '@app/dashboard/job-list/hooks';
 import { useCreateJob } from '@app/dashboard/job/hooks';
 import cn from 'classnames';
 import { useModal } from '@/common/hooks';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
+import { useAppDispatch } from '../../store';
 
 export const MODAL_ID = 'addJob';
 
 export function AddJobModal() {
   const formId = 'new-job';
   const modal = useModal(MODAL_ID);
+  const dispatch = useAppDispatch();
 
   const form = useForm<CreateJobDto>({
     resolver: formValidator(CreateJobDto),
@@ -40,7 +43,14 @@ export function AddJobModal() {
         onSubmit={form.handleSubmit(async (job) => {
           await addJobMutation.mutateAsync(job, {
             onSuccess: () => {
+              form.reset();
               modal.toggle();
+              dispatch(
+                enqueueToast({
+                  message: 'Job successfully created! 🙌',
+                  type: 'success',
+                })
+              );
             },
           });
         })}

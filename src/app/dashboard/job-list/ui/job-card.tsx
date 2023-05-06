@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
+import { useAppDispatch } from '../../store';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 
 type JobCardProps = {
   job: JobEntity;
@@ -20,6 +22,7 @@ type JobCardProps = {
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
   const editJobMutation = useUpdateJob();
   const backgroundColor = p.job.color || '#fff';
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     queryClient.prefetchQuery({
@@ -73,11 +76,21 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
                       aria-selected={selected}
                       className={cn({ disabled: selected })}
                       onClick={() => {
-                        if (!selected)
-                          editJobMutation.mutate({
-                            jobId: p.job.id,
-                            data: { jobListId: list.id },
-                          });
+                        if (!selected) {
+                          editJobMutation
+                            .mutateAsync({
+                              jobId: p.job.id,
+                              data: { jobListId: list.id },
+                            })
+                            .catch((e) => {
+                              dispatch(
+                                enqueueToast({
+                                  message: 'Failed to change job list',
+                                  type: 'error',
+                                })
+                              );
+                            });
+                        }
                       }}
                     >
                       <a>{list.label}</a>

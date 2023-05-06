@@ -7,12 +7,17 @@ import { rest, server } from '@tests/server';
 import { JobCard } from './job-card';
 import { mockRouter, MemoryRouterProvider } from '@tests/next-navigation.mock';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
+import { DashboardStoreProvider } from '../../store';
 
 const jobMock = jobMocks[0];
 
 describe('Job Card', () => {
   it('displays company and title', async () => {
-    renderWithQueryClient(<JobCard job={jobMock} jobLists={jobListMocks} />);
+    renderWithQueryClient(
+      <DashboardStoreProvider>
+        <JobCard job={jobMock} jobLists={jobListMocks} />
+      </DashboardStoreProvider>
+    );
     await expect(screen.findByText(jobMock.title)).toBeTruthy();
     await expect(screen.findByText(jobMock.company)).toBeTruthy();
   });
@@ -20,7 +25,9 @@ describe('Job Card', () => {
   it('redirects user to job page when clicked', async () => {
     renderWithQueryClient(
       <MemoryRouterProvider>
-        <JobCard job={jobMock} jobLists={jobListMocks} />
+        <DashboardStoreProvider>
+          <JobCard job={jobMock} jobLists={jobListMocks} />
+        </DashboardStoreProvider>
       </MemoryRouterProvider>
     );
     const titleELement = await screen.findByText(jobMock.title);
@@ -40,7 +47,11 @@ describe('Job Card', () => {
       })
     );
 
-    renderWithQueryClient(<JobCard job={job} jobLists={jobListMocks} />);
+    renderWithQueryClient(
+      <DashboardStoreProvider>
+        <JobCard job={job} jobLists={jobListMocks} />;
+      </DashboardStoreProvider>
+    );
 
     const menuItem = await screen
       .findAllByTestId('job-list-menu-item')

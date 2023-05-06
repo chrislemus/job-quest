@@ -10,6 +10,7 @@ import { jobsQueryKey } from './jobs.hook';
 export function useCreateJob() {
   const mutation = useMutation<ApiOkRes<JobEntity>, ApiErrorRes, CreateJobDto>({
     mutationFn: jobQuestApi.job.createJob,
+
     onSuccess(res) {
       queryClient.invalidateQueries({
         refetchType: 'all',

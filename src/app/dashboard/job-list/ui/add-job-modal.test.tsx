@@ -8,6 +8,7 @@ import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
 import { ApiOkRes } from '@/api/job-quest/types';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
 import { CreateJobDto } from '../../job/dto';
+import { DashboardStoreProvider } from '../../store';
 
 describe('Add Job Modal', () => {
   test('On valid submit, modal sends post request', async () => {
@@ -33,7 +34,11 @@ describe('Add Job Modal', () => {
       })
     );
 
-    renderWithQueryClient(<AddJobModal />);
+    renderWithQueryClient(
+      <DashboardStoreProvider>
+        <AddJobModal />
+      </DashboardStoreProvider>
+    );
 
     const data = {
       company: 'acme',
@@ -66,7 +71,11 @@ describe('Add Job Modal', () => {
   });
 
   test('On invalid submit, modal form displays error', async () => {
-    renderWithQueryClient(<AddJobModal />);
+    renderWithQueryClient(
+      <DashboardStoreProvider>
+        <AddJobModal />
+      </DashboardStoreProvider>
+    );
 
     const submitButton = await screen.findByRole<HTMLButtonElement>('button', {
       name: /add/i,
