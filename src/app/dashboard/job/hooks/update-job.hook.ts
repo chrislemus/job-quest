@@ -1,57 +1,128 @@
-import { QueryState, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@common/query-client';
-import { jobQueryKeyFactory } from '@app/dashboard/job/factories';
 import { UpdateJobDto } from '@app/dashboard/job/dto';
 import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
 import { JobEntity } from '@api/job-quest/job/job.entity';
 import { jobQuestApi } from '@api/job-quest';
-import { JobsData, JobFilters } from './jobs.hook';
+import { getJobData, JobData, jobQueryKey } from './job.hook';
+import { JobsData, jobsQueryKey } from './jobs.hook';
+
+type Data = ApiOkRes<JobEntity>;
+type Error = ApiErrorRes;
+type Variables = { jobId: number; data: UpdateJobDto };
+type Context = undefined | { oldJob: JobEntity; newJob: JobEntity };
 
 export function useUpdateJob() {
-  const mutation = useMutation<
-    ApiOkRes<JobEntity>,
-    ApiErrorRes,
-    {
-      jobId: number;
-      data: UpdateJobDto;
-    }
-  >({
-    mutationFn: (args: { jobId: number; data: UpdateJobDto }) => {
-      return jobQuestApi.job.updateJob(args.jobId, args.data);
+  const mutation = useMutation<Data, Error, Variables, Context>({
+    mutationFn: (vars) => {
+      return jobQuestApi.job.updateJob(vars.jobId, vars.data);
     },
-    onSuccess: async (res) => {
-      const updatedJob = res.data;
+    onMutate: async ({ jobId, data }) => {
+      const oldJob = getJobData(jobId);
+      if (oldJob) {
+        const newJob = { ...oldJob, ...data };
 
-      queryClient.invalidateQueries({
-        // when job list is updated from job panel, we need to update detail query as well.
-        // Otherwise when user tries to update job in detail view(job/[id]), the dropdown menu will no be updated.
-        refetchType: 'all',
-        queryKey: jobQueryKeyFactory.detail(updatedJob.id),
-      });
+        // Job Update
+        await queryClient.cancelQueries({ queryKey: jobQueryKey(jobId) });
+        queryClient.setQueryData<JobData>(jobQueryKey(jobId), (res) => {
+          if (res) return { data: newJob };
+        });
 
-      const [aK1, aK2] = jobQueryKeyFactory.all();
+        // Job Lists Updates
+        await updateJobListsData('newJob', { oldJob, newJob });
 
-      await queryClient.invalidateQueries({
-        refetchType: 'all',
-        predicate: (query) => {
-          const [k1, k2, k3] = query.queryKey;
-          if (k1 === aK1 && k2 === aK2) {
-            const jobFiltersKey = k3 as JobFilters | undefined;
-            // To ensure job appears on `job list` updates.
-            if (jobFiltersKey?.jobListId === updatedJob.jobListId) return true;
+        return { oldJob, newJob };
+      }
+    },
+    onError: async (_err, _variables, ctx) => {
+      if (ctx) {
+        const { oldJob, newJob } = ctx;
+        // Job Lists Updates
+        await updateJobListsData('oldJob', { oldJob, newJob });
+        // Job Update
+        queryClient.setQueryData<JobData>(jobQueryKey(newJob.id), (res) => {
+          if (res) return { data: oldJob };
+        });
+      }
+    },
+    onSettled: async (_res, _error, _vars, ctx) => {
+      if (ctx) {
+        const { oldJob, newJob } = ctx;
 
-            const state = query.state as QueryState<JobsData, unknown>;
-            const jobs = state.data?.data;
-            const hasJobListData = jobs?.[0] instanceof JobEntity;
-            if (hasJobListData) {
-              // To ensure job is updated or remove from lists where the job id matches.
-              return jobs.some((job) => job.id === updatedJob.id);
-            }
-          }
-          return false;
-        },
-      });
+        const jobLists = uniqueList([oldJob.jobListId, newJob.jobListId]);
+
+        await Promise.all([
+          // Job Lists Updates
+          ...jobLists.map((jobListId) => {
+            return queryClient.invalidateQueries({
+              refetchType: 'all',
+              queryKey: jobsQueryKey({ jobListId }),
+            });
+          }),
+          // Job Update
+          queryClient.invalidateQueries({
+            refetchType: 'all',
+            queryKey: jobQueryKey(newJob.id),
+          }),
+        ]);
+      }
     },
   });
   return mutation;
+}
+
+function uniqueList<T>(list: T[]) {
+  const uList: T[] = [];
+  for (const item of list) {
+    if (!uList.includes(item)) uList.push(item);
+  }
+  return uList;
+}
+
+type JobVersions = { newJob: JobEntity; oldJob: JobEntity };
+type SetVersion = keyof JobVersions;
+
+async function updateJobListsData(
+  setVersion: SetVersion,
+  jobVersions: JobVersions
+) {
+  const { oldJob, newJob } = jobVersions;
+  const jobVersion = { ...jobVersions[setVersion] };
+
+  // Job Lists Updates
+  const jobListsUpdates = uniqueList([oldJob.jobListId, newJob.jobListId]);
+  const jobListChanged = jobListsUpdates.length > 1;
+
+  return Promise.all(
+    // Job Lists Updates
+    jobListsUpdates.map(async (jobListId) => {
+      const queryKey = jobsQueryKey({ jobListId });
+
+      // we don't want NEW data to be overridden
+      if (setVersion === 'newJob') {
+        await queryClient.cancelQueries({ queryKey });
+      }
+
+      queryClient.setQueryData<JobsData>(queryKey, (res) => {
+        const [_pk, { jobListId }] = queryKey;
+        if (res) {
+          let jobs = res?.data;
+          // main operations REMOVE, UPDATE, or ADD to a job list
+          if (jobListId === jobVersion.jobListId) {
+            if (jobListChanged) {
+              jobs.push(jobVersion);
+            } else {
+              jobs = jobs.map((job) =>
+                job.id === jobVersion.id ? jobVersion : job
+              );
+            }
+          } else {
+            jobs = jobs.filter((job) => job.id !== jobVersion.id);
+          }
+
+          return { ...res, data: jobs };
+        }
+      });
+    })
+  );
 }

@@ -1,4 +1,3 @@
-export * from './job-main';
+export * from './job-info-tab';
 export * from './delete-job-button';
-// export * from './job-layout';
-export * from './job-log-section';
+export * from './job-log-tab';

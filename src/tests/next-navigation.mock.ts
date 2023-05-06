@@ -1,23 +1,15 @@
-import * as NextRouter from 'next/navigation';
+import mockRouter from 'next-router-mock';
+import { usePathnameMockFactory } from './jest.setup';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 
-type R = ReturnType<typeof NextRouter.useRouter>;
+const usePathnameMock = jest.requireMock('next/navigation')
+  .usePathname as ReturnType<typeof usePathnameMockFactory>;
+const useSearchParamsMock = jest.requireMock('next/navigation')
+  .usePathname as ReturnType<typeof usePathnameMockFactory>;
 
-export const useRouterMock = {
-  push: jest.fn<ReturnType<R['push']>, Parameters<R['push']>>(),
-  back: jest.fn<ReturnType<R['back']>, Parameters<R['back']>>(),
-  forward: jest.fn<ReturnType<R['forward']>, Parameters<R['forward']>>(),
-  refresh: jest.fn<ReturnType<R['refresh']>, Parameters<R['refresh']>>(),
-  replace: jest.fn<ReturnType<R['replace']>, Parameters<R['replace']>>(),
-  prefetch: jest.fn<ReturnType<R['prefetch']>, Parameters<R['prefetch']>>(),
+export {
+  mockRouter,
+  usePathnameMock,
+  useSearchParamsMock,
+  MemoryRouterProvider,
 };
-
-export const usePathNameMock = jest.spyOn(NextRouter, 'usePathname');
-
-jest.spyOn(NextRouter, 'useRouter').mockReturnValue(useRouterMock);
-
-beforeEach(() => {
-  for (const mock of Object.values(useRouterMock)) {
-    mock.mockClear();
-  }
-  usePathNameMock.mockClear();
-});

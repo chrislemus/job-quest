@@ -1,81 +1,88 @@
 'use client';
-import { useState } from 'react';
-import { JobLogSection, JobMain } from './ui';
+import { useCallback } from 'react';
+import { JobLogTab, JobInfoTab } from './ui';
 import { useJob } from '@app/dashboard/job/hooks';
-import { ArrowBackIosIcon } from '@common/ui/icons';
-import { useRouter } from 'next/navigation';
-import {
-  Button,
-  Container,
-  Grid,
-  Skeleton,
-  Tab,
-  Tabs,
-  Typography,
-} from '@common/ui/atoms';
-
-type JobProps = {
-  params: { id: string };
-};
+import { useParams, usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { XCircleIcon } from '@heroicons/react/20/solid';
+import { useJobLogs } from '../../job-log/hooks';
 
 const tabs = {
   info: 'Info',
-  logs: 'Logs',
+  log: 'Log',
 } as const;
 
-type TabKeys = typeof tabs[keyof typeof tabs];
-
-export default function Job(p: JobProps) {
-  const router = useRouter();
-  const jobId = parseInt(p.params.id);
+export default function JobPage() {
+  const jobId = +useParams().id;
+  const searchParams = useSearchParams();
+  const selectedTab = searchParams.get('tab') || tabs.info;
   const jobQuery = useJob(jobId);
-  const jobQueryData = jobQuery?.data?.data;
-  const [activeTab, setActiveTab] = useState<TabKeys>(tabs.info);
+  const job = jobQuery?.data?.data;
+
+  const jobLogsQuery = useJobLogs(jobId);
+  const jobLogs = jobLogsQuery?.data?.data;
+
+  const pathname = usePathname();
+
+  const qs = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   if (jobQuery.isLoading)
-    return (
-      <Grid xs={12}>
-        <Skeleton height={500} />
-      </Grid>
-    );
+    return <div className="h-screen w-full bg-gray-200 animate-pulse card" />;
+
+  if (jobQuery.isError || !job)
+    return <JobPageError refetchFn={() => jobQuery.refetch()} />;
+
   return (
-    <Container>
-      {jobQueryData && (
-        <Grid container>
-          <Grid xs={12}>
-            <Button
-              startIcon={<ArrowBackIosIcon />}
-              onClick={() => {
-                router.push('/dashboard/job-list');
-              }}
+    <div className="grid grid-cols-1 gap-4">
+      <div>
+        <h1 className="font-semibold text-3xl">{job.title} </h1>
+        <p className="mt-1 max-w-2xl text-xl">{job.company} </p>
+      </div>
+      <div className="tabs">
+        {Object.values(tabs).map((tab) => {
+          return (
+            <Link
+              key={tab}
+              aria-selected={selectedTab === tab}
+              className="tab tab-bordered tab-lg aria-selected:tab-active"
+              replace
+              href={`${pathname}?${qs('tab', tab)}`}
             >
-              Back
-            </Button>
-          </Grid>
-          <Grid xs={12}>
-            <Typography variant="h4">{jobQueryData.title}</Typography>
-            <Typography variant="subtitle1">{jobQueryData.company}</Typography>
-          </Grid>
-          <Grid xs={12}>
-            <Tabs
-              onChange={(_e, newValue: TabKeys) => {
-                setActiveTab(newValue);
-              }}
-              aria-label="Job Nav"
-              value={activeTab}
-              variant="scrollable"
-              scrollButtons="auto"
-            >
-              <Tab label={tabs.info} value={tabs.info} />
-              <Tab label={tabs.logs} value={tabs.logs} />
-            </Tabs>
-          </Grid>
-          <Grid xs={12} paddingY={2}>
-            {activeTab === 'Info' && <JobMain job={jobQueryData} />}
-            {activeTab === 'Logs' && <JobLogSection jobId={jobQueryData.id} />}
-          </Grid>
-        </Grid>
-      )}
-    </Container>
+              {tab}
+            </Link>
+          );
+        })}
+      </div>
+      <div>
+        {selectedTab === tabs.info && <JobInfoTab job={job} />}
+        {selectedTab === tabs.log && (
+          <JobLogTab jobId={job.id} jobLogs={jobLogs} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function JobPageError(p: { refetchFn: () => void }) {
+  const { refetchFn } = p;
+  return (
+    <div className="alert alert-error shadow-lg">
+      <div>
+        <XCircleIcon className="flex-shrink-0 h-6 w-6" />
+        <span>Error! Failed to load job details.</span>
+      </div>
+      <div className="flex-none">
+        <button className="btn btn-sm disabled:loading" onClick={refetchFn}>
+          Try again
+        </button>
+      </div>
+    </div>
   );
 }

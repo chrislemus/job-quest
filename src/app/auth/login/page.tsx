@@ -1,71 +1,98 @@
 'use client';
-import { Form } from '@common/ui/molecules';
+import { formValidator } from '@common/utils';
 import { UserLogin } from '@app/auth/dto';
 import { useLogin } from '@app/auth/hooks';
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@common/utils';
-import {
-  Button,
-  FormErrors,
-  Stack,
-  TextField,
-  Typography,
-} from '@common/ui/atoms';
+import cn from 'classnames';
 
 export default function Login() {
-  const formId = 'login';
   const form = useForm<UserLogin>({ resolver: formValidator(UserLogin) });
   const login = useLogin();
+  const { errors } = form.formState;
+  const emailError = errors.email?.message;
+  const passwordError = errors.password?.message;
 
   return (
-    <Form
-      id={formId}
-      formMethods={form}
-      onValidSubmit={(data) => {
+    <form
+      onSubmit={form.handleSubmit((data) => {
         login.mutate(data);
-      }}
+      })}
     >
-      <Stack spacing={3}>
-        <Typography variant="h4" component="h1" style={{ fontWeight: 700 }}>
-          Log In
-        </Typography>
-        <Typography variant="subtitle2">
-          <strong>Demo Account</strong>
-          <br />
-          email: chris@jobquest.com
-          <br />
-          password: Jobs#365
-        </Typography>
-        <FormErrors errors={login?.error?.messages} />
+      <h2 className="text-4xl sm:text-6xl font-bold pb-8">Log In</h2>
 
-        <TextField
-          name="email"
-          type="email"
-          label="Email"
-          fullWidth
-          isInvalid={!!form.formState.errors?.email?.message}
-          helperText={form.formState.errors?.email?.message}
-        />
+      <p>
+        <strong>Demo Account</strong>
+        <br />
+        email: chris@jobquest.com
+        <br />
+        password: Jobs#365
+      </p>
+      <div className="pt-4 flex flex-col gap-5">
+        {login?.error?.messages && (
+          <ul className="text-error list-disc list-inside">
+            {login.error.messages.map((msg) => {
+              return <li>{msg}</li>;
+            })}
+          </ul>
+        )}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            id="form-email"
+            data-testid="form-email"
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.email,
+            })}
+            {...form.register('email')}
+          />
+          {emailError && (
+            <label className="label">
+              <span className="label-text-alt text-error">{emailError}</span>
+            </label>
+          )}
+        </div>
 
-        <TextField
-          name="password"
-          type="password"
-          label="Password"
-          fullWidth
-          isInvalid={!!form.formState.errors?.password?.message}
-          helperText={form.formState.errors?.password?.message}
-        />
-        <Button
-          color="primary"
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Password</span>
+          </label>
+          <input
+            type="password"
+            id="form-password"
+            data-testid="form-password"
+            {...form.register('password')}
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.password?.message,
+            })}
+          />
+          {passwordError && (
+            <label className="label">
+              <span className="label-text-alt text-error">{passwordError}</span>
+            </label>
+          )}
+        </div>
+
+        <button
           type="submit"
-          variant="contained"
-          form={formId}
           disabled={form.formState.isSubmitting || login.isLoading}
-          loading={form.formState.isSubmitting || login.isLoading}
+          className={cn('btn btn-primary mt-4', {
+            loading: form.formState.isSubmitting || login.isLoading,
+          })}
         >
           Log In
-        </Button>
-      </Stack>
-    </Form>
+        </button>
+
+        <p>
+          Don't have an account?
+          <a href="/auth/signup" className="font-bold">
+            {' '}
+            Sign up
+          </a>
+        </p>
+      </div>
+    </form>
   );
 }

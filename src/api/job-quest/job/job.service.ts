@@ -39,7 +39,7 @@ async function createJob(job: CreateJobDto) {
       ...job,
       color: job.color
         ? job.color
-        : jobColors[Math.round(Math.random() * jobColors.length)],
+        : jobColors[Math.floor(Math.random() * jobColors.length)],
     }
   );
   const data = response?.data;

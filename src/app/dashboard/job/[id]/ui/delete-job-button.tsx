@@ -1,71 +1,76 @@
 'use client';
-import { Modal } from '@common/ui/molecules';
-import { useBoolean } from '@common/hooks';
 import { useRouter } from 'next/navigation';
 import { useDeleteJob } from '@app/dashboard/job/hooks';
-import { Button, Grid, Box, Typography } from '@common/ui/atoms';
+import { useId } from 'react';
+import cn from 'classnames';
+import { useAppDispatch } from '@/app/dashboard/store';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 
 type DeleteJobButtonProps = {
   jobId: number;
 };
 
 export function DeleteJobButton(p: DeleteJobButtonProps) {
+  const dispatch = useAppDispatch();
+  const modalId = useId();
   const router = useRouter();
   const deleteJobMutation = useDeleteJob();
-  const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useBoolean();
 
   return (
     <>
-      <Button
-        color="error"
-        variant="outlined"
-        onClick={setDeleteConfirmModalOpen.on}
-      >
+      <label htmlFor={modalId} className="btn btn-error btn-outline">
         Delete
-      </Button>
-      <Modal
-        active={deleteConfirmModalOpen}
-        toggleActive={setDeleteConfirmModalOpen.off}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box padding={4}>
-          <Typography id="modal-modal-description">
-            Are you sure you want to delete this Job?
-          </Typography>
-          {/* 
-              TODO: add error response messages 
-        */}
-          <Grid container justifyContent="space-around" paddingTop={6}>
-            <Grid paddingRight={2}>
-              <Button
-                color="error"
-                variant="outlined"
-                disabled={deleteJobMutation.isLoading}
-                loading={deleteJobMutation.isLoading}
-                onClick={() => {
-                  deleteJobMutation.mutate(p.jobId, {
-                    onSuccess: () => {
-                      router.push('/dashboard');
-                    },
-                  });
-                }}
-              >
-                Delete
-              </Button>
-            </Grid>
-            <Grid>
-              <Button
-                color="info"
-                variant="contained"
-                onClick={setDeleteConfirmModalOpen.off}
-              >
-                Cancel
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
-      </Modal>
+      </label>
+
+      <input type="checkbox" id={modalId} className="modal-toggle" />
+      <label htmlFor={modalId} className="modal cursor-pointer">
+        <label className="modal-box relative" htmlFor={modalId}>
+          <label
+            htmlFor={modalId}
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
+            ✕
+          </label>
+
+          <h3 className="text-lg font-bold">Delete Job</h3>
+          <p className="py-4">Are you sure you want to delete this Job?</p>
+          <div className="flex gap-4 pt-6">
+            <button
+              className={cn('btn btn-error', {
+                loading: deleteJobMutation.isLoading,
+              })}
+              type="button"
+              disabled={deleteJobMutation.isLoading}
+              onClick={() => {
+                deleteJobMutation.mutate(p.jobId, {
+                  onSuccess: () => {
+                    router.back();
+                    dispatch(
+                      enqueueToast({
+                        message: 'Job successfully deleted',
+                        type: 'success',
+                      })
+                    );
+                  },
+                  onError() {
+                    dispatch(
+                      enqueueToast({
+                        message: 'Failed to change delete job',
+                        type: 'error',
+                      })
+                    );
+                  },
+                });
+              }}
+            >
+              Delete
+            </button>
+            <label className="btn btn-outline" htmlFor={modalId}>
+              Cancel
+            </label>
+          </div>
+        </label>
+      </label>
     </>
   );
 }

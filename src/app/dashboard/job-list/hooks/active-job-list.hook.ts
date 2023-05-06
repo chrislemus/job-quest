@@ -1,26 +1,44 @@
-import { setActiveJobList as _setActiveJobList } from '@app/dashboard/job-list/job-list.slice';
-import { useAppDispatch, useAppSelector } from '@app/dashboard/store';
-import { useEffect } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useMemo } from 'react';
 import { useJobLists } from './job-lists.hook';
 
+const QS_KEY = 'list';
+
 export function useActiveJobList(): [
-  number | undefined,
+  number | null,
   (jobListId: number) => void
 ] {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
   const jobListQuery = useJobLists();
-  const dispatch = useAppDispatch();
-  const activeJobList = useAppSelector((state) => state.jobList.activeJobList);
 
-  const setActiveJobList = (jobListId: number) => {
-    dispatch(_setActiveJobList(jobListId));
-  };
+  const jobLists = jobListQuery.data?.data;
 
-  useEffect(() => {
-    const jobList = jobListQuery.data?.data?.[0];
-    if (!activeJobList && jobList) {
-      setActiveJobList(jobList.id);
+  /** Create a Link with updated query string value */
+  const setActiveJobList = useCallback(
+    (jobListId: number) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(QS_KEY, `${jobListId}`);
+      const queryString = params.toString();
+      router.replace(`${pathname}?${queryString}`);
+    },
+    [searchParams]
+  );
+
+  const activeJobList = useMemo(() => {
+    const params = new URLSearchParams(searchParams);
+    let activeJobList = params.get(QS_KEY);
+
+    if (activeJobList === null) {
+      const firstList = jobLists?.[0];
+      if (firstList) activeJobList = `${firstList.id}`;
     }
-  }, [jobListQuery.isSuccess]);
+    if (activeJobList && /^\d+$/.test(activeJobList)) {
+      return +activeJobList;
+    }
+    return null;
+  }, [searchParams, jobLists]);
 
   return [activeJobList, setActiveJobList];
 }

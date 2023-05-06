@@ -55,6 +55,7 @@ export class CreateJobDto implements Omit<JobEntity, 'id' | 'userId'> {
   /**
    * Job List ID belonging to this Job
    */
+
   @IsNumber()
   @IsNotEmpty()
   jobListId: number;

@@ -1,19 +1,17 @@
-import { useUpdateJob } from '@app/dashboard/job/hooks';
+import {
+  jobQueryFn,
+  jobQueryKey,
+  useUpdateJob,
+} from '@app/dashboard/job/hooks';
 import { JobEntity } from '@api/job-quest/job/job.entity';
 import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
-import Link from 'next/link';
-import { MoveUpIcon } from '@common/ui/icons';
-import { theme } from '@common/theme';
-import { PropsWithoutRef, useMemo, useState } from 'react';
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@common/ui/atoms';
+import { PropsWithoutRef, useEffect, useMemo } from 'react';
+import cn from 'classnames';
+import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
+import { getContrastText } from '@/common/utils';
+import { queryClient } from '@/common/query-client';
+import { useAppDispatch } from '../../store';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 import { useRouter } from 'next/navigation';
 
 type JobCardProps = {
@@ -24,74 +22,91 @@ type JobCardProps = {
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
   const router = useRouter();
   const editJobMutation = useUpdateJob();
-  const backgroundColor = p.job.color || '#ffff';
+  const backgroundColor = p.job.color || '#fff';
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: jobQueryKey(p.job.id),
+      queryFn: jobQueryFn,
+    });
+  }, []);
+
   const textColor = useMemo(() => {
-    return theme.palette.getContrastText(backgroundColor);
+    return getContrastText(backgroundColor);
   }, [backgroundColor]);
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
-    <Card sx={{ minWidth: 275 }} style={{ backgroundColor }}>
-      <CardActionArea onClick={() => router.push(`/dashboard/job/${p.job.id}`)}>
-        <CardContent>
-          <Typography variant="button" noWrap display="block" color={textColor}>
-            <strong>{p.job.title}</strong>
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color={textColor}>
-            {p.job.company}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <IconButton
-        role="button"
-        name="job list"
-        onClick={(e) => {
-          setAnchorEl(e.currentTarget);
-        }}
-      >
-        <MoveUpIcon />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={!!anchorEl}
-        onClose={handleClose}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        {editJobMutation.isLoading ? (
-          <MenuItem>Loading...</MenuItem>
-        ) : (
-          p.jobLists.map((list) => {
-            return (
-              <MenuItem
-                key={list.id}
-                disabled={p.job.jobListId === list.id}
-                onClick={() => {
-                  editJobMutation.mutate(
-                    {
-                      jobId: p.job.id,
-                      data: { jobListId: list.id },
-                    },
-                    {
-                      onSuccess: () => {
-                        handleClose();
-                      },
-                    }
+    <div
+      className="card bg-base-100 shadow-xl h-24"
+      style={{ backgroundColor, color: textColor }}
+      data-testid="job-card"
+    >
+      <div className="flex">
+        <div
+          className="flex-1 cursor-pointer text-left p-5 "
+          onClick={() => router.push(`/dashboard/job/${p.job.id}`)}
+        >
+          <p className="font-bold">{p.job.title} </p>
+          <p>{p.job.company}</p>
+        </div>
+        <div className="p-2">
+          <div className="dropdown dropdown-left">
+            <label
+              tabIndex={0}
+              className="btn btn-square btn-sm btn-ghost"
+              data-testid="job-list-menu"
+            >
+              <EllipsisVerticalIcon className="w-6 h-6" />
+            </label>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box text-base-content"
+            >
+              {editJobMutation.isLoading ? (
+                <li className="animate-pulse">
+                  <a>Loading...</a>
+                </li>
+              ) : (
+                p.jobLists.map((list) => {
+                  const selected = p.job.jobListId === list.id;
+                  return (
+                    <li
+                      key={list.id}
+                      data-testid="job-list-menu-item"
+                      aria-selected={selected}
+                      className={cn({ disabled: selected })}
+                      onClick={() => {
+                        if (!selected) {
+                          editJobMutation
+                            .mutateAsync({
+                              jobId: p.job.id,
+                              data: { jobListId: list.id },
+                            })
+                            .catch((e) => {
+                              dispatch(
+                                enqueueToast({
+                                  message: 'Failed to change job list',
+                                  type: 'error',
+                                })
+                              );
+                            });
+                        }
+                      }}
+                    >
+                      <a>{list.label}</a>
+                    </li>
                   );
-                }}
-              >
-                {list.label}
-              </MenuItem>
-            );
-          })
-        )}
-      </Menu>
-    </Card>
+                })
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   );
+}
+
+export function JobCardLoading() {
+  return <div className="h-24 w-full bg-gray-300 animate-pulse card" />;
 }

@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { renderWithQueryClient } from '@tests/query-client';
 import { DashboardNav } from './dashboard-nav';
-import { useRouterMock } from '@tests/next-navigation.mock';
+import { mockRouter } from '@tests/next-navigation.mock';
 import { userProfileMock } from '@api/job-quest/user/user.mocks';
 import userEvent from '@testing-library/user-event';
 
@@ -24,28 +24,18 @@ describe('Dashboard Nav', () => {
   });
   describe('User Avatar Menu', () => {
     test('Avatar menu contains user initials ', async () => {
-      // reference to activate mock
-      useRouterMock.push;
-
       renderWithQueryClient(<DashboardNav />);
       await findAvatarMenu().then((avatarMenu) => {
         expect(avatarMenu.textContent).toBe(mockInitials);
       });
     });
     test('redirects user to login page after "logout"', async () => {
-      let pushUrl = '';
-      useRouterMock.push.mockImplementation((url) => {
-        pushUrl = url;
-      });
-
       renderWithQueryClient(<DashboardNav />);
-
       const avatarMenu = await findAvatarMenu();
       await userEvent.click(avatarMenu);
       const logoutBtn = await screen.findByText('Logout');
       await userEvent.click(logoutBtn);
-
-      expect(pushUrl).toBe('/auth/login');
+      expect(mockRouter.pathname).toBe('/auth/login');
     });
   });
 });

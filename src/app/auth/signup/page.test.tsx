@@ -3,21 +3,11 @@ import SignUp from './page';
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ThemeProvider } from '@mui/material';
-import { theme } from '@common/theme';
 import { server, rest } from '@tests/server';
 import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { useRouterMock } from '@tests/next-navigation.mock';
-
-// reference to mock nav router
-useRouterMock.push;
 
 it('should display field errors', async () => {
-  renderWithQueryClient(
-    <ThemeProvider theme={theme}>
-      <SignUp />
-    </ThemeProvider>
-  );
+  renderWithQueryClient(<SignUp />);
 
   await screen
     .findByRole('button', { name: /sign up/i })
@@ -36,11 +26,7 @@ it('should display field errors', async () => {
   });
 });
 it('should submit valid form', async () => {
-  renderWithQueryClient(
-    <ThemeProvider theme={theme}>
-      <SignUp />
-    </ThemeProvider>
-  );
+  renderWithQueryClient(<SignUp />);
 
   const data = {
     firstName: 'john',
@@ -59,19 +45,19 @@ it('should submit valid form', async () => {
   );
 
   await screen
-    .findByRole('textbox', { name: /first name/i })
+    .findByTestId('form-first-name')
     .then((f) => userEvent.type(f, data.firstName));
 
   await screen
-    .findByRole('textbox', { name: /last name/i })
+    .findByTestId('form-last-name')
     .then((f) => userEvent.type(f, data.lastName));
 
   await screen
-    .findByRole('textbox', { name: /email/i })
+    .findByTestId('form-email')
     .then((f) => userEvent.type(f, data.email));
 
   await screen
-    .findByLabelText(/password/i)
+    .findByTestId('form-password')
     .then((f) => userEvent.type(f, data.password));
 
   await screen

@@ -18,8 +18,9 @@ describe('Job List Tabs', () => {
     '"%s" tab label is displayed',
     async (tabLabel) => {
       render(<JobListTabs />, { wrapper: AllProviders });
-      const tab = await screen.findByText(tabLabel);
-      await expect(tab.textContent).toBe(tabLabel);
+      const tabs = await screen.findAllByTestId('job-list-tab');
+      const tabFound = tabs.find((tab) => tab.textContent === tabLabel);
+      await expect(tabFound).toBeTruthy();
     }
   );
 });

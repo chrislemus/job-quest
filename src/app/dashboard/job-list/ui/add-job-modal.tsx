@@ -4,116 +4,155 @@ import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@app/dashboard/job/dto';
 import { useJobLists } from '@app/dashboard/job-list/hooks';
 import { useCreateJob } from '@app/dashboard/job/hooks';
-import {
-  Button,
-  SelectField,
-  Stack,
-  TextField,
-  Typography,
-} from '@common/ui/atoms';
-import {
-  Form,
-  Modal,
-  ModalActions,
-  ModalContent,
-  ModalContentText,
-  ModalTitle,
-} from '@common/ui/molecules';
+import cn from 'classnames';
+import { useModal } from '@/common/hooks';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
+import { useAppDispatch } from '../../store';
 
-type NewJobModalContentProps = {
-  active: boolean;
-  toggleActive: () => void;
-};
+export const MODAL_ID = 'addJob';
 
-export function AddJobModal(p: NewJobModalContentProps) {
+export function AddJobModal() {
   const formId = 'new-job';
+  const modal = useModal(MODAL_ID);
+  const dispatch = useAppDispatch();
+
   const form = useForm<CreateJobDto>({
     resolver: formValidator(CreateJobDto),
+    shouldUnregister: true,
   });
 
   const JobsListQuery = useJobLists();
   const addJobMutation = useCreateJob();
 
   const jobListOptions = useMemo(() => {
-    return JobsListQuery.data?.data?.map((j) => ({
+    const data = JobsListQuery.data?.data?.map((j) => ({
       value: j.id,
       label: j.label,
     }));
+    return data;
   }, [JobsListQuery.data]);
 
+  const errors = form.formState.errors;
   const errorMsgs = addJobMutation.error?.messages;
 
   return (
-    <Modal active={p.active} toggleActive={p.toggleActive}>
-      <Form
-        formMethods={form}
+    <div className={cn('modal', { 'modal-open': modal.isOpen })}>
+      <form
+        className="modal-box relative"
         id={formId}
-        onValidSubmit={(job) => {
-          addJobMutation.mutate(job, {
+        onSubmit={form.handleSubmit(async (job) => {
+          await addJobMutation.mutateAsync(job, {
             onSuccess: () => {
               form.reset();
-              p.toggleActive();
+              modal.toggle();
+              dispatch(
+                enqueueToast({
+                  message: 'Job successfully created! 🙌',
+                  type: 'success',
+                })
+              );
             },
           });
-        }}
+        })}
       >
-        <ModalTitle>Add a Job</ModalTitle>
-        <ModalContent>
-          <ModalContentText>
-            Quickly add job by entering formation below.
-          </ModalContentText>
+        <h2 className="text-xl font-semibold">Add a Job</h2>
+        <p> Quickly add job by entering formation below.</p>
 
-          {errorMsgs && (
-            <Typography paddingTop={1} color="error" variant="body1">
-              {errorMsgs?.map((msg, idx) => {
-                return <li key={idx}>{msg}</li>;
-              }) || 'Error'}
-            </Typography>
+        {errorMsgs && (
+          <ul className="text-error list-disc list-inside">
+            {errorMsgs.map((msg) => {
+              return <li>{msg}</li>;
+            })}
+          </ul>
+        )}
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Company</span>
+          </label>
+          <input
+            type="text"
+            data-testid="input-company"
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.company?.message,
+            })}
+            {...form.register('company')}
+          />
+          {errors.company?.message && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors.company.message}
+              </span>
+            </label>
           )}
-          <br />
-          <Stack spacing={2}>
-            <TextField
-              name="company"
-              type="text"
-              label="Company"
-              fullWidth
-              isInvalid={!!form.formState.errors?.company?.message}
-              helperText={form.formState.errors?.company?.message}
-            />
-            <TextField
-              name="title"
-              type="text"
-              label="Title"
-              fullWidth
-              isInvalid={!!form.formState.errors?.title?.message}
-              helperText={form.formState.errors?.title?.message}
-            />
-            {jobListOptions && (
-              <SelectField
-                name="jobListId"
-                label="List"
-                defaultValue={jobListOptions?.[0].value}
-                options={jobListOptions}
-              />
+        </div>
+        <div className="form-control w-full">
+          <label className="label">
+            <span className="label-text">Title</span>
+          </label>
+          <input
+            type="text"
+            data-testid="input-title"
+            className={cn('input input-bordered w-full', {
+              'input-error': !!form.formState.errors?.title?.message,
+            })}
+            {...form.register('title')}
+          />
+          {errors.title?.message && (
+            <label className="label">
+              <span className="label-text-alt text-error">
+                {errors.title.message}
+              </span>
+            </label>
+          )}
+        </div>
+        {jobListOptions && (
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">List</span>
+            </label>
+            <select
+              className="select select-bordered"
+              data-testid="input-job-list"
+              placeholder="Please select"
+              {...form.register('jobListId')}
+            >
+              {jobListOptions.map((opt) => {
+                const { label, value } = opt;
+                return (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                );
+              })}
+            </select>
+            {errors.jobListId?.message && (
+              <label className="label">
+                <span className="label-text-alt text-error">
+                  {errors.jobListId.message}
+                </span>
+              </label>
             )}
-          </Stack>
-        </ModalContent>
-        <ModalActions>
-          <Button
-            color="primary"
+          </div>
+        )}
+
+        <div className="modal-actions pt-8 flex justify-end gap-4">
+          <button
+            className={'btn btn-primary disabled:loading'}
             type="submit"
-            variant="contained"
             form={formId}
-            disabled={form.formState.isSubmitting || addJobMutation.isLoading}
-            loading={form.formState.isSubmitting || addJobMutation.isLoading}
+            disabled={form.formState.isSubmitting}
           >
             Add
-          </Button>
-          <Button type="button" onClick={p.toggleActive}>
+          </button>
+          <label
+            className="btn btn-primary btn-ghost"
+            htmlFor={MODAL_ID}
+            onClick={() => modal.toggle()}
+          >
             Cancel
-          </Button>
-        </ModalActions>
-      </Form>
-    </Modal>
+          </label>
+        </div>
+      </form>
+    </div>
   );
 }

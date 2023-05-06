@@ -1,93 +1,97 @@
-import { Button, Grid, Skeleton, Typography } from '@common/ui/atoms';
-import { PropsWithChildren, useMemo } from 'react';
-import { JobCard } from './job-card';
+'use client';
+import { useMemo, useState } from 'react';
+import { JobCard, JobCardLoading } from './job-card';
 import { useJobs } from '@app/dashboard/job/hooks';
 import { useActiveJobList, useJobLists } from '@app/dashboard/job-list/hooks';
-import { Alert } from '@common/ui/atoms/alert';
-import { useBoolean } from '@common/hooks';
-import { AddJobModal } from './add-job-modal';
-
-function GridItem(p: PropsWithChildren<{}>) {
-  return (
-    <Grid xs={12} sm={6} md={4} lg={3} padding={1}>
-      {p.children}
-    </Grid>
-  );
-}
+import { useModal } from '@/common/hooks';
+import { MODAL_ID } from './add-job-modal';
 
 export function JobListTabContent() {
+  const modal = useModal(MODAL_ID);
+
   const [activeJobList] = useActiveJobList();
-  const [activeModal, setActiveModal] = useBoolean();
   const JobsListQuery = useJobLists();
   const jobLists = JobsListQuery.data?.data || [];
   const jobsQuery = useJobs(
-    { jobListId: activeJobList },
-    { enabled: activeJobList === 0 || !!activeJobList }
+    { jobListId: activeJobList !== null ? activeJobList : undefined },
+    { enabled: activeJobList !== null }
   );
   const jobs = jobsQuery.data?.data;
   const loadingCards = useMemo(() => {
-    return Array.from({ length: 8 }, (_v, i) => (
-      <GridItem key={i}>
-        <Skeleton variant="rectangular" height={150} />
-      </GridItem>
-    ));
+    return Array.from({ length: 8 }, (_v, i) => <JobCardLoading key={i} />);
   }, []);
 
-  const jobsElements = useMemo(
-    () =>
-      jobs?.map((job) => {
-        return (
-          <GridItem key={job.id}>
-            <JobCard job={job} jobLists={jobLists} />
-          </GridItem>
-        );
-      }),
-    [jobs]
-  );
+  const jobCards = useMemo(() => {
+    if (!(jobs && jobs.length > 0)) return;
+    return jobs?.map((job) => {
+      return <JobCard job={job} jobLists={jobLists} key={job.id} />;
+    });
+  }, [jobs]);
+
+  if (jobsQuery.isError) {
+    return (
+      <JobListTabContentError
+        refetchFn={async () => {
+          await jobsQuery.refetch();
+        }}
+      />
+    );
+  }
 
   return (
-    <Grid container>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {jobsQuery.isLoading ? (
         loadingCards
-      ) : jobsQuery.isError ? (
-        <Alert
-          severity="error"
-          sx={{ width: '100%' }}
-          action={
-            <Button
-              color="inherit"
-              size="small"
-              loading={jobsQuery.isFetching}
-              onClick={() => {
-                jobsQuery.refetch();
-              }}
-            >
-              Retry
-            </Button>
-          }
-        >
-          Failed to load job list nav.
-        </Alert>
-      ) : jobsElements ? (
-        jobsElements
+      ) : jobCards ? (
+        jobCards
       ) : (
-        <Grid xs={12} paddingTop={2}>
-          <Typography textAlign="center">
-            <Button
-              aria-label="add-job"
-              size="large"
-              variant="contained"
-              onClick={setActiveModal.toggle}
-            >
-              Add Job
-            </Button>
-          </Typography>
-          <AddJobModal
-            active={activeModal}
-            toggleActive={setActiveModal.toggle}
-          />
-        </Grid>
+        <div>
+          <button className="btn btn-primary" onClick={() => modal.toggle()}>
+            Add
+          </button>
+        </div>
       )}
-    </Grid>
+    </div>
+  );
+}
+
+function JobListTabContentError(p: { refetchFn: () => Promise<void> }) {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <div className="alert alert-error text-center shadow-lg text-error-content">
+      <p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="stroke-current flex-shrink-0 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        Failed to load job list nav.
+        <br />
+      </p>
+      <div className="flex-none">
+        <button
+          className="btn btn-ghost disabled:loading"
+          disabled={loading}
+          onClick={async () => {
+            setLoading(true);
+            try {
+              await p.refetchFn();
+            } catch (error) {}
+            setLoading(false);
+          }}
+        >
+          Retry
+        </button>
+      </div>
+    </div>
   );
 }

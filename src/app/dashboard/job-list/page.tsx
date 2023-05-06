@@ -1,19 +1,25 @@
 'use client';
-import { Grid } from '@common/ui/atoms';
-import { JobListTopMenu, JobListTabContent, JobListTabs } from './ui';
+import { useModal } from '@/common/hooks';
+import { JobListTabContent, JobListTabs, AddJobModal, MODAL_ID } from './ui';
 
 export default function JobListPage() {
+  const modal = useModal(MODAL_ID);
+
   return (
-    <Grid container>
-      <Grid xs={12} paddingBottom={1}>
-        <JobListTopMenu />
-      </Grid>
-      <Grid xs={12} paddingBottom={1}>
+    <div className="flex flex-col gap-3">
+      {/* Top Nav */}
+      <div className="flex justify-end">
+        <button className="btn btn-primary" onClick={() => modal.toggle()}>
+          Add
+        </button>
+      </div>
+      <div>
         <JobListTabs />
-      </Grid>
-      <Grid xs={12}>
+      </div>
+      <div className="pt-3">
         <JobListTabContent />
-      </Grid>
-    </Grid>
+      </div>
+      <AddJobModal />
+    </div>
   );
 }

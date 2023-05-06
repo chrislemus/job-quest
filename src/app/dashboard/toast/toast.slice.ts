@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@app/dashboard/store';
 
+export type ToastType = 'error' | 'warning' | 'info' | 'success';
+
 type Toast = {
   message: string;
-  type: 'error' | 'warning' | 'info' | 'success';
+  type: ToastType;
 };
 
 interface ToastState {
@@ -27,12 +29,12 @@ const toastSlice = createSlice({
         state.currentToast = action.payload;
       }
     },
-    currentToastDone: (state) => {
+    dequeueToast: (state) => {
       state.currentToast = state.toasts.shift();
     },
   },
 });
 
-export const { enqueueToast, currentToastDone } = toastSlice.actions;
+export const { enqueueToast, dequeueToast } = toastSlice.actions;
 export const selectToast = (state: RootState) => state.toast;
 export const toastReducer = toastSlice.reducer;
