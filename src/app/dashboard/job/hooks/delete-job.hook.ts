@@ -22,7 +22,7 @@ export function useDeleteJob() {
         queryClient.setQueryData<JobsData>(queryKey, (res) => {
           if (res) {
             let data = res?.data;
-            data = data.filter((job) => job.id !== job.id);
+            data = data.filter(({ id }) => id !== job.id);
             return { ...res, data };
           }
         });
