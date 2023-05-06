@@ -20,7 +20,9 @@ export default function AuthLayout(p: PropsWithChildren<{}>) {
               </div>
             </div>
             {/* Card Right */}
-            <div className="w-1/2 py-10 px-7 bg-base-100">{p.children}</div>
+            <div className="w-full md:w-1/2 py-10 px-7 bg-base-100">
+              {p.children}
+            </div>
           </div>
         </div>
       </div>
