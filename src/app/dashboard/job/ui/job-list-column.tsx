@@ -1,13 +1,48 @@
 'use client';
 import { useMemo, useState } from 'react';
 import { JobCard, JobCardLoading } from './job-card';
-import { useJobs } from '@app/dashboard/job/hooks';
+import { useJobs, useUpdateJob } from '@app/dashboard/job/hooks';
 import { JobListEntity } from '@/api/job-quest/job-list/job-list.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { AddJobModal } from './add-job-modal';
+import { useDrop } from 'react-dnd';
+import { useAppDispatch } from '../../store';
+import { enqueueToast } from '@app/dashboard/toast/toast.slice';
+import { JobEntity } from '@/api/job-quest/job/job.entity';
 
 export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
+  const editJobMutation = useUpdateJob();
+  const dispatch = useAppDispatch();
+  const [{ isOver, canDrop }, drop] = useDrop<JobEntity>(() => {
+    return {
+      accept: ['jobCard'],
+      drop: (job) => {
+        if (job.jobListId !== jobList.id) {
+          editJobMutation
+            .mutateAsync({
+              jobId: job.id,
+              data: { jobListId: jobList.id },
+            })
+            .catch((e) => {
+              dispatch(
+                enqueueToast({
+                  message: 'Failed to change job list',
+                  type: 'error',
+                })
+              );
+            });
+        }
+      },
+      collect: (monitor) => {
+        return {
+          isOver: monitor.isOver(),
+          canDrop: monitor.canDrop(),
+        };
+      },
+    };
+  });
+
   const [modalActive, setModalActive] = useState(false);
   const toggleModal = () => setModalActive((active) => !active);
   const jobsQuery = useJobs({ jobListId: jobList.id });
@@ -35,7 +70,10 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
   }, []);
 
   return (
-    <div className="h-full flex flex-col gap-4 min-w-[18rem] max-w-[18rem] px-1 overflow-y-auto">
+    <div
+      className="h-full flex flex-col min-w-[18rem] max-w-[18rem] px-1 overflow-y-auto"
+      ref={drop}
+    >
       <div className="text-center sticky top-0 bg-white w-full">
         <h1 className=" text-lg font-semibold">{jobList.label}</h1>
         {jobs && (
@@ -53,7 +91,10 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
       {jobsQuery.isError ? (
         errorAlert
       ) : (
-        <div className="h-full flex flex-col gap-4 overflow-y-auto overscroll-contain px-1">
+        <div
+          data-can-drop={canDrop && isOver}
+          className="h-full flex flex-col gap-4 overflow-y-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
+        >
           {jobsQuery.isLoading ? loadingCards : jobCards}
           <AddJobModal
             active={modalActive}

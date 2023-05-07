@@ -1,7 +1,8 @@
 'use client';
 import { useJobLists } from '../job-list/hooks';
 import { JobListColumn } from './ui';
-
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 export default function JobListPage() {
   const JobsListQuery = useJobLists();
   const jobLists = JobsListQuery.data?.data || [];
@@ -10,5 +11,9 @@ export default function JobListPage() {
     return <JobListColumn jobList={list} key={list.id} />;
   });
 
-  return <div className="h-full flex gap-2 overflow-x-auto">{jobListCols}</div>;
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <div className="h-full flex gap-2 overflow-x-auto">{jobListCols}</div>;
+    </DndProvider>
+  );
 }

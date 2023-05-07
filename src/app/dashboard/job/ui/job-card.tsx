@@ -1,45 +1,44 @@
-import {
-  jobQueryFn,
-  jobQueryKey,
-  useUpdateJob,
-} from '@app/dashboard/job/hooks';
 import { JobEntity } from '@api/job-quest/job/job.entity';
 import { PropsWithoutRef, useEffect, useMemo } from 'react';
-import cn from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
-import { useAppDispatch } from '../../store';
-import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 import { useRouter } from 'next/navigation';
-import { useJobLists } from '../../job-list/hooks';
+import { useDrag } from 'react-dnd';
+import { jobQueryFn, jobQueryKey } from '@app/dashboard/job/hooks';
 
 type JobCardProps = {
   job: JobEntity;
 };
 
-export function JobCard(p: PropsWithoutRef<JobCardProps>) {
-  const JobsListQuery = useJobLists();
-  const jobLists = JobsListQuery.data?.data;
+export function JobCard({ job }: PropsWithoutRef<JobCardProps>) {
+  const [{ isDragging }, drag, dragPreview] = useDrag(
+    () => ({
+      type: 'jobCard',
+      item: job,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [job]
+  );
+
   const router = useRouter();
-  const editJobMutation = useUpdateJob();
-  const backgroundColor = p.job.color || '#fff';
-  const dispatch = useAppDispatch();
+  const backgroundColor = job.color || '#fff';
 
   useEffect(() => {
     queryClient.prefetchQuery({
-      queryKey: jobQueryKey(p.job.id),
+      queryKey: jobQueryKey(job.id),
       queryFn: jobQueryFn,
     });
   }, []);
-
   const textColor = useMemo(() => {
     return getContrastText(backgroundColor);
   }, [backgroundColor]);
 
+  if (isDragging) return <div ref={dragPreview} />;
   return (
     <div
+      ref={drag}
       className="card bg-base-100 h-24"
       style={{ backgroundColor, color: textColor }}
       data-testid="job-card"
@@ -47,62 +46,10 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
       <div className="flex">
         <div
           className="flex-1 cursor-pointer text-left p-5 "
-          onClick={() => router.push(`/dashboard/job/${p.job.id}`)}
+          onClick={() => router.push(`/dashboard/job/${job.id}`)}
         >
-          <p className="font-bold">{p.job.title} </p>
-          <p>{p.job.company}</p>
-        </div>
-        <div className="p-2">
-          <div className="dropdown dropdown-left">
-            <label
-              tabIndex={0}
-              className="btn btn-square btn-sm btn-ghost"
-              data-testid="job-list-menu"
-            >
-              <FontAwesomeIcon icon={faEllipsisVertical} className="w-4 h-4" />
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box text-base-content"
-            >
-              {editJobMutation.isLoading || !jobLists ? (
-                <li className="animate-pulse">
-                  <a>Loading...</a>
-                </li>
-              ) : (
-                jobLists.map((list) => {
-                  const selected = p.job.jobListId === list.id;
-                  return (
-                    <li
-                      key={list.id}
-                      data-testid="job-list-menu-item"
-                      aria-selected={selected}
-                      className={cn({ disabled: selected })}
-                      onClick={() => {
-                        if (!selected) {
-                          editJobMutation
-                            .mutateAsync({
-                              jobId: p.job.id,
-                              data: { jobListId: list.id },
-                            })
-                            .catch((e) => {
-                              dispatch(
-                                enqueueToast({
-                                  message: 'Failed to change job list',
-                                  type: 'error',
-                                })
-                              );
-                            });
-                        }
-                      }}
-                    >
-                      <a>{list.label}</a>
-                    </li>
-                  );
-                })
-              )}
-            </ul>
-          </div>
+          <p className="font-bold">{job.title} </p>
+          <p>{job.company}</p>
         </div>
       </div>
     </div>
