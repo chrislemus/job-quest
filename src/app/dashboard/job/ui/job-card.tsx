@@ -4,7 +4,6 @@ import {
   useUpdateJob,
 } from '@app/dashboard/job/hooks';
 import { JobEntity } from '@api/job-quest/job/job.entity';
-import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
 import { PropsWithoutRef, useEffect, useMemo } from 'react';
 import cn from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,13 +13,15 @@ import { queryClient } from '@/common/query-client';
 import { useAppDispatch } from '../../store';
 import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 import { useRouter } from 'next/navigation';
+import { useJobLists } from '../../job-list/hooks';
 
 type JobCardProps = {
   job: JobEntity;
-  jobLists: JobListEntity[];
 };
 
 export function JobCard(p: PropsWithoutRef<JobCardProps>) {
+  const JobsListQuery = useJobLists();
+  const jobLists = JobsListQuery.data?.data;
   const router = useRouter();
   const editJobMutation = useUpdateJob();
   const backgroundColor = p.job.color || '#fff';
@@ -39,7 +40,7 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
 
   return (
     <div
-      className="card bg-base-100 shadow-xl h-24"
+      className="card bg-base-100 h-24"
       style={{ backgroundColor, color: textColor }}
       data-testid="job-card"
     >
@@ -64,12 +65,12 @@ export function JobCard(p: PropsWithoutRef<JobCardProps>) {
               tabIndex={0}
               className="dropdown-content menu menu-compact p-2 shadow bg-base-100 rounded-box text-base-content"
             >
-              {editJobMutation.isLoading ? (
+              {editJobMutation.isLoading || !jobLists ? (
                 <li className="animate-pulse">
                   <a>Loading...</a>
                 </li>
               ) : (
-                p.jobLists.map((list) => {
+                jobLists.map((list) => {
                   const selected = p.job.jobListId === list.id;
                   return (
                     <li

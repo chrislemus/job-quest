@@ -5,20 +5,27 @@ import { CreateJobDto } from '@app/dashboard/job/dto';
 import { useJobLists } from '@app/dashboard/job-list/hooks';
 import { useCreateJob } from '@app/dashboard/job/hooks';
 import cn from 'classnames';
-import { useModal } from '@/common/hooks';
 import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 import { useAppDispatch } from '../../store';
 
-export const MODAL_ID = 'addJob';
-
-export function AddJobModal() {
+export function AddJobModal({
+  active,
+  toggle,
+  defaultJobListId,
+}: {
+  active: boolean;
+  toggle: () => void;
+  defaultJobListId?: number;
+}) {
   const formId = 'new-job';
-  const modal = useModal(MODAL_ID);
   const dispatch = useAppDispatch();
 
   const form = useForm<CreateJobDto>({
     resolver: formValidator(CreateJobDto),
     shouldUnregister: true,
+    defaultValues: {
+      jobListId: defaultJobListId,
+    },
   });
 
   const JobsListQuery = useJobLists();
@@ -36,7 +43,7 @@ export function AddJobModal() {
   const errorMsgs = addJobMutation.error?.messages;
 
   return (
-    <div className={cn('modal', { 'modal-open': modal.isOpen })}>
+    <div className={cn('modal', { 'modal-open': active })}>
       <form
         className="modal-box relative"
         id={formId}
@@ -44,7 +51,7 @@ export function AddJobModal() {
           await addJobMutation.mutateAsync(job, {
             onSuccess: () => {
               form.reset();
-              modal.toggle();
+              toggle();
               dispatch(
                 enqueueToast({
                   message: 'Job successfully created! 🙌',
@@ -72,9 +79,8 @@ export function AddJobModal() {
           <input
             type="text"
             data-testid="input-company"
-            className={cn('input input-bordered w-full', {
-              'input-error': !!form.formState.errors?.company?.message,
-            })}
+            aria-invalid={!!errors.company?.message}
+            className="input input-bordered w-full aria-invalid:input-error"
             {...form.register('company')}
           />
           {errors.company?.message && (
@@ -92,9 +98,8 @@ export function AddJobModal() {
           <input
             type="text"
             data-testid="input-title"
-            className={cn('input input-bordered w-full', {
-              'input-error': !!form.formState.errors?.title?.message,
-            })}
+            aria-invalid={!!errors.title?.message}
+            className="input input-bordered w-full aria-invalid:input-error"
             {...form.register('title')}
           />
           {errors.title?.message && (
@@ -144,11 +149,7 @@ export function AddJobModal() {
           >
             Add
           </button>
-          <label
-            className="btn btn-primary btn-ghost"
-            htmlFor={MODAL_ID}
-            onClick={() => modal.toggle()}
-          >
+          <label className="btn btn-primary btn-ghost" onClick={() => toggle()}>
             Cancel
           </label>
         </div>

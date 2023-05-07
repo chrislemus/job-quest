@@ -13,9 +13,12 @@ export default function Layout(p: PropsWithChildren<{}>) {
       <RouterAuthGuard>
         <ReactQueryDevtools initialIsOpen={false} />
 
-        <div>
-          <DashboardNav />
-          <div className="p-5">{p.children}</div>
+        <div className="flex flex-col h-screen">
+          <div>
+            <DashboardNav />
+          </div>
+
+          <div className="grow overflow-x-auto pt-4">{p.children}</div>
         </div>
       </RouterAuthGuard>
     </DashboardStoreProvider>

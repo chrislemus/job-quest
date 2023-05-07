@@ -2,7 +2,7 @@ import { jobMocks } from '@api/job-quest/job/job.mocks';
 import { render, screen } from '@testing-library/react';
 import { QueryClientTestProvider } from '@tests/query-client';
 import { PropsWithChildren } from 'react';
-import { JobListTabContent } from './job-list-tab-content';
+import { JobListColumn } from './job-list-column';
 import { DashboardStoreProvider } from '@app/dashboard/store';
 
 function AllProviders(p: PropsWithChildren<{}>) {
@@ -13,9 +13,9 @@ function AllProviders(p: PropsWithChildren<{}>) {
   );
 }
 
-describe('Job List Tab Content', () => {
+describe('Job List Column', () => {
   it('Displays job card', async () => {
-    render(<JobListTabContent />, { wrapper: AllProviders });
+    render(<JobListColumn />, { wrapper: AllProviders });
     const tabContent = await screen.findByText(jobMocks[3].company);
     await expect(tabContent.textContent).toBe(jobMocks[3].company);
   });
