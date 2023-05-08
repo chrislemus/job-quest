@@ -14,10 +14,13 @@ import { JobEntity } from '@/api/job-quest/job/job.entity';
 export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
   const editJobMutation = useUpdateJob();
   const dispatch = useAppDispatch();
-  const [{ isOver, canDrop }, drop] = useDrop<JobEntity>(() => {
+  const jobsQuery = useJobs({ jobListId: jobList.id });
+  const jobs = jobsQuery.data?.data;
+  // const [childDragCapture, setChildDragCapture] = useState(second)
+  const [{ isOver }, drop] = useDrop<JobEntity & { index: number }>(() => {
     return {
       accept: ['jobCard'],
-      drop: (job) => {
+      drop: (job, mon) => {
         if (job.jobListId !== jobList.id) {
           editJobMutation
             .mutateAsync({
@@ -34,24 +37,22 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
             });
         }
       },
+
       collect: (monitor) => {
         return {
           isOver: monitor.isOver(),
-          canDrop: monitor.canDrop(),
         };
       },
     };
-  });
+  }, []);
 
   const [modalActive, setModalActive] = useState(false);
   const toggleModal = () => setModalActive((active) => !active);
-  const jobsQuery = useJobs({ jobListId: jobList.id });
-  const jobs = jobsQuery.data?.data;
 
   const jobCards = useMemo(() => {
     if (!(jobs && jobs.length > 0)) return;
-    return jobs?.map((job) => {
-      return <JobCard job={job} key={job.id} />;
+    return jobs?.map((job, idx) => {
+      return <JobCard job={job} key={job.id} index={idx} />;
     });
   }, [jobs]);
 
@@ -92,8 +93,8 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
         errorAlert
       ) : (
         <div
-          data-can-drop={canDrop && isOver}
-          className="h-full flex flex-col gap-4 overflow-y-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
+          data-can-drop={isOver}
+          className="h-full flex flex-col overflow-y-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
         >
           {jobsQuery.isLoading ? loadingCards : jobCards}
           <AddJobModal
