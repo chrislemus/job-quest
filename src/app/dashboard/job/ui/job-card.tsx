@@ -10,7 +10,7 @@ import {
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
 import { useRouter } from 'next/navigation';
-import { useDrag, useDrop, XYCoord } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import {
   jobQueryFn,
   jobQueryKey,
@@ -43,7 +43,7 @@ export function JobCard({ job }: PropsWithoutRef<JobCardProps>) {
   );
 
   const [externalDraggedItem, setExternalDraggedItem] = useState<{
-    position: string;
+    position: 'top' | 'bottom';
     itemHeight: string;
   }>();
 
@@ -57,24 +57,31 @@ export function JobCard({ job }: PropsWithoutRef<JobCardProps>) {
       };
     },
     drop(item, monitor) {
-      // if (item.jobListId !== jobList.id) {
-      editJobMutation
-        .mutateAsync({
-          jobId: item.id,
-          data: { jobListId: job.jobListId },
-        })
-        .catch((e) => {
-          dispatch(
-            enqueueToast({
-              message: 'Failed to change job list',
-              type: 'error',
-            })
-          );
-        });
+      const cardPosition = externalDraggedItem?.position;
+      if (cardPosition) {
+        const beforeJobId = cardPosition === 'top' ? job.id : undefined;
+        const afterJobId = cardPosition === 'bottom' ? job.id : undefined;
+
+        editJobMutation
+          .mutateAsync({
+            jobId: item.id,
+            data: { jobList: { beforeJobId, afterJobId } },
+          })
+          .catch((e) => {
+            dispatch(
+              enqueueToast({
+                message: 'Failed to change job list',
+                type: 'error',
+              })
+            );
+          });
+      }
       // }
     },
     hover(item, monitor) {
       const dropElement = ref.current;
+      // console.log(dropElement);
+      // console.log(itm);
       const clientOffset = monitor.getClientOffset();
       if (!dropElement || !clientOffset || !item) {
         return;
@@ -93,7 +100,6 @@ export function JobCard({ job }: PropsWithoutRef<JobCardProps>) {
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       // Get pixels to the top
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      // console.log(hoverClientY);
       const position = hoverClientY < hoverMiddleY ? 'top' : 'bottom';
       if (position === 'bottom' && nextEl?.id == itemId) {
         return;

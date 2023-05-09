@@ -1,5 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { CreateJobDto } from './create-job.dto';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { CreateJobDto, JobListDto } from './create-job.dto';
 
 /**
  * Request body Data transfer object for updating a Job.
@@ -54,11 +59,8 @@ export class UpdateJobDto implements Partial<CreateJobDto> {
   @IsOptional()
   @IsString()
   color?: string;
-  /**
-   * Job List ID belonging to this Job
-   */
-  @IsOptional()
-  @IsNumber()
-  @IsNotEmpty()
-  jobListId?: number;
+
+  /** Job list data */
+  @ValidateNested()
+  jobList: JobListDto;
 }

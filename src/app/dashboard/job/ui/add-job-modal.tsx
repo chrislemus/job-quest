@@ -10,23 +10,30 @@ import { useAppDispatch } from '../../store';
 
 export function AddJobModal({
   active,
-  toggle,
+  toggle: _toggle,
   defaultJobListId,
 }: {
   active: boolean;
   toggle: () => void;
   defaultJobListId?: number;
 }) {
-  const formId = 'new-job';
+  const formId = defaultJobListId ? `new-job-${defaultJobListId}` : 'new-job';
   const dispatch = useAppDispatch();
 
   const form = useForm<CreateJobDto>({
     resolver: formValidator(CreateJobDto),
     shouldUnregister: true,
     defaultValues: {
-      jobListId: defaultJobListId,
+      jobList: {
+        id: defaultJobListId,
+      },
     },
   });
+
+  const toggle = () => {
+    form.reset();
+    _toggle();
+  };
 
   const JobsListQuery = useJobLists();
   const addJobMutation = useCreateJob();
@@ -50,7 +57,6 @@ export function AddJobModal({
         onSubmit={form.handleSubmit(async (job) => {
           await addJobMutation.mutateAsync(job, {
             onSuccess: () => {
-              form.reset();
               toggle();
               dispatch(
                 enqueueToast({
@@ -119,7 +125,7 @@ export function AddJobModal({
               className="select select-bordered"
               data-testid="input-job-list"
               placeholder="Please select"
-              {...form.register('jobListId')}
+              {...form.register('jobList.id')}
             >
               {jobListOptions.map((opt) => {
                 const { label, value } = opt;
@@ -130,10 +136,10 @@ export function AddJobModal({
                 );
               })}
             </select>
-            {errors.jobListId?.message && (
+            {errors.jobList?.id?.message && (
               <label className="label">
                 <span className="label-text-alt text-error">
-                  {errors.jobListId.message}
+                  {errors.jobList?.id?.message}
                 </span>
               </label>
             )}

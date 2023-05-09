@@ -16,16 +16,30 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
   const dispatch = useAppDispatch();
   const jobsQuery = useJobs({ jobListId: jobList.id });
   const jobs = jobsQuery.data?.data;
-  // const [childDragCapture, setChildDragCapture] = useState(second)
-  const [{ isOver }, drop] = useDrop<JobEntity & { index: number }>(() => {
+  // const [childDragCapture, setChildDragCapture] = useState(new Set<string>());
+  const [{ isOver: isOverColumnContainerDrop }, columnContainerDropRef] =
+    useDrop(() => {
+      return {
+        accept: ['jobCard'],
+        collect: (monitor) => {
+          return {
+            isOver: !!monitor.isOver(),
+          };
+        },
+      };
+    }, []);
+
+  const [_collect, emptyColumnSpaceDropRef] = useDrop<
+    JobEntity & { index: number }
+  >(() => {
     return {
       accept: ['jobCard'],
-      drop: (job, mon) => {
+      drop: (job) => {
         if (job.jobListId !== jobList.id) {
           editJobMutation
             .mutateAsync({
               jobId: job.id,
-              data: { jobListId: jobList.id },
+              data: { jobList: { id: jobList.id } },
             })
             .catch((e) => {
               dispatch(
@@ -36,12 +50,6 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
               );
             });
         }
-      },
-
-      collect: (monitor) => {
-        return {
-          isOver: monitor.isOver(),
-        };
       },
     };
   }, []);
@@ -54,7 +62,7 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
     return jobs?.map((job, idx) => {
       return <JobCard job={job} key={job.id} index={idx} />;
     });
-  }, [jobs]);
+  }, [jobsQuery.dataUpdatedAt]);
 
   const loadingCards = useMemo(() => {
     return Array.from({ length: 8 }, (_v, i) => <JobCardLoading key={i} />);
@@ -71,10 +79,7 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
   }, []);
 
   return (
-    <div
-      className="h-full flex flex-col min-w-[18rem] max-w-[18rem] px-1 overflow-y-auto"
-      ref={drop}
-    >
+    <div className="h-full flex flex-col min-w-[18rem] max-w-[18rem] px-1 overflow-auto">
       <div className="text-center sticky top-0 bg-white w-full">
         <h1 className=" text-lg font-semibold">{jobList.label}</h1>
         {jobs && (
@@ -93,10 +98,14 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
         errorAlert
       ) : (
         <div
-          data-can-drop={isOver}
-          className="h-full flex flex-col overflow-y-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
+          data-can-drop={isOverColumnContainerDrop}
+          ref={columnContainerDropRef}
+          className="h-full flex flex-col overflow-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
         >
           {jobsQuery.isLoading ? loadingCards : jobCards}
+          {!jobsQuery.isLoading && (
+            <div className="grow" ref={emptyColumnSpaceDropRef} />
+          )}
           <AddJobModal
             active={modalActive}
             toggle={toggleModal}
