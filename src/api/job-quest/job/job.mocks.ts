@@ -12,6 +12,7 @@ export const jobMocks: JobEntity[] = [
     description: 'great place to work',
     color: '#e91e63',
     userId: 1,
+    jobListRank: 'a',
     jobListId: jobListMocks[0].id,
   },
   {
@@ -24,6 +25,7 @@ export const jobMocks: JobEntity[] = [
     description: null,
     color: '#cddc39',
     userId: 1,
+    jobListRank: 'b',
     jobListId: jobListMocks[1].id,
   },
   {
@@ -36,6 +38,7 @@ export const jobMocks: JobEntity[] = [
     description: null,
     color: '#009688',
     userId: 1,
+    jobListRank: 'c',
     jobListId: jobListMocks[2].id,
   },
   {
@@ -48,6 +51,7 @@ export const jobMocks: JobEntity[] = [
     description: null,
     color: '#03a9f4',
     userId: 1,
+    jobListRank: 'd',
     jobListId: jobListMocks[3].id,
   },
 ];

@@ -11,16 +11,16 @@ import { DashboardStoreProvider } from '../../store';
 
 const jobMock = jobMocks[0];
 
-describe.skip('Job Card', () => {
-  // it('displays company and title', async () => {
-  //   renderWithQueryClient(
-  //     <DashboardStoreProvider>
-  //       <JobCard job={jobMock} jobLists={jobListMocks} />
-  //     </DashboardStoreProvider>
-  //   );
-  //   await expect(screen.findByText(jobMock.title)).toBeTruthy();
-  //   await expect(screen.findByText(jobMock.company)).toBeTruthy();
-  // });
+describe('Job Card', () => {
+  it.skip('displays company and title', async () => {
+    // renderWithQueryClient(
+    //   <DashboardStoreProvider>
+    //     <JobCard job={jobMock} jobLists={jobListMocks} />
+    //   </DashboardStoreProvider>
+    // );
+    // await expect(screen.findByText(jobMock.title)).toBeTruthy();
+    // await expect(screen.findByText(jobMock.company)).toBeTruthy();
+  });
   // it('redirects user to job page when clicked', async () => {
   //   renderWithQueryClient(
   //     <MemoryRouterProvider>

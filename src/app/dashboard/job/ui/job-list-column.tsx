@@ -1,66 +1,49 @@
-'use client';
 import { useMemo, useState } from 'react';
-import { JobCard, JobCardLoading } from './job-card';
-import { useJobs, useUpdateJob } from '@app/dashboard/job/hooks';
+import { useJobs } from '@app/dashboard/job/hooks';
 import { JobListEntity } from '@/api/job-quest/job-list/job-list.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-import { AddJobModal } from './add-job-modal';
 import { useDrop } from 'react-dnd';
-import { useAppDispatch } from '../../store';
-import { enqueueToast } from '@app/dashboard/toast/toast.slice';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import {
+  JobCard,
+  JobCardItem,
+  jobCardItemType,
+  JobCardLoading,
+} from './job-card';
+import { JobListDto } from '../dto';
 
-export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
-  const editJobMutation = useUpdateJob();
-  const dispatch = useAppDispatch();
+type JobListColumnProps = {
+  jobList: JobListEntity;
+  toggleModal: (defaultJobListId?: number) => void;
+  updateJobList: (jobId: number, jobListData: JobListDto) => void;
+};
+
+export function JobListColumn(props: JobListColumnProps) {
+  const { jobList, updateJobList, toggleModal } = props;
   const jobsQuery = useJobs({ jobListId: jobList.id });
   const jobs = jobsQuery.data?.data;
-  // const [childDragCapture, setChildDragCapture] = useState(new Set<string>());
+
   const [{ isOver: isOverColumnContainerDrop }, columnContainerDropRef] =
     useDrop(() => {
       return {
-        accept: ['jobCard'],
-        collect: (monitor) => {
-          return {
-            isOver: !!monitor.isOver(),
-          };
-        },
+        accept: jobCardItemType,
+        collect: (m) => ({ isOver: m.isOver() }),
       };
     }, []);
 
-  const [_collect, emptyColumnSpaceDropRef] = useDrop<
-    JobEntity & { index: number }
-  >(() => {
+  const [_collect, emptyColumnSpaceDropRef] = useDrop<JobCardItem>(() => {
     return {
-      accept: ['jobCard'],
+      accept: jobCardItemType,
       drop: (job) => {
-        if (job.jobListId !== jobList.id) {
-          editJobMutation
-            .mutateAsync({
-              jobId: job.id,
-              data: { jobList: { id: jobList.id } },
-            })
-            .catch((e) => {
-              dispatch(
-                enqueueToast({
-                  message: 'Failed to change job list',
-                  type: 'error',
-                })
-              );
-            });
-        }
+        updateJobList(job.id, { id: jobList.id });
       },
     };
   }, []);
 
-  const [modalActive, setModalActive] = useState(false);
-  const toggleModal = () => setModalActive((active) => !active);
-
   const jobCards = useMemo(() => {
     if (!(jobs && jobs.length > 0)) return;
-    return jobs?.map((job, idx) => {
-      return <JobCard job={job} key={job.id} index={idx} />;
+    return jobs?.map((job) => {
+      return <JobCard job={job} key={job.id} updateJobList={updateJobList} />;
     });
   }, [jobsQuery.dataUpdatedAt]);
 
@@ -87,7 +70,7 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
             <p>{jobs?.length} Jobs</p>
             <button
               className="btn btn-ghost w-full text-gray-400 border-1 border-gray-300 text-2xl"
-              onClick={toggleModal}
+              onClick={() => toggleModal(jobList.id)}
             >
               +
             </button>
@@ -106,11 +89,6 @@ export function JobListColumn({ jobList }: { jobList: JobListEntity }) {
           {!jobsQuery.isLoading && (
             <div className="grow" ref={emptyColumnSpaceDropRef} />
           )}
-          <AddJobModal
-            active={modalActive}
-            toggle={toggleModal}
-            defaultJobListId={jobList.id}
-          />
         </div>
       )}
     </div>

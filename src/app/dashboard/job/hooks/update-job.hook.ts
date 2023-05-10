@@ -28,7 +28,8 @@ export function useUpdateJob() {
         } else {
           let siblingJob: JobEntity | undefined;
           if (jobList?.afterJobId) siblingJob = getJobData(jobList.afterJobId);
-          if (jobList?.afterJobId) siblingJob = getJobData(jobList.afterJobId);
+          if (jobList?.beforeJobId)
+            siblingJob = getJobData(jobList.beforeJobId);
           if (siblingJob) {
             newJob.jobListId = siblingJob.jobListId;
           }

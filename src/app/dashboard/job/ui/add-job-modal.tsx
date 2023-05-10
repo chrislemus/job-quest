@@ -8,15 +8,15 @@ import cn from 'classnames';
 import { enqueueToast } from '@app/dashboard/toast/toast.slice';
 import { useAppDispatch } from '../../store';
 
-export function AddJobModal({
-  active,
-  toggle: _toggle,
-  defaultJobListId,
-}: {
+type AddJobModalProps = {
   active: boolean;
   toggle: () => void;
   defaultJobListId?: number;
-}) {
+};
+
+export function AddJobModal(props: AddJobModalProps) {
+  const { active, toggle, defaultJobListId } = props;
+
   const formId = defaultJobListId ? `new-job-${defaultJobListId}` : 'new-job';
   const dispatch = useAppDispatch();
 
@@ -29,11 +29,6 @@ export function AddJobModal({
       },
     },
   });
-
-  const toggle = () => {
-    form.reset();
-    _toggle();
-  };
 
   const JobsListQuery = useJobLists();
   const addJobMutation = useCreateJob();

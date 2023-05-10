@@ -1,125 +1,29 @@
 import { JobEntity } from '@api/job-quest/job/job.entity';
-import {
-  PropsWithoutRef,
-  RefObject,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
 import { useRouter } from 'next/navigation';
 import { useDrag, useDrop } from 'react-dnd';
-import {
-  jobQueryFn,
-  jobQueryKey,
-  useUpdateJob,
-} from '@app/dashboard/job/hooks';
-import { useAppDispatch } from '../../store';
-import { enqueueToast } from '../../toast/toast.slice';
+import { JobListDto } from '../dto';
+import { jobQueryFn, jobQueryKey } from '@app/dashboard/job/hooks';
+import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 
 type JobCardProps = {
   job: JobEntity;
+  updateJobList: (jobId: number, jobListData: JobListDto) => void;
 };
 
-type Item = JobEntity & { ref: RefObject<HTMLDivElement> };
+export type JobCardItem = JobEntity & {
+  ref: RefObject<HTMLDivElement>;
+};
 
-export function JobCard({ job }: PropsWithoutRef<JobCardProps>) {
-  const editJobMutation = useUpdateJob();
-  const dispatch = useAppDispatch();
+export const jobCardItemType = 'JobCard' as const;
+
+export function JobCard(props: JobCardProps) {
+  const { job, updateJobList } = props;
+
   const ref = useRef<HTMLDivElement>(null);
-
-  const [{ isDragging }, drag, dragPreview] = useDrag<Item>(
-    () => ({
-      type: 'jobCard',
-      item: { ...job, ref },
-
-      collect: (monitor) => ({
-        isDragging: !!monitor.isDragging(),
-      }),
-    }),
-    [job]
-  );
-
-  const [externalDraggedItem, setExternalDraggedItem] = useState<{
-    position: 'top' | 'bottom';
-    itemHeight: string;
-  }>();
-
-  const [{ isOver }, drop] = useDrop<Item, unknown, { isOver: boolean }>({
-    accept: ['jobCard'],
-    collect(monitor) {
-      const isOver = monitor.isOver();
-
-      return {
-        isOver,
-      };
-    },
-    drop(item, monitor) {
-      const cardPosition = externalDraggedItem?.position;
-      if (cardPosition) {
-        const beforeJobId = cardPosition === 'top' ? job.id : undefined;
-        const afterJobId = cardPosition === 'bottom' ? job.id : undefined;
-
-        editJobMutation
-          .mutateAsync({
-            jobId: item.id,
-            data: { jobList: { beforeJobId, afterJobId } },
-          })
-          .catch((e) => {
-            dispatch(
-              enqueueToast({
-                message: 'Failed to change job list',
-                type: 'error',
-              })
-            );
-          });
-      }
-      // }
-    },
-    hover(item, monitor) {
-      const dropElement = ref.current;
-      // console.log(dropElement);
-      // console.log(itm);
-      const clientOffset = monitor.getClientOffset();
-      if (!dropElement || !clientOffset || !item) {
-        return;
-      }
-      if (item?.id === job.id) {
-        return;
-      }
-      const prevEl = dropElement?.previousElementSibling;
-      const nextEl = dropElement?.nextElementSibling;
-      const itemId = `jobCard${item.id}`;
-
-      // Determine rectangle on screen
-      const hoverBoundingRect = dropElement?.getBoundingClientRect();
-      // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      const position = hoverClientY < hoverMiddleY ? 'top' : 'bottom';
-      if (position === 'bottom' && nextEl?.id == itemId) {
-        return;
-      }
-      if (position === 'top' && prevEl?.id == itemId) {
-        return;
-      }
-
-      setExternalDraggedItem({
-        position,
-        itemHeight: `${item.ref.current?.offsetHeight}px`,
-      });
-    },
-  });
-
-  useEffect(() => {
-    if (!isOver) setExternalDraggedItem(undefined);
-  }, [isOver]);
-
   const router = useRouter();
+  const jobCardId = `jobCard${job.id}`;
   const backgroundColor = job.color || '#fff';
 
   useEffect(() => {
@@ -128,23 +32,75 @@ export function JobCard({ job }: PropsWithoutRef<JobCardProps>) {
       queryFn: jobQueryFn,
     });
   }, []);
+
   const textColor = useMemo(() => {
     return getContrastText(backgroundColor);
   }, [backgroundColor]);
 
-  // if (isDragging)
-  //   return <div ref={dragPreview} id={`jobCardDragPreview${job.id}`} />;
+  const [{ isDragging }, drag] = useDrag<
+    JobCardItem,
+    unknown,
+    { isDragging: boolean }
+  >(() => ({
+    type: jobCardItemType,
+    item: { ...job, ref },
+    collect: (m) => ({ isDragging: m.isDragging() }),
+  }));
+
+  const [externalDraggedItem, setExternalDraggedItem] = useState<{
+    position: 'top' | 'bottom';
+    itemHeight: string;
+  }>();
+
+  const [{ isOver }, drop] = useDrop<JobCardItem, unknown, { isOver: boolean }>(
+    {
+      accept: jobCardItemType,
+      collect: (m) => ({ isOver: m.isOver() }),
+      drop(item) {
+        const cardPosition = externalDraggedItem?.position;
+        if (cardPosition) {
+          const beforeJobId = cardPosition === 'top' ? job.id : undefined;
+          const afterJobId = cardPosition === 'bottom' ? job.id : undefined;
+          const jobList = { beforeJobId, afterJobId };
+          updateJobList(item.id, jobList);
+        }
+      },
+      hover(item, monitor) {
+        const dropElement = ref.current;
+        const clientOffset = monitor.getClientOffset();
+        const same = item?.id === job.id;
+        if (!dropElement || !clientOffset || same) return;
+
+        const prevElId = dropElement?.previousElementSibling?.id;
+        const nextElId = dropElement?.nextElementSibling?.id;
+        const itemElId = item?.ref?.current?.id;
+
+        const { top, bottom } = dropElement.getBoundingClientRect();
+        const hoverMiddleY = (bottom - top) / 2;
+        const hoverClientY = clientOffset.y - top;
+        const position = hoverClientY < hoverMiddleY ? 'top' : 'bottom';
+        if (position === 'bottom' && nextElId === itemElId) return;
+        if (position === 'top' && prevElId === itemElId) return;
+
+        const itemHeight = `${item.ref.current?.offsetHeight}px`;
+        setExternalDraggedItem({ position, itemHeight });
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (!isOver) setExternalDraggedItem(undefined);
+  }, [isOver]);
 
   const blankEl = <div style={{ height: externalDraggedItem?.itemHeight }} />;
+
+  drop(drag(ref));
+
   return (
     <div
-      id={`jobCard${job.id}`}
+      id={jobCardId}
       aria-disabled={isDragging}
-      ref={(el) => {
-        drag(el);
-        drop(el);
-        ref.current = el;
-      }}
+      ref={ref}
       className="py-2 aria-disabled:opacity-10  aria-disabled:animate-pulse"
     >
       {externalDraggedItem?.position === 'top' && blankEl}

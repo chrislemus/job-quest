@@ -1,20 +1,73 @@
 'use client';
+import { useMemo, useState } from 'react';
 import { useJobLists } from '../job-list/hooks';
-import { JobListColumn } from './ui';
+import { AddJobModal, JobListColumn } from './ui';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useRef } from 'react';
+import { enqueueToast } from '../toast/toast.slice';
+import { useUpdateJob } from './hooks';
+import { useAppDispatch } from '../store';
+import { JobListDto } from './dto';
+
 export default function JobListPage() {
   const JobsListQuery = useJobLists();
-  const jobLists = JobsListQuery.data?.data || [];
+  const [modal, setModal] = useState<{
+    active: boolean;
+    defaultJobListId?: number;
+  }>({ active: false, defaultJobListId: undefined });
 
-  const jobListCols = jobLists.map((list) => {
-    return <JobListColumn jobList={list} key={list.id} />;
-  });
+  const toggleModal = (defaultJobListId?: number) => {
+    setModal((prev) => {
+      const active = !prev.active;
+      return { active, defaultJobListId };
+    });
+  };
+
+  const jobLists = JobsListQuery.data?.data || [];
+  const editJobMutation = useUpdateJob();
+  const dispatch = useAppDispatch();
+
+  const updateJobList = (jobId: number, jobListData: JobListDto) => {
+    editJobMutation
+      .mutateAsync({
+        jobId,
+        data: { jobList: jobListData },
+      })
+      .catch((_e) => {
+        dispatch(
+          enqueueToast({
+            message: 'Failed to change job list',
+            type: 'error',
+          })
+        );
+      });
+  };
+
+  const jobListCols = useMemo(
+    () =>
+      jobLists.map((list) => {
+        return (
+          <JobListColumn
+            jobList={list}
+            key={list.id}
+            updateJobList={updateJobList}
+            toggleModal={toggleModal}
+          />
+        );
+      }),
+    [jobLists]
+  );
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="h-full flex gap-2 overflow-x-auto">{jobListCols}</div>
+      {modal.active && (
+        <AddJobModal
+          active={modal.active}
+          toggle={toggleModal}
+          defaultJobListId={modal.defaultJobListId}
+        />
+      )}
     </DndProvider>
   );
 }
