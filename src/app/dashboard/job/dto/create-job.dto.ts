@@ -1,10 +1,61 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+  ValidationArguments,
+  ValidateIf,
+} from 'class-validator';
 import { JobEntity } from '@api/job-quest/job/job.entity';
+
+/**
+ * Parameters for assigning job list to job
+ * - only one property must be defined
+ */
+export class JobListDto {
+  @ValidateIf((obj: JobListDto) => {
+    const keys = Object.keys(obj);
+    const valueCountNotInRange = !valueCountInRange(obj);
+    const propValueProvided = keys.includes('id');
+    return propValueProvided || valueCountNotInRange;
+  })
+  @IsNumber(
+    {},
+    {
+      message: ({ object, property }: ValidationArguments) => {
+        const count = Object.keys(object)?.length;
+        const overRange = count > 1;
+        const belowRange = count < 1;
+
+        // global class validation
+        if (overRange || belowRange) {
+          return overRange ? overRangeErrorMsg : belowRangeErrorMsg;
+        } else {
+          return `${property} must be a number conforming to the specified constraints`;
+        }
+      },
+    }
+  )
+  id?: number;
+
+  @ValidateIf((obj: JobListDto) => valueCountInRange(obj))
+  @IsNumber()
+  @IsOptional()
+  beforeJobId?: number;
+
+  @ValidateIf((obj: JobListDto) => valueCountInRange(obj))
+  @IsNumber()
+  @IsOptional()
+  afterJobId?: number;
+}
 
 /**
  * Request body data transfer object for creating a Job.
  */
-export class CreateJobDto implements Omit<JobEntity, 'id' | 'userId'> {
+export class CreateJobDto
+  implements Omit<JobEntity, 'id' | 'userId' | 'jobListId' | 'jobListRank'>
+{
   /**
    * Job Title
    * @example 'Software Engineer'
@@ -52,11 +103,20 @@ export class CreateJobDto implements Omit<JobEntity, 'id' | 'userId'> {
   @IsOptional()
   @IsString()
   color?: string;
-  /**
-   * Job List ID belonging to this Job
-   */
 
-  @IsNumber()
-  @IsNotEmpty()
-  jobListId: number;
+  /** Job list data */
+  @ValidateNested()
+  jobList: JobListDto;
+}
+
+export const overRangeErrorMsg =
+  'Job list should have at most one property defined';
+export const belowRangeErrorMsg =
+  'Job list should have at least one property defined';
+
+function valueCountInRange(obj: JobListDto) {
+  const keys = Object.keys(obj);
+  JobListDto;
+  const count = keys.length;
+  return count == 1;
 }

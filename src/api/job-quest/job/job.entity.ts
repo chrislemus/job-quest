@@ -34,6 +34,9 @@ export class JobEntity {
   @IsNumber()
   jobListId: number;
 
+  @IsString()
+  jobListRank: string;
+
   @IsNumber()
   userId: number;
 }

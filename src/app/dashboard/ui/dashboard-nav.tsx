@@ -16,11 +16,11 @@ export function DashboardNav() {
   }, [user.data]);
 
   return (
-    <div className="navbar bg-primary">
+    <div className="navbar shadow-sm">
       <div className="flex-1">
         <Link
           href="/dashboard"
-          className="text-base-100 text-xl font-semibold flex justify-center items-center gap-2"
+          className="text-primary text-xl font-semibold flex justify-center items-center gap-2"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@ export function DashboardNav() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 "
           >
             <path
               strokeLinecap="round"
@@ -45,7 +45,7 @@ export function DashboardNav() {
             tabIndex={0}
             className="btn btn-ghost btn-circle avatar placeholder"
           >
-            <div className="bg-secondary text-neutral-content rounded-full w-12">
+            <div className="bg-blue-500 text-neutral-content rounded-full w-8">
               <span>{userInitials}</span>
             </div>
           </div>

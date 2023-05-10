@@ -14,7 +14,7 @@ module.exports = {
       },
       {
         source: '/dashboard',
-        destination: '/dashboard/job-list',
+        destination: '/dashboard/job',
         permanent: false,
       },
     ];
