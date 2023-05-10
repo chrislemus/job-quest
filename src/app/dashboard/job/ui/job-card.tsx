@@ -125,5 +125,5 @@ export function JobCard(props: JobCardProps) {
 }
 
 export function JobCardLoading() {
-  return <div className="h-24 w-full bg-gray-300 animate-pulse card" />;
+  return <div className="h-24 w-full bg-gray-300 animate-pulse card my-2" />;
 }
