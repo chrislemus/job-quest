@@ -1,9 +1,9 @@
 import { userService } from './user.service';
-import { UserProfileRes } from '@api/job-quest/user/dto';
+import { UserProfileRes } from '@/api/job-quest/user/dto';
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { server } from '@tests/server';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { server } from '@/tests/server';
 import { rest } from 'msw';
 
 describe('UserService', () => {

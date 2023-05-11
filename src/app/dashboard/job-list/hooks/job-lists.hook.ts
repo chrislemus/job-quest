@@ -1,8 +1,8 @@
-import { jobQuestApi } from '@api/job-quest';
-import { JobListPageRes as JobListData } from '@api/job-quest/job-list/dto/job-list-page-res.dto';
-import { ApiErrorRes as JobListsError } from '@api/job-quest/types';
+import { jobQuestApi } from '@/api/job-quest';
+import { JobListPageRes as JobListData } from '@/api/job-quest/job-list/dto/job-list-page-res.dto';
+import { ApiErrorRes as JobListsError } from '@/api/job-quest/types';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
-import { jobListQueryKey as _jobListQueryKey } from '../constants';
+import { jobListQueryKey as _jobListQueryKey } from '@/app/dashboard/job-list/constants';
 
 export const jobListQueryKey = _jobListQueryKey.all;
 export type JobListQueryKey = typeof jobListQueryKey;

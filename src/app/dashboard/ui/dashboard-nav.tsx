@@ -1,5 +1,5 @@
-import { useLogout } from '@app/auth/hooks';
-import { useUser } from '@app/user/hooks';
+import { useLogout } from '@/app/auth/hooks';
+import { useUser } from '@/app/user/hooks';
 import { useMemo } from 'react';
 import Link from 'next/link';
 

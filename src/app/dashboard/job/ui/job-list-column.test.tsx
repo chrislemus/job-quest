@@ -1,10 +1,10 @@
-import { jobMocks } from '@api/job-quest/job/job.mocks';
+import { jobMocks } from '@/api/job-quest/job/job.mocks';
 import { render, screen } from '@testing-library/react';
-import { QueryClientTestProvider } from '@tests/query-client';
+import { QueryClientTestProvider } from '@/tests/query-client';
 import { PropsWithChildren } from 'react';
 import { JobListColumn } from './job-list-column';
-import { DashboardStoreProvider } from '@app/dashboard/store';
-import { jobListMocks } from '@api/job-quest/job-list/job-list.mocks';
+import { DashboardStoreProvider } from '@/app/dashboard/store';
+import { jobListMocks } from '@/api/job-quest/job-list/job-list.mocks';
 
 function AllProviders(p: PropsWithChildren<{}>) {
   return (

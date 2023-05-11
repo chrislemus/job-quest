@@ -1,7 +1,7 @@
-import { jobQuestHttpService } from '@api/job-quest/services/job-quest-http.service';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
+import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { authLocalStore } from './auth-local-store.service';
-import { AuthSignUpArgs, AuthLogInArgs } from '@api/job-quest/auth/types';
+import { AuthSignUpArgs, AuthLogInArgs } from '@/api/job-quest/auth/types';
 import { validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import {
@@ -9,7 +9,7 @@ import {
   AuthLogInRes,
   AuthLogOutRes,
   AuthRefreshJwtRes,
-} from '@api/job-quest/auth/dto';
+} from '@/api/job-quest/auth/dto';
 
 async function signup(user: AuthSignUpArgs): Promise<AuthSignUpRes> {
   const res = await jobQuestHttpService

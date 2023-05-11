@@ -1,7 +1,7 @@
-import { jobQuestHttpService } from '../services/job-quest-http.service';
-import { jobQuestApiUrls } from '../job-quest-api-urls.const';
-import { ApiPageRes } from '../dto/api-page-res.dto';
-import { JobListEntity } from '@api/job-quest/job-list/job-list.entity';
+import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { ApiPageRes } from '@/api/job-quest/dto/api-page-res.dto';
+import { JobListEntity } from '@/api/job-quest/job-list/job-list.entity';
 
 /** Fetch all Job Lists */
 async function getAll() {

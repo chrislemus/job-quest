@@ -1,5 +1,5 @@
 import Cookies from 'universal-cookie';
-import { JWT } from '@api/job-quest/auth/dto';
+import { JWT } from '@/api/job-quest/auth/dto';
 
 const cookies = new Cookies();
 export const authCookieKey = 'userAuth';

@@ -1,6 +1,6 @@
 'use client';
 import { useMemo, useState } from 'react';
-import { useJobLists } from '../job-list/hooks';
+import { useJobLists } from '@/app/dashboard/job-list/hooks';
 import { AddJobModal, JobListColumn } from './ui';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';

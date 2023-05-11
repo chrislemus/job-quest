@@ -1,12 +1,12 @@
-import { rest } from '@tests/server';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
+import { rest } from '@/tests/server';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { jwtMock } from './auth.mocks';
 import {
   AuthSignUpRes,
   AuthLogInRes,
   AuthLogOutRes,
   AuthRefreshJwtRes,
-} from '@api/job-quest/auth/dto';
+} from '@/api/job-quest/auth/dto';
 
 export const authServiceHandlers = [
   rest.post(jobQuestApiUrls.auth.signup, (_req, res, ctx) => {

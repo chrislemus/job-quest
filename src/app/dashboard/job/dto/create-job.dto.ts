@@ -7,7 +7,7 @@ import {
   ValidationArguments,
   ValidateIf,
 } from 'class-validator';
-import { JobEntity } from '@api/job-quest/job/job.entity';
+import { JobEntity } from '@/api/job-quest/job/job.entity';
 
 /**
  * Parameters for assigning job list to job

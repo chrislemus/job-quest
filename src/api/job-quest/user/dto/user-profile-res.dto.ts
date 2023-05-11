@@ -1,5 +1,5 @@
 import { IsNumber, IsString } from 'class-validator';
-import { ApiOkRes } from '@api/job-quest/types';
+import { ApiOkRes } from '@/api/job-quest/types';
 import { Type } from 'class-transformer';
 import { ValidateNested, IsNotEmpty } from 'class-validator';
 

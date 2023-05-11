@@ -1,10 +1,10 @@
-import { renderWithQueryClient } from '@tests/query-client';
+import { renderWithQueryClient } from '@/tests/query-client';
 import SignUp from './page';
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { server, rest } from '@tests/server';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
+import { server, rest } from '@/tests/server';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 
 it('should display field errors', async () => {
   renderWithQueryClient(<SignUp />);

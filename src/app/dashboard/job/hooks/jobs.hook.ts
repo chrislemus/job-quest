@@ -1,9 +1,9 @@
-import { jobQuestApi } from '@api/job-quest';
-import { JobPageRes as JobsData } from '@api/job-quest/job/dto';
-import { ApiErrorRes as JobsError } from '@api/job-quest/types';
-import { jobQueryKey } from '@app/dashboard/job/constants';
+import { jobQuestApi } from '@/api/job-quest';
+import { JobPageRes as JobsData } from '@/api/job-quest/job/dto';
+import { ApiErrorRes as JobsError } from '@/api/job-quest/types';
+import { jobQueryKey } from '@/app/dashboard/job/constants';
 import { useEffect } from 'react';
-import { useActiveJobList, useJobLists } from '../../job-list/hooks';
+import { useActiveJobList, useJobLists } from '@/app/dashboard/job-list/hooks';
 import { queryClient } from '@/common/query-client';
 import { useQuery, UseQueryResult, QueryFunction } from '@tanstack/react-query';
 

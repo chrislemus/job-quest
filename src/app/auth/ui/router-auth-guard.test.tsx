@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
-import { jobQuestApi } from '@api/job-quest';
-import { mockRouter, usePathnameMock } from '@tests/next-navigation.mock';
+import { jobQuestApi } from '@/api/job-quest';
+import { mockRouter, usePathnameMock } from '@/tests/next-navigation.mock';
 import {
   RouterAuthGuard,
   intervalTime,

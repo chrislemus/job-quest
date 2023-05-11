@@ -1,6 +1,6 @@
 'use client';
 import { PropsWithChildren } from 'react';
-import { RouterAuthGuard } from '@app/auth/ui';
+import { RouterAuthGuard } from '@/app/auth/ui';
 
 export default function AuthLayout(p: PropsWithChildren<{}>) {
   return (

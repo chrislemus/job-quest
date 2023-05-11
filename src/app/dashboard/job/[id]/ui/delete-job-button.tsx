@@ -1,9 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useDeleteJob } from '@app/dashboard/job/hooks';
+import { useDeleteJob } from '@/app/dashboard/job/hooks';
 import { useId } from 'react';
 import { useAppDispatch } from '@/app/dashboard/store';
-import { enqueueToast } from '@app/dashboard/toast/toast.slice';
+import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
 
 type DeleteJobButtonProps = {
   jobId: number;

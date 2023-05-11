@@ -1,12 +1,12 @@
-import { formValidator } from '@common/utils';
+import { formValidator } from '@/common/utils';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { CreateJobDto } from '@app/dashboard/job/dto';
-import { useJobLists } from '@app/dashboard/job-list/hooks';
-import { useCreateJob } from '@app/dashboard/job/hooks';
+import { CreateJobDto } from '@/app/dashboard/job/dto';
+import { useJobLists } from '@/app/dashboard/job-list/hooks';
+import { useCreateJob } from '@/app/dashboard/job/hooks';
 import cn from 'classnames';
-import { enqueueToast } from '@app/dashboard/toast/toast.slice';
-import { useAppDispatch } from '../../store';
+import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
+import { useAppDispatch } from '@/app/dashboard/store';
 
 type AddJobModalProps = {
   active: boolean;

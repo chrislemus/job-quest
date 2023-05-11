@@ -1,4 +1,4 @@
-import { JobEntity } from '@api/job-quest/job/job.entity';
+import { JobEntity } from '@/api/job-quest/job/job.entity';
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
 import { useDrag, useDrop } from 'react-dnd';
@@ -8,7 +8,7 @@ import {
   jobQueryFn,
   jobQueryKey,
   useAssignJobList,
-} from '@app/dashboard/job/hooks';
+} from '@/app/dashboard/job/hooks';
 
 type JobCardProps = { job: JobEntity };
 export type JobCardItem = JobEntity & { ref: RefObject<HTMLDivElement> };

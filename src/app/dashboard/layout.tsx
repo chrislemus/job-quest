@@ -1,5 +1,5 @@
 'use client';
-import { RouterAuthGuard } from '@app/auth/ui';
+import { RouterAuthGuard } from '@/app/auth/ui';
 import { PropsWithChildren } from 'react';
 import { DashboardNav } from './ui';
 import { Toast } from './toast/toast';

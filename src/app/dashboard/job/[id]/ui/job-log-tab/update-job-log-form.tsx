@@ -1,8 +1,8 @@
-import { UpdateJobLogDto } from '@app/dashboard/job/dto';
-import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
+import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
+import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@common/utils';
-import { useUpdateJobLog } from '@app/dashboard/job-log/hooks';
+import { formValidator } from '@/common/utils';
+import { useUpdateJobLog } from '@/app/dashboard/job-log/hooks';
 import { useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons';

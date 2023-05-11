@@ -1,6 +1,6 @@
-import { useAppDispatch } from '../../store';
-import { enqueueToast } from '../../toast/toast.slice';
-import { JobListDto } from '../dto';
+import { useAppDispatch } from '@/app/dashboard/store';
+import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
+import { JobListDto } from '@/app/dashboard/job/dto';
 import { useUpdateJob } from './update-job.hook';
 
 export function useAssignJobList() {

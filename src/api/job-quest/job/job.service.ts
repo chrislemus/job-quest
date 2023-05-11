@@ -1,12 +1,12 @@
-import { CreateJobDto, UpdateJobDto } from '@app/dashboard/job/dto';
-import { jobColors } from '@app/dashboard/job/constants';
-import { jobQuestHttpService } from '../services/job-quest-http.service';
-import { ApiOkRes } from '@api/job-quest/types';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
+import { CreateJobDto, UpdateJobDto } from '@/app/dashboard/job/dto';
+import { jobColors } from '@/app/dashboard/job/constants';
+import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { ApiOkRes } from '@/api/job-quest/types';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { JobPageRes } from './dto/job-page-res.dto';
 import { validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { JobEntity } from '@api/job-quest/job/job.entity';
+import { JobEntity } from '@/api/job-quest/job/job.entity';
 
 /** Fetch all Jobs */
 async function getAll(filters?: { jobListId?: number }): Promise<JobPageRes> {

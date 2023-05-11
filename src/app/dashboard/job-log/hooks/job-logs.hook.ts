@@ -1,6 +1,6 @@
-import { jobQuestApi } from '@api/job-quest';
-import { JobLogPageRes as JobLogData } from '@api/job-quest/job-log/dto';
-import { ApiErrorRes as JobLogError } from '@api/job-quest/types';
+import { jobQuestApi } from '@/api/job-quest';
+import { JobLogPageRes as JobLogData } from '@/api/job-quest/job-log/dto';
+import { ApiErrorRes as JobLogError } from '@/api/job-quest/types';
 import { jobLogQueryKey } from '@/app/dashboard/job-log/constants';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
 

@@ -1,9 +1,9 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { jobQuestApi } from '@api/job-quest';
-import { dashboardUrl } from '@app/dashboard/constants';
-import { authLoginUrl, authSignUpUrl } from '@app/auth/constants';
+import { jobQuestApi } from '@/api/job-quest';
+import { dashboardUrl } from '@/app/dashboard/constants';
+import { authLoginUrl, authSignUpUrl } from '@/app/auth/constants';
 import { useInterval } from 'react-use';
 
 export const intervalTime = 5000;

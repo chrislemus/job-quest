@@ -1,7 +1,7 @@
-import { useDeleteJobLog } from '@app/dashboard/job-log/hooks';
+import { useDeleteJobLog } from '@/app/dashboard/job-log/hooks';
 import { useMemo } from 'react';
-import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
-import { useBoolean } from '@common/hooks';
+import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';
+import { useBoolean } from '@/common/hooks';
 import { UpdateJobLogForm } from './update-job-log-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';

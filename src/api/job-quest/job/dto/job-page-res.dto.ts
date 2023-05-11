@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { ValidateNested, IsNotEmpty } from 'class-validator';
-import { JobEntity } from '@api/job-quest/job/job.entity';
-import { ApiPageRes } from '../../dto/api-page-res.dto';
+import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { ApiPageRes } from '@/api/job-quest/dto/api-page-res.dto';
 
 export class JobPageRes extends ApiPageRes<JobEntity> {
   @Type(() => JobEntity)

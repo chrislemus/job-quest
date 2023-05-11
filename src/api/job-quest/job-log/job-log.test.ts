@@ -2,9 +2,9 @@ import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 import { jobLogService } from './job-log.service';
 import { rest } from 'msw';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { server } from '@tests/server';
-import { JobLogPageRes } from '@api/job-quest/job-log/dto';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { server } from '@/tests/server';
+import { JobLogPageRes } from '@/api/job-quest/job-log/dto';
 import { jobLogMocks } from './job-log.mocks';
 
 test('contains valid global server handlers', async () => {

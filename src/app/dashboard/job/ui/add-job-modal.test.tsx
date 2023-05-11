@@ -1,14 +1,14 @@
 import { screen } from '@testing-library/react';
-import { renderWithQueryClient } from '@tests/query-client';
+import { renderWithQueryClient } from '@/tests/query-client';
 import { AddJobModal } from './add-job-modal';
 import userEvent from '@testing-library/user-event';
-import { jobListMocks } from '@api/job-quest/job-list/job-list.mocks';
-import { rest, server } from '@tests/server';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
+import { jobListMocks } from '@/api/job-quest/job-list/job-list.mocks';
+import { rest, server } from '@/tests/server';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { ApiOkRes } from '@/api/job-quest/types';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
-import { CreateJobDto } from '../dto';
-import { DashboardStoreProvider } from '../../store';
+import { CreateJobDto } from '@/app/dashboard/job/dto';
+import { DashboardStoreProvider } from '@/app/dashboard/store';
 
 describe('Add Job Modal', () => {
   let active = true;

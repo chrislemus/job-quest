@@ -1,11 +1,11 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import { UserLogin } from '@app/auth/dto';
-import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
-import { jobQuestApi } from '@api/job-quest';
-import { JWT } from '@api/job-quest/auth/dto';
-import { AuthLogInArgs } from '@api/job-quest/auth/types';
+import { UserLogin } from '@/app/auth/dto';
+import { ApiErrorRes, ApiOkRes } from '@/api/job-quest/types';
+import { jobQuestApi } from '@/api/job-quest';
+import { JWT } from '@/api/job-quest/auth/dto';
+import { AuthLogInArgs } from '@/api/job-quest/auth/types';
 import { useRouter } from 'next/navigation';
-import { dashboardUrl } from '@app/dashboard/constants';
+import { dashboardUrl } from '@/app/dashboard/constants';
 
 /** User login */
 export function useLogin(): UseMutationResult<

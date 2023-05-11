@@ -2,9 +2,9 @@ import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 import { jobListService } from './job-list.service';
 import { rest } from 'msw';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { server } from '@tests/server';
-import { JobListPageRes } from '@api/job-quest/job-list/dto';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { server } from '@/tests/server';
+import { JobListPageRes } from '@/api/job-quest/job-list/dto';
 
 test('contains valid global server handlers', async () => {
   const res = await jobListService.getAll();

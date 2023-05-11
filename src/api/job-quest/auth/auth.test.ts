@@ -1,19 +1,19 @@
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { server, rest } from '@tests/server';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { server, rest } from '@/tests/server';
 import { authService } from './auth.service';
 import { signUpMockCredentials, logInMockCredentials } from './auth.mocks';
 import { userService } from '../user/user.service';
 import { authLocalStore } from './auth-local-store.service';
-import { userProfileMock } from '@api/job-quest/user/user.mocks';
-import { UserProfileRes } from '@api/job-quest/user/dto';
+import { userProfileMock } from '@/api/job-quest/user/user.mocks';
+import { UserProfileRes } from '@/api/job-quest/user/dto';
 import {
   AuthSignUpRes,
   AuthLogInRes,
   AuthLogOutRes,
   AuthRefreshJwtRes,
-} from '@api/job-quest/auth/dto';
+} from '@/api/job-quest/auth/dto';
 
 afterEach(() => {
   jest.resetAllMocks();

@@ -1,4 +1,4 @@
-import { toastReducer } from '@app/dashboard/toast/toast.slice';
+import { toastReducer } from '@/app/dashboard/toast/toast.slice';
 import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({

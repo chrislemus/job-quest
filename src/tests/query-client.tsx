@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { defaultQueryClientOptions } from '@common/query-client';
+import { defaultQueryClientOptions } from '@/common/query-client';
 import { PropsWithChildren, ReactElement } from 'react';
 import {
   DefaultOptions,

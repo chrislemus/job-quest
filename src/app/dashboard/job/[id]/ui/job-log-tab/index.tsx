@@ -1,6 +1,6 @@
-import { useUser } from '@app/user/hooks';
+import { useUser } from '@/app/user/hooks';
 import { PropsWithChildren, useMemo } from 'react';
-import { useJobLogs } from '@app/dashboard/job-log/hooks';
+import { useJobLogs } from '@/app/dashboard/job-log/hooks';
 import { JobLogContent } from './job-log-content';
 import { AddJobLogForm } from './add-job-log-form';
 import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';

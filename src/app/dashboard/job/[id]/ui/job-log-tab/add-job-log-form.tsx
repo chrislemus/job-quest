@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@common/utils';
-import { CreateJobLogDto } from '@app/dashboard/job/dto';
-import { useCreateJobLog } from '@app/dashboard/job-log/hooks';
+import { formValidator } from '@/common/utils';
+import { CreateJobLogDto } from '@/app/dashboard/job/dto';
+import { useCreateJobLog } from '@/app/dashboard/job-log/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';

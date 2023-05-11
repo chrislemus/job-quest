@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@app/dashboard/store';
-import { dequeueToast, ToastType } from '@app/dashboard/toast/toast.slice';
+import { useAppDispatch, useAppSelector } from '@/app/dashboard/store';
+import { dequeueToast, ToastType } from '@/app/dashboard/toast/toast.slice';
 import * as _Toast from '@radix-ui/react-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {

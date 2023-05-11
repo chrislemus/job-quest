@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@common/query-client';
-import { JobListDto, UpdateJobDto } from '@app/dashboard/job/dto';
-import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
-import { JobEntity } from '@api/job-quest/job/job.entity';
-import { jobQuestApi } from '@api/job-quest';
+import { queryClient } from '@/common/query-client';
+import { JobListDto, UpdateJobDto } from '@/app/dashboard/job/dto';
+import { ApiErrorRes, ApiOkRes } from '@/api/job-quest/types';
+import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { jobQuestApi } from '@/api/job-quest';
 import { getJobData, JobData, jobQueryKey } from './job.hook';
 import { JobsData, jobsQueryKey } from './jobs.hook';
 

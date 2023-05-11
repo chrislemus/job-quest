@@ -1,4 +1,4 @@
-import { jobService } from '@api/job-quest/job/job.service';
+import { jobService } from '@/api/job-quest/job/job.service';
 
 const pk = 'job' as const;
 export const jobQueryKey = {

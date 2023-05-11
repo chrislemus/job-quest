@@ -1,12 +1,12 @@
 'use client';
 import { useCallback } from 'react';
 import { JobLogTab, JobInfoTab } from './ui';
-import { useJob } from '@app/dashboard/job/hooks';
+import { useJob } from '@/app/dashboard/job/hooks';
 import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-import { useJobLogs } from '../../job-log/hooks';
+import { useJobLogs } from '@/app/dashboard/job-log/hooks';
 
 const tabs = {
   info: 'Info',

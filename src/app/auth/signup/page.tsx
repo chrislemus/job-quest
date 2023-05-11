@@ -1,8 +1,8 @@
 'use client';
-import { formValidator } from '@common/utils';
+import { formValidator } from '@/common/utils';
 import { useForm } from 'react-hook-form';
-import { useSignUp } from '@app/auth/hooks';
-import { UserSignUp } from '@app/auth/dto';
+import { useSignUp } from '@/app/auth/hooks';
+import { UserSignUp } from '@/app/auth/dto';
 
 export default function SignUp() {
   const form = useForm<UserSignUp>({

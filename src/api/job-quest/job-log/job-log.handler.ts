@@ -1,7 +1,7 @@
-import { rest } from '@tests/server';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { jobLogMocks } from '@api/job-quest/job-log/job-log.mocks';
-import { jobQuestApi } from '@api/job-quest';
+import { rest } from '@/tests/server';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { jobLogMocks } from '@/api/job-quest/job-log/job-log.mocks';
+import { jobQuestApi } from '@/api/job-quest';
 
 export const jobLogServiceHandlers = [
   rest.get(jobQuestApiUrls.jobLog.root, (req, res, ctx) => {

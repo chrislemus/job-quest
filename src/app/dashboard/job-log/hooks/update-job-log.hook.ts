@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@common/query-client';
-import { UpdateJobLogDto } from '@app/dashboard/job/dto';
-import { ApiErrorRes, ApiOkRes } from '@api/job-quest/types';
-import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
-import { jobQuestApi } from '@api/job-quest';
+import { queryClient } from '@/common/query-client';
+import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
+import { ApiErrorRes, ApiOkRes } from '@/api/job-quest/types';
+import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';
+import { jobQuestApi } from '@/api/job-quest';
 import { jobLogsQueryKey } from './job-logs.hook';
 
 export type UpdateJobLogData = ApiOkRes<JobLogEntity>;

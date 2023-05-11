@@ -1,7 +1,7 @@
 'use client';
-import { formValidator } from '@common/utils';
-import { UserLogin } from '@app/auth/dto';
-import { useLogin } from '@app/auth/hooks';
+import { formValidator } from '@/common/utils';
+import { UserLogin } from '@/app/auth/dto';
+import { useLogin } from '@/app/auth/hooks';
 import { useForm } from 'react-hook-form';
 
 export default function Login() {

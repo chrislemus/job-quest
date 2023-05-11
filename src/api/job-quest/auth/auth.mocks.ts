@@ -1,4 +1,4 @@
-import { AuthSignUpArgs, AuthLogInArgs } from '@api/job-quest/auth/types';
+import { AuthSignUpArgs, AuthLogInArgs } from '@/api/job-quest/auth/types';
 import { JWT } from './dto';
 
 export const jwtMock: JWT = {

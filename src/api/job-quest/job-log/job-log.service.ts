@@ -1,9 +1,9 @@
-import { jobQuestHttpService } from '../services/job-quest-http.service';
-import { ApiOkRes } from '@api/job-quest/types';
-import { CreateJobLogDto, UpdateJobLogDto } from '@app/dashboard/job/dto';
-import { jobQuestApiUrls } from '@api/job-quest/job-quest-api-urls.const';
-import { ApiPageRes } from '../dto/api-page-res.dto';
-import { JobLogEntity } from '@api/job-quest/job-log/job-log.entity';
+import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { ApiOkRes } from '@/api/job-quest/types';
+import { CreateJobLogDto, UpdateJobLogDto } from '@/app/dashboard/job/dto';
+import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { ApiPageRes } from '@/api/job-quest/dto/api-page-res.dto';
+import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';
 import { JobLogPageRes } from './dto/job-log-page-res.dto';
 import { validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
