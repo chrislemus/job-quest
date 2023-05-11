@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useJobs } from '@app/dashboard/job/hooks';
+import { useAssignJobList, useJobs } from '@app/dashboard/job/hooks';
 import { JobListEntity } from '@/api/job-quest/job-list/job-list.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
@@ -10,16 +10,15 @@ import {
   jobCardItemType,
   JobCardLoading,
 } from './job-card';
-import { JobListDto } from '../dto';
 
 type JobListColumnProps = {
   jobList: JobListEntity;
-  toggleModal: (defaultJobListId?: number) => void;
-  updateJobList: (jobId: number, jobListData: JobListDto) => void;
+  toggleModal(defaultJobListId?: number): void;
 };
 
 export function JobListColumn(props: JobListColumnProps) {
-  const { jobList, updateJobList, toggleModal } = props;
+  const assignJobList = useAssignJobList();
+  const { jobList, toggleModal } = props;
   const jobsQuery = useJobs({ jobListId: jobList.id });
   const jobs = jobsQuery.data?.data;
 
@@ -31,11 +30,11 @@ export function JobListColumn(props: JobListColumnProps) {
       };
     }, []);
 
-  const [_collect, emptyColumnSpaceDropRef] = useDrop<JobCardItem>(() => {
+  const [_, emptyColumnSpaceDropRef] = useDrop<JobCardItem>(() => {
     return {
       accept: jobCardItemType,
       drop: (job) => {
-        updateJobList(job.id, { id: jobList.id });
+        assignJobList(job.id, { id: jobList.id });
       },
     };
   }, []);
@@ -43,7 +42,7 @@ export function JobListColumn(props: JobListColumnProps) {
   const jobCards = useMemo(() => {
     if (!(jobs && jobs.length > 0)) return;
     return jobs?.map((job) => {
-      return <JobCard job={job} key={job.id} updateJobList={updateJobList} />;
+      return <JobCard job={job} key={job.id} />;
     });
   }, [jobsQuery.dataUpdatedAt]);
 
@@ -52,13 +51,7 @@ export function JobListColumn(props: JobListColumnProps) {
   }, []);
 
   const errorAlert = useMemo(() => {
-    return (
-      <JobListTabContentError
-        refetchFn={async () => {
-          await jobsQuery.refetch();
-        }}
-      />
-    );
+    return <JobListTabContentError refetchFn={jobsQuery.refetch} />;
   }, []);
 
   return (
@@ -95,7 +88,7 @@ export function JobListColumn(props: JobListColumnProps) {
   );
 }
 
-function JobListTabContentError(p: { refetchFn: () => Promise<void> }) {
+function JobListTabContentError(p: { refetchFn: () => Promise<any> }) {
   const [loading, setLoading] = useState(false);
 
   return (

@@ -4,10 +4,6 @@ import { useJobLists } from '../job-list/hooks';
 import { AddJobModal, JobListColumn } from './ui';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { enqueueToast } from '../toast/toast.slice';
-import { useUpdateJob } from './hooks';
-import { useAppDispatch } from '../store';
-import { JobListDto } from './dto';
 
 export default function JobListPage() {
   const JobsListQuery = useJobLists();
@@ -24,24 +20,6 @@ export default function JobListPage() {
   };
 
   const jobLists = JobsListQuery.data?.data || [];
-  const editJobMutation = useUpdateJob();
-  const dispatch = useAppDispatch();
-
-  const updateJobList = (jobId: number, jobListData: JobListDto) => {
-    editJobMutation
-      .mutateAsync({
-        jobId,
-        data: { jobList: jobListData },
-      })
-      .catch((_e) => {
-        dispatch(
-          enqueueToast({
-            message: 'Failed to change job list',
-            type: 'error',
-          })
-        );
-      });
-  };
 
   const jobListCols = useMemo(
     () =>
@@ -50,7 +28,6 @@ export default function JobListPage() {
           <JobListColumn
             jobList={list}
             key={list.id}
-            updateJobList={updateJobList}
             toggleModal={toggleModal}
           />
         );

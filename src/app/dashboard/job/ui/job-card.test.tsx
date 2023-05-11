@@ -11,11 +11,12 @@ import { DashboardStoreProvider } from '../../store';
 
 const jobMock = jobMocks[0];
 
+// TODO: resolve jest error when importing ReactDnD package
 describe('Job Card', () => {
   it.skip('displays company and title', async () => {
     // renderWithQueryClient(
     //   <DashboardStoreProvider>
-    //     <JobCard job={jobMock} jobLists={jobListMocks} />
+    //     <JobCard job={jobMock} />
     //   </DashboardStoreProvider>
     // );
     // await expect(screen.findByText(jobMock.title)).toBeTruthy();
