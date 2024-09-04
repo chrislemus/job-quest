@@ -4,6 +4,7 @@ import { queryClient } from '@/common/query-client';
 import { useDrag, useDrop } from 'react-dnd';
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
+import { JobListRankPlacementEnum } from '../dto';
 import {
   jobQueryFn,
   jobQueryKey,
@@ -51,10 +52,15 @@ export function JobCard(props: JobCardProps) {
       drop(item) {
         const cardPosition = externalDraggedItem?.position;
         if (cardPosition) {
-          const beforeJobId = cardPosition === 'top' ? job.id : undefined;
-          const afterJobId = cardPosition === 'bottom' ? job.id : undefined;
-          const jobList = { beforeJobId, afterJobId };
-          assignJobList(item.id, jobList);
+          const jobListId = job.jobListId;
+
+          assignJobList(item.id, {
+            jobListId,
+            jobListRank: {
+              rank: job.jobListRank,
+              placement: cardPosition as JobListRankPlacementEnum,
+            },
+          });
         }
       },
       hover(item, monitor) {

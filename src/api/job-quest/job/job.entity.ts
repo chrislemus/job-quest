@@ -1,9 +1,10 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { JobListRankDto } from '@/app/dashboard/job/dto';
+import { IsOptional, IsString } from 'class-validator';
 
 /** Job Entity */
 export class JobEntity {
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 
   @IsString()
   title: string;
@@ -31,12 +32,15 @@ export class JobEntity {
   @IsString()
   color?: string | null;
 
-  @IsNumber()
-  jobListId: number;
+  @IsString()
+  jobListId: string;
 
   @IsString()
   jobListRank: string;
 
-  @IsNumber()
-  userId: number;
+  /** for optimistic UI updates only */
+  jobListRankTemp?: JobListRankDto;
+
+  @IsString()
+  userId: string;
 }

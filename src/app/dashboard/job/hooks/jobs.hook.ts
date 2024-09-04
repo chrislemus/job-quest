@@ -14,10 +14,13 @@ export type JobsFilters = Parameters<typeof jobQuestApi.job.getAll>[0];
 export const jobsQueryKey = jobQueryKey.all;
 export type JobsQueryKey = ReturnType<typeof jobsQueryKey>;
 
-export const jobsQueryFn: QueryFunction<JobsData, JobsQueryKey> = (ctx) => {
+export const jobsQueryFn: QueryFunction<JobsData, JobsQueryKey> = async (
+  ctx
+) => {
   const { queryKey } = ctx;
   const [_pk, { jobListId }] = queryKey;
-  return jobQuestApi.job.getAll({ jobListId });
+  const res = await jobQuestApi.job.getAll({ jobListId });
+  return res;
 };
 
 export function useJobs(

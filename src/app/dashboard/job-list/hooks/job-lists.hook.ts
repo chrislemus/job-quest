@@ -12,7 +12,7 @@ export const jobsListQueryFn: QueryFunction<
   JobListQueryKey
 > = async () => {
   const res = await jobQuestApi.jobList.getAll();
-  const data = res.data.sort((a, b) => a.order - b.order);
+  const data = res.items.sort((a, b) => a.order - b.order);
   return { ...res, data };
 };
 

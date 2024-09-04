@@ -1,11 +1,11 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { ApiOkRes } from '@/api/job-quest/types';
 import { Type } from 'class-transformer';
 import { ValidateNested, IsNotEmpty } from 'class-validator';
 
 export class UserProfile {
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 
   @IsString()
   email: string;
@@ -17,9 +17,4 @@ export class UserProfile {
   lastName: string;
 }
 
-export class UserProfileRes implements ApiOkRes<UserProfile> {
-  @Type(() => UserProfile)
-  @IsNotEmpty()
-  @ValidateNested()
-  data: UserProfile;
-}
+export class UserProfileRes extends UserProfile {}

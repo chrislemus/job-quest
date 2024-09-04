@@ -26,7 +26,7 @@ async function signup(user: AuthSignUpArgs): Promise<AuthSignUpRes> {
 }
 
 async function login(credentials: AuthLogInArgs): Promise<AuthLogInRes> {
-  const res = await jobQuestHttpService
+  const tokens = await jobQuestHttpService
     .post<AuthLogInRes>(jobQuestApiUrls.auth.login, credentials)
     .then(async (res) => {
       const data = plainToInstance(AuthLogInRes, res.data);
@@ -34,9 +34,8 @@ async function login(credentials: AuthLogInArgs): Promise<AuthLogInRes> {
       return data;
     });
 
-  const tokens = res.data;
   authLocalStore.setTokens(tokens);
-  return res;
+  return tokens;
 }
 
 async function refreshJwt(): Promise<AuthRefreshJwtRes> {

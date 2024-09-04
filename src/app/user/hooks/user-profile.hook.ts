@@ -11,7 +11,7 @@ export type UserProfileData = UserProfile;
 export type UserProfileError = ApiErrorRes;
 export const userQueryFn: QueryFunction<UserProfile> = async () => {
   const res = await jobQuestApi.user.profile();
-  return res.data;
+  return res;
 };
 
 export function useUser(): UseQueryResult<UserProfile, ApiErrorRes> {

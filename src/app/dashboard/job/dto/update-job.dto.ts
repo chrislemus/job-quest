@@ -4,7 +4,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { CreateJobDto, JobListDto } from './create-job.dto';
+import { CreateJobDto, JobListRankDto } from './create-job.dto';
 
 /**
  * Request body Data transfer object for updating a Job.
@@ -60,7 +60,12 @@ export class UpdateJobDto implements Partial<CreateJobDto> {
   @IsString()
   color?: string;
 
+  @IsOptional()
+  @IsString()
+  jobListId: string;
+
   /** Job list data */
+  @IsOptional()
   @ValidateNested()
-  jobList: JobListDto;
+  jobListRank?: JobListRankDto;
 }

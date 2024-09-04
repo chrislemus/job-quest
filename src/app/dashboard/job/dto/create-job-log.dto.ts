@@ -1,7 +1,8 @@
-import { MinLength } from 'class-validator';
+import { IsString, MinLength } from 'class-validator';
 
 export class CreateJobLogDto {
-  jobId: number;
+  @IsString()
+  jobId: string;
   @MinLength(1)
   content: string;
 }

@@ -18,7 +18,7 @@ export const jobQueryFn: QueryFunction<JobData, JobQueryKey> = (ctx) => {
   return jobQuestApi.job.findById(jobId);
 };
 
-export function useJob(jobId: number): UseQueryResult<JobData, JobError> {
+export function useJob(jobId: string): UseQueryResult<JobData, JobError> {
   const query = useQuery<JobData, JobError, JobData, JobQueryKey>({
     queryKey: jobQueryKey(jobId),
     queryFn: jobQueryFn,
@@ -31,13 +31,13 @@ export function useJob(jobId: number): UseQueryResult<JobData, JobError> {
  * - job data can be find individually (query by ID)
  * - or in a list (jobs query with filters)
  */
-export function getJobData(jobId: number): JobEntity | undefined {
-  const job = queryClient.getQueryData<JobData>(jobQueryKey(jobId));
-  if (!!job?.data) return job?.data;
+export function getJobData(jobId: string): JobEntity | undefined {
+  const job = queryClient.getQueryData<JobEntity>(jobQueryKey(jobId));
+  if (!!job) return job;
 
-  const all = queryClient.getQueriesData<JobsData | JobData>(jobsQueryKey());
+  const all = queryClient.getQueriesData<JobsData>(jobsQueryKey());
   for (const [_queryKey, _data] of all) {
-    const data = _data?.data;
+    const data = _data?.items;
     if (data) {
       if (Array.isArray(data)) {
         for (const job of data) {

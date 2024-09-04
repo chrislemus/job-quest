@@ -13,14 +13,14 @@ import {
 
 type JobListColumnProps = {
   jobList: JobListEntity;
-  toggleModal(defaultJobListId?: number): void;
+  toggleModal(defaultJobListId?: string): void;
 };
 
 export function JobListColumn(props: JobListColumnProps) {
   const assignJobList = useAssignJobList();
   const { jobList, toggleModal } = props;
   const jobsQuery = useJobs({ jobListId: jobList.id });
-  const jobs = jobsQuery.data?.data;
+  const jobs = jobsQuery.data?.items;
 
   const [{ isOver: isOverColumnContainerDrop }, columnContainerDropRef] =
     useDrop(() => {
@@ -33,17 +33,32 @@ export function JobListColumn(props: JobListColumnProps) {
   const [_, emptyColumnSpaceDropRef] = useDrop<JobCardItem>(() => {
     return {
       accept: jobCardItemType,
-      drop: (job) => {
-        assignJobList(job.id, { id: jobList.id });
+      drop: (job, monitor) => {
+        console.log('monitor', monitor);
+        assignJobList(job.id, { jobListId: jobList.id });
       },
     };
   }, []);
 
   const jobCards = useMemo(() => {
     if (!(jobs && jobs.length > 0)) return;
-    return jobs?.map((job) => {
-      return <JobCard job={job} key={job.id} />;
-    });
+    return jobs
+      ?.sort((a, b) => {
+        const rank = a.jobListRankTemp?.rank;
+        const placement = a.jobListRankTemp?.placement;
+
+        if (rank && b.jobListRank === rank) {
+          if (!placement || placement === 'bottom') return 1;
+          if (placement === 'top') return -1;
+        }
+
+        if (a.jobListRank < b.jobListRank) return -1;
+        if (a.jobListRank > b.jobListRank) return 1;
+        return 0;
+      })
+      .map((job) => {
+        return <JobCard job={job} key={job.id} />;
+      });
   }, [jobsQuery.dataUpdatedAt]);
 
   const loadingCards = useMemo(() => {

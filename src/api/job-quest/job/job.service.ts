@@ -9,7 +9,7 @@ import { plainToInstance } from 'class-transformer';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
 
 /** Fetch all Jobs */
-async function getAll(filters?: { jobListId?: number }): Promise<JobPageRes> {
+async function getAll(filters?: { jobListId?: string }): Promise<JobPageRes> {
   const response = await jobQuestHttpService.get<JobPageRes>(
     jobQuestApiUrls.job.root,
     { params: filters }
@@ -22,7 +22,7 @@ async function getAll(filters?: { jobListId?: number }): Promise<JobPageRes> {
 }
 
 /** Fetch a Job by ID */
-async function findById(id: number) {
+async function findById(id: string) {
   const response = await jobQuestHttpService.get<ApiOkRes<JobEntity>>(
     jobQuestApiUrls.job.findById(id)
   );
@@ -33,7 +33,7 @@ async function findById(id: number) {
 
 /** Create a job */
 async function createJob(job: CreateJobDto) {
-  const response = await jobQuestHttpService.post<ApiOkRes<JobEntity>>(
+  const response = await jobQuestHttpService.post<JobEntity>(
     jobQuestApiUrls.job.root,
     {
       ...job,
@@ -47,7 +47,7 @@ async function createJob(job: CreateJobDto) {
 }
 
 /** Update a Job */
-async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
+async function updateJob(jobId: string, updatedJob: UpdateJobDto) {
   const response = await jobQuestHttpService.patch<ApiOkRes<JobEntity>>(
     jobQuestApiUrls.job.update(jobId),
     updatedJob
@@ -58,7 +58,7 @@ async function updateJob(jobId: number, updatedJob: UpdateJobDto) {
 }
 
 /** Delete a Job */
-async function deleteJob(jobId: number) {
+async function deleteJob(jobId: string) {
   const response = await jobQuestHttpService.delete<ApiOkRes<JobEntity>>(
     jobQuestApiUrls.job.delete(jobId)
   );

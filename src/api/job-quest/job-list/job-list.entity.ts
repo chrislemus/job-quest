@@ -2,8 +2,8 @@ import { IsNumber, IsString } from 'class-validator';
 
 /** Job List Entity */
 export class JobListEntity {
-  @IsNumber()
-  id: number;
+  @IsString()
+  id: string;
 
   @IsString()
   label: string;

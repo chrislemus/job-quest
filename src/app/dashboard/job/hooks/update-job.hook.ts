@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/common/query-client';
-import { JobListDto, UpdateJobDto } from '@/app/dashboard/job/dto';
+import { UpdateJobDto } from '@/app/dashboard/job/dto';
 import { ApiErrorRes, ApiOkRes } from '@/api/job-quest/types';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
 import { jobQuestApi } from '@/api/job-quest';
@@ -9,7 +9,7 @@ import { JobsData, jobsQueryKey } from './jobs.hook';
 
 type Data = ApiOkRes<JobEntity>;
 type Error = ApiErrorRes;
-type Variables = { jobId: number; data: UpdateJobDto };
+type Variables = { jobId: string; data: UpdateJobDto };
 type Context = undefined | { oldJob: JobEntity; newJob: JobEntity };
 
 export function useUpdateJob() {
@@ -19,30 +19,24 @@ export function useUpdateJob() {
     },
     onMutate: async ({ jobId, data }) => {
       const oldJob = getJobData(jobId);
+      console.log({ oldJob });
       if (oldJob) {
-        const { jobList, ...resData } = data;
+        const { jobListRank, ...resData } = data;
         const newJob: JobEntity = { ...oldJob, ...resData };
 
-        if (jobList?.id) {
-          newJob.jobListId = jobList.id;
-        } else {
-          let siblingJob: JobEntity | undefined;
-          if (jobList?.afterJobId) siblingJob = getJobData(jobList.afterJobId);
-          if (jobList?.beforeJobId)
-            siblingJob = getJobData(jobList.beforeJobId);
-          if (siblingJob) {
-            newJob.jobListId = siblingJob.jobListId;
-          }
+        if (jobListRank) {
+          newJob.jobListRankTemp = jobListRank;
+          newJob.jobListRank = jobListRank.rank;
         }
 
         // Job Update
         await queryClient.cancelQueries({ queryKey: jobQueryKey(jobId) });
         queryClient.setQueryData<JobData>(jobQueryKey(jobId), (res) => {
-          if (res) return { data: newJob };
+          if (res) return { items: newJob };
         });
 
         // Job Lists Updates
-        await updateJobListsData('newJob', { oldJob, newJob }, jobList);
+        await updateJobListsData('newJob', { oldJob, newJob });
 
         return { oldJob, newJob };
       }
@@ -51,14 +45,10 @@ export function useUpdateJob() {
       if (ctx) {
         const { oldJob, newJob } = ctx;
         // Job Lists Updates
-        await updateJobListsData(
-          'oldJob',
-          { oldJob, newJob },
-          variables?.data?.jobList
-        );
+        await updateJobListsData('oldJob', { oldJob, newJob });
         // Job Update
         queryClient.setQueryData<JobData>(jobQueryKey(newJob.id), (res) => {
-          if (res) return { data: oldJob };
+          if (res) return { items: oldJob };
         });
       }
     },
@@ -101,9 +91,9 @@ type SetVersion = keyof JobVersions;
 
 async function updateJobListsData(
   setJob: SetVersion,
-  jobVersions: JobVersions,
-  jobListData?: JobListDto
+  jobVersions: JobVersions
 ) {
+  console.log({ jobVersions, setJob });
   const { oldJob, newJob } = jobVersions;
   const jobToSet = { ...jobVersions[setJob] };
 
@@ -111,9 +101,7 @@ async function updateJobListsData(
   const jobListsUpdates = uniqueList([oldJob.jobListId, newJob.jobListId]);
   const jobListChanged = jobListsUpdates.length > 1;
 
-  const beforeJobId = jobListData?.beforeJobId;
-  const afterJobId = jobListData?.afterJobId;
-
+  console.log({ jobListChanged, jobListsUpdates });
   return Promise.all(
     // Job Lists Updates
     jobListsUpdates.map(async (jobListId) => {
@@ -127,7 +115,7 @@ async function updateJobListsData(
       queryClient.setQueryData<JobsData>(queryKey, (res) => {
         const [_pk, { jobListId }] = queryKey;
         if (res) {
-          let jobs = res?.data;
+          let jobs = res?.items;
           if (jobListId === jobToSet.jobListId) {
             if (jobListChanged) {
               // ADD
@@ -138,14 +126,13 @@ async function updateJobListsData(
                 job.id === jobToSet.id ? jobToSet : job
               );
             }
-
-            const pointerJobId = afterJobId ?? beforeJobId;
-            if (setJob == 'newJob' && pointerJobId) {
+            if (setJob == 'newJob' && jobToSet.jobListRankTemp) {
               const sortedJobs = jobs.filter((j) => j.id !== jobToSet.id);
               let pointerJobIdx = sortedJobs.findIndex(
-                (j) => j.id === pointerJobId
+                (j) => j.jobListRank === jobToSet.jobListRankTemp?.rank
               );
-              if (afterJobId) pointerJobIdx++;
+              if (jobToSet.jobListRankTemp.placement === 'bottom')
+                pointerJobIdx++;
               sortedJobs.splice(pointerJobIdx, 0, jobToSet);
               jobs = [...sortedJobs];
             }
@@ -154,7 +141,7 @@ async function updateJobListsData(
             jobs = jobs.filter((job) => job.id !== jobToSet.id);
           }
 
-          return { ...res, data: jobs };
+          return { ...res, items: jobs };
         }
       });
     })

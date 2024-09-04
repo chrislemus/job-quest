@@ -1,17 +1,20 @@
 import { useAppDispatch } from '@/app/dashboard/store';
 import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
-import { JobListDto } from '@/app/dashboard/job/dto';
+import { UpdateJobDto } from '@/app/dashboard/job/dto';
 import { useUpdateJob } from './update-job.hook';
+
+type jobListData = Pick<UpdateJobDto, 'jobListId' | 'jobListRank'>;
 
 export function useAssignJobList() {
   const editJobMutation = useUpdateJob();
   const dispatch = useAppDispatch();
 
-  return (jobId: number, jobListData: JobListDto) =>
-    editJobMutation
+  return (jobId: string, jobListData: jobListData) => {
+    console.log('useAssignJobList', jobListData);
+    return editJobMutation
       .mutateAsync({
         jobId,
-        data: { jobList: jobListData },
+        data: jobListData,
       })
       .catch((_e: unknown) => {
         dispatch(
@@ -21,4 +24,5 @@ export function useAssignJobList() {
           })
         );
       });
+  };
 }

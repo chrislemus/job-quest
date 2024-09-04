@@ -29,9 +29,9 @@ describe('Add Job Modal', () => {
             id: jobList.id,
             company: reqData.company,
             title: reqData.title,
-            jobListId: reqData.jobList.id as unknown as number,
+            jobListId: reqData.jobListId as unknown as string,
             jobListRank: 'a',
-            userId: 1,
+            userId: `1`,
           },
         };
         return res(ctx.status(201), ctx.json(resData));

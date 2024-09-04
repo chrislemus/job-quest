@@ -8,17 +8,18 @@ import { jobQueryKey } from './job.hook';
 import { jobsQueryKey } from './jobs.hook';
 
 export function useCreateJob() {
-  const mutation = useMutation<ApiOkRes<JobEntity>, ApiErrorRes, CreateJobDto>({
+  const mutation = useMutation<JobEntity, ApiErrorRes, CreateJobDto>({
     mutationFn: jobQuestApi.job.createJob,
 
     onSuccess(res) {
+      console.log({ res });
       queryClient.invalidateQueries({
         refetchType: 'all',
-        queryKey: jobQueryKey(res.data.id),
+        queryKey: jobQueryKey(res.id),
       });
       queryClient.invalidateQueries({
         refetchType: 'all',
-        queryKey: jobsQueryKey({ jobListId: res.data.jobListId }),
+        queryKey: jobsQueryKey({ jobListId: res.jobListId }),
       });
     },
   });

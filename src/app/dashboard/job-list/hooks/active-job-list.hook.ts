@@ -5,8 +5,8 @@ import { useJobLists } from './job-lists.hook';
 const QS_KEY = 'list';
 
 export function useActiveJobList(): [
-  number | null,
-  (jobListId: number) => void
+  string | null,
+  (jobListId: string) => void
 ] {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -17,7 +17,7 @@ export function useActiveJobList(): [
 
   /** Create a Link with updated query string value */
   const setActiveJobList = useCallback(
-    (jobListId: number) => {
+    (jobListId: string) => {
       const params = new URLSearchParams(searchParams);
       params.set(QS_KEY, `${jobListId}`);
       const queryString = params.toString();
@@ -34,9 +34,8 @@ export function useActiveJobList(): [
       const firstList = jobLists?.[0];
       if (firstList) activeJobList = `${firstList.id}`;
     }
-    if (activeJobList && /^\d+$/.test(activeJobList)) {
-      return +activeJobList;
-    }
+    if (activeJobList && /^\s+$/.test(activeJobList)) return activeJobList;
+
     return null;
   }, [searchParams, jobLists]);
 

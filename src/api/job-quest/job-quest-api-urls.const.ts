@@ -15,14 +15,14 @@ export const jobQuestApiUrls = {
   user: { profile: url('/user/profile') },
   job: {
     root: url('/job'),
-    findById: (id: number) => url(`/job/${id}`),
-    update: (id: number) => url(`/job/${id}`),
-    delete: (id: number) => url(`/job/${id}`),
+    findById: (id: string) => url(`/job/${id}`),
+    update: (id: string) => url(`/job/${id}`),
+    delete: (id: string) => url(`/job/${id}`),
   },
   jobLog: {
     root: url('/job-log'),
-    update: (id: number) => url(`/job-log/${id}`),
-    delete: (id: number) => url(`/job-log/${id}`),
+    update: (id: string) => url(`/job-log/${id}`),
+    delete: (id: string) => url(`/job-log/${id}`),
   },
   jobList: {
     root: url('/job-list'),

@@ -11,7 +11,7 @@ import { useAppDispatch } from '@/app/dashboard/store';
 type AddJobModalProps = {
   active: boolean;
   toggle: () => void;
-  defaultJobListId?: number;
+  defaultJobListId?: string;
 };
 
 export function AddJobModal(props: AddJobModalProps) {
@@ -24,9 +24,7 @@ export function AddJobModal(props: AddJobModalProps) {
     resolver: formValidator(CreateJobDto),
     shouldUnregister: true,
     defaultValues: {
-      jobList: {
-        id: defaultJobListId,
-      },
+      jobListId: defaultJobListId,
     },
   });
 
@@ -50,6 +48,7 @@ export function AddJobModal(props: AddJobModalProps) {
         className="modal-box relative"
         id={formId}
         onSubmit={form.handleSubmit(async (job) => {
+          // job.
           await addJobMutation.mutateAsync(job, {
             onSuccess: () => {
               toggle();
@@ -120,7 +119,7 @@ export function AddJobModal(props: AddJobModalProps) {
               className="select select-bordered"
               data-testid="input-job-list"
               placeholder="Please select"
-              {...form.register('jobList.id')}
+              {...form.register('jobListId')}
             >
               {jobListOptions.map((opt) => {
                 const { label, value } = opt;
@@ -131,10 +130,10 @@ export function AddJobModal(props: AddJobModalProps) {
                 );
               })}
             </select>
-            {errors.jobList?.id?.message && (
+            {errors.jobListId?.message && (
               <label className="label">
                 <span className="label-text-alt text-error">
-                  {errors.jobList?.id?.message}
+                  {errors.jobListId?.message}
                 </span>
               </label>
             )}

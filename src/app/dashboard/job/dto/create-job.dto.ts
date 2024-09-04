@@ -1,53 +1,74 @@
 import {
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
   ValidationArguments,
-  ValidateIf,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  Validate,
+  ValidationOptions,
+  registerDecorator,
+  IsEnum,
 } from 'class-validator';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
 
-/**
- * Parameters for assigning job list to job
- * - only one property must be defined
- */
-export class JobListDto {
-  @ValidateIf((obj: JobListDto) => {
-    const keys = Object.keys(obj);
-    const valueCountNotInRange = !valueCountInRange(obj);
-    const propValueProvided = keys.includes('id');
-    return propValueProvided || valueCountNotInRange;
-  })
-  @IsNumber(
-    {},
-    {
-      message: ({ object, property }: ValidationArguments) => {
-        const count = Object.keys(object)?.length;
-        const overRange = count > 1;
-        const belowRange = count < 1;
+const propNames = {
+  id: 'id',
+  beforeJobId: 'beforeJobId',
+  afterJobId: 'afterJobId',
+} as const;
 
-        // global class validation
-        if (overRange || belowRange) {
-          return overRange ? overRangeErrorMsg : belowRangeErrorMsg;
-        } else {
-          return `${property} must be a number conforming to the specified constraints`;
-        }
-      },
+@ValidatorConstraint({ name: 'jobListProperty', async: false })
+export class JobListPropertyConstraint implements ValidatorConstraintInterface {
+  validate(_value: any, args: ValidationArguments) {
+    const validPropNames = Object.values(propNames);
+    const queryPropNames = Object.keys(args.object);
+    const currPropName = args.property;
+
+    if (!validPropNames.includes(currPropName as any)) return false; // invalid property name
+    if (queryPropNames.length > 1) return false;
+
+    return true;
+  }
+
+  defaultMessage(args: ValidationArguments) {
+    const validPropNames = Object.values(propNames);
+    const queryPropNames = Object.keys(args.object);
+    const currPropName = args.property;
+
+    if (queryPropNames.length > 1) {
+      const validPropNamesStr = validPropNames.join(', ');
+      return `${currPropName}: only one property must be defined: ${validPropNamesStr}`;
     }
-  )
-  id?: number;
+    return `${currPropName}: invalid property name.`;
+  }
+}
 
-  @ValidateIf((obj: JobListDto) => valueCountInRange(obj))
-  @IsNumber()
-  @IsOptional()
-  beforeJobId?: number;
+export function JobListProperty(validationOptions?: ValidationOptions) {
+  return function (object: Record<any, any>, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: JobListPropertyConstraint,
+    });
+  };
+}
 
-  @ValidateIf((obj: JobListDto) => valueCountInRange(obj))
-  @IsNumber()
+enum JobListRankPlacementEnum {
+  TOP = 'top',
+  BOTTOM = 'bottom',
+}
+
+export class JobListRankDto {
+  @IsString()
+  rank: string;
+
   @IsOptional()
-  afterJobId?: number;
+  @IsEnum(JobListRankPlacementEnum)
+  placement?: JobListRankPlacementEnum;
 }
 
 /**
@@ -104,19 +125,11 @@ export class CreateJobDto
   @IsString()
   color?: string;
 
-  /** Job list data */
+  /** Job list id */
+  @IsString()
+  jobListId: string;
+
+  @IsOptional()
   @ValidateNested()
-  jobList: JobListDto;
-}
-
-export const overRangeErrorMsg =
-  'Job list should have at most one property defined';
-export const belowRangeErrorMsg =
-  'Job list should have at least one property defined';
-
-function valueCountInRange(obj: JobListDto) {
-  const keys = Object.keys(obj);
-  JobListDto;
-  const count = keys.length;
-  return count == 1;
+  jobListRank: JobListRankDto;
 }

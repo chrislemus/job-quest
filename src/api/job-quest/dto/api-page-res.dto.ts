@@ -3,7 +3,7 @@ import { ValidateNested } from 'class-validator';
 import { PageInfo } from './page-info.dto';
 
 export class ApiPageRes<Data extends any> {
-  data: Data[];
+  items: Data[];
 
   @Type(() => PageInfo)
   @ValidateNested()
