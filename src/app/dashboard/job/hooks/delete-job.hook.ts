@@ -17,7 +17,9 @@ export function useDeleteJob() {
         queryClient.removeQueries(jobQueryKey(jobId));
 
         // Job Lists Updates
-        const queryKey = jobsQueryKey({ jobListId: job.jobListId });
+        const queryKey = jobsQueryKey({
+          queryParams: { jobListId: job.jobListId },
+        });
         await queryClient.cancelQueries({ queryKey });
         queryClient.setQueryData<JobsData>(queryKey, (res) => {
           if (res) {
@@ -37,7 +39,7 @@ export function useDeleteJob() {
         queryClient.setQueryData<JobData>(jobQueryKey(job.id), (job) => job);
 
         queryClient.setQueryData<JobsData>(
-          jobsQueryKey({ jobListId: job.id }),
+          jobsQueryKey({ queryParams: { jobListId: job.id } }),
           (res) => {
             if (res) {
               const data = res?.items;
@@ -55,7 +57,9 @@ export function useDeleteJob() {
         queryClient.invalidateQueries({
           refetchType: 'all',
           queryKey: jobsQueryKey({
-            jobListId: job.jobListId,
+            queryParams: {
+              jobListId: job.jobListId,
+            },
           }),
         });
 

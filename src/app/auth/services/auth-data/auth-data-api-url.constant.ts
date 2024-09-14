@@ -1,7 +1,6 @@
 import { jobQuestApiConfig } from '@/core/configs';
 
-const root = jobQuestApiConfig.baseUrl;
-const url = <T extends string>(resource: T) => `${root}${resource}` as const;
+const url = jobQuestApiConfig.createUrl;
 
 export const authDataApiUrlConstant = {
   login: url('/auth/login'),

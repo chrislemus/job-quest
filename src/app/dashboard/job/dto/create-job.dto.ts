@@ -1,3 +1,4 @@
+import { JobDto } from '../services';
 import {
   IsNotEmpty,
   IsOptional,
@@ -10,7 +11,6 @@ import {
   registerDecorator,
   IsEnum,
 } from 'class-validator';
-import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 
 const propNames = {
   id: 'id',
@@ -74,7 +74,7 @@ export class JobListRankDto {
  * Request body data transfer object for creating a Job.
  */
 export class CreateJobDto
-  implements Omit<JobEntity, 'id' | 'userId' | 'jobListId' | 'jobListRank'>
+  implements Omit<JobDto, 'id' | 'userId' | 'jobListId' | 'jobListRank'>
 {
   /**
    * Job Title

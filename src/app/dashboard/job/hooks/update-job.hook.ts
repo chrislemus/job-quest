@@ -2,15 +2,15 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/shared/query-client';
 import { UpdateJobDto } from '@/app/dashboard/job/dto';
 import { ApiErrorRes } from '@/api/job-quest/types';
-import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { jobQuestApi } from '@/api/job-quest';
 import { getJobData, JobData, jobQueryKey } from './job.hook';
 import { JobsData, jobsQueryKey } from './jobs.hook';
+import { JobDto } from '../services';
 
-type Data = JobEntity;
+type Data = JobDto;
 type Error = ApiErrorRes;
 type Variables = { jobId: string; data: UpdateJobDto };
-type Context = undefined | { oldJob: JobEntity; newJob: JobEntity };
+type Context = undefined | { oldJob: JobDto; newJob: JobDto };
 
 export function useUpdateJob() {
   const mutation = useMutation<Data, Error, Variables, Context>({
@@ -22,7 +22,7 @@ export function useUpdateJob() {
       console.log({ oldJob });
       if (oldJob) {
         const { jobListRank, ...resData } = data;
-        const newJob: JobEntity = { ...oldJob, ...resData };
+        const newJob: JobDto = { ...oldJob, ...resData };
 
         if (jobListRank) {
           newJob.jobListRankTemp = jobListRank;
@@ -59,7 +59,7 @@ export function useUpdateJob() {
           ...jobLists.map((jobListId) => {
             return queryClient.invalidateQueries({
               refetchType: 'all',
-              queryKey: jobsQueryKey({ jobListId }),
+              queryKey: jobsQueryKey({ queryParams: { jobListId } }),
             });
           }),
           // Job Update
@@ -82,7 +82,7 @@ function uniqueList<T>(list: T[]) {
   return uList;
 }
 
-type JobVersions = { newJob: JobEntity; oldJob: JobEntity };
+type JobVersions = { newJob: JobDto; oldJob: JobDto };
 type SetVersion = keyof JobVersions;
 
 async function updateJobListsData(
@@ -101,7 +101,7 @@ async function updateJobListsData(
   return Promise.all(
     // Job Lists Updates
     jobListsUpdates.map(async (jobListId) => {
-      const queryKey = jobsQueryKey({ jobListId });
+      const queryKey = jobsQueryKey({ queryParams: { jobListId } });
 
       // we don't want NEW data to be overridden
       if (setJob === 'newJob') {
@@ -109,7 +109,8 @@ async function updateJobListsData(
       }
 
       queryClient.setQueryData<JobsData>(queryKey, (res) => {
-        const [_pk, { jobListId }] = queryKey;
+        const [_pk, reqConfig] = queryKey;
+        const jobListId = reqConfig.queryParams?.jobListId;
         if (res) {
           let jobs = res?.items;
           if (jobListId === jobToSet.jobListId) {

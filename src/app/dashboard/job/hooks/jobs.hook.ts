@@ -1,5 +1,5 @@
 import { jobQuestApi } from '@/api/job-quest';
-import { JobPageRes as JobsData } from '@/app/dashboard/job/services/job-data/dto';
+import { GetAllJobsResBodyDto as JobsData } from '@/app/dashboard/job/services/job-data/dto';
 import { ApiErrorRes as JobsError } from '@/api/job-quest/types';
 import { jobQueryKey } from '@/app/dashboard/job/constants';
 import { useEffect } from 'react';
@@ -18,8 +18,8 @@ export const jobsQueryFn: QueryFunction<JobsData, JobsQueryKey> = async (
   ctx
 ) => {
   const { queryKey } = ctx;
-  const [_pk, { jobListId }] = queryKey;
-  const res = await jobQuestApi.job.getAll({ jobListId });
+  const [_pk, { queryParams }] = queryKey;
+  const res = await jobQuestApi.job.getAll({ queryParams });
   return res;
 };
 
@@ -47,7 +47,7 @@ export function useJobs(
       Promise.all(
         prefetchList.map((list) => {
           return queryClient.prefetchQuery({
-            queryKey: jobsQueryKey({ jobListId: list.id }),
+            queryKey: jobsQueryKey({ queryParams: { jobListId: list.id } }),
             queryFn: jobsQueryFn,
           });
         })

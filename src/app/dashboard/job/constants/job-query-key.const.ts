@@ -1,4 +1,4 @@
-import { jobDataService } from '@/app/dashboard/job/services/job-data/job.service';
+import { jobDataService } from '@/app/dashboard/job/services/job-data/job-data.service';
 
 const pk = 'job' as const;
 export const jobQueryKey = {

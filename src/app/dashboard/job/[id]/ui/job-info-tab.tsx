@@ -14,10 +14,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PropsWithChildren, useMemo } from 'react';
-import { JobEntity } from '../../services/job-data/job.entity';
+import { JobDto } from '../../services';
 
 type JobInfoTabProps = {
-  job: JobEntity;
+  job: JobDto;
 };
 
 export type TextFieldProps = Omit<

@@ -4,10 +4,10 @@ export type TCreateResBodyReturn = ReturnType<typeof createPageResBody>;
 export function createPageResBody<TSchema extends z.ZodTypeAny>(
   schema: TSchema
 ) {
-  const res = {
+  return z.object({
     items: z.array(schema),
-    pageInfo: PageInfoDto,
-  };
+    pageInfo: PageInfoDto.optional(),
+  });
 }
 
 export const PageInfoDto = z.object({

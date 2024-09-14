@@ -1,7 +1,7 @@
 import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
-import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
+import { JobDto } from '../dto';
 
-export const jobMocks: JobEntity[] = [
+export const jobMocks: JobDto[] = [
   {
     id: '38',
     title: 'Software Engineer',
@@ -22,7 +22,6 @@ export const jobMocks: JobEntity[] = [
     location: 'San Diego, CA',
     url: 'chrislemus.io',
     salary: '120k',
-    description: null,
     color: '#cddc39',
     userId: '1',
     jobListRank: 'b',
@@ -32,10 +31,6 @@ export const jobMocks: JobEntity[] = [
     id: '53',
     title: 'QA',
     company: 'WalBlue',
-    location: null,
-    url: null,
-    salary: null,
-    description: null,
     color: '#009688',
     userId: '1',
     jobListRank: 'c',
@@ -45,10 +40,6 @@ export const jobMocks: JobEntity[] = [
     id: '57',
     title: 'Supervisor',
     company: 'SmartPet',
-    location: null,
-    url: null,
-    salary: null,
-    description: null,
     color: '#03a9f4',
     userId: '1',
     jobListRank: 'd',

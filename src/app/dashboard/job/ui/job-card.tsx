@@ -1,4 +1,3 @@
-import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { getContrastText } from '@/shared/utils';
 import { queryClient } from '@/shared/query-client';
 import { useDrag, useDrop } from 'react-dnd';
@@ -10,9 +9,10 @@ import {
   jobQueryKey,
   useAssignJobList,
 } from '@/app/dashboard/job/hooks';
+import { JobDto } from '../services';
 
-type JobCardProps = { job: JobEntity };
-export type JobCardItem = JobEntity & { ref: RefObject<HTMLDivElement> };
+type JobCardProps = { job: JobDto };
+export type JobCardItem = JobDto & { ref: RefObject<HTMLDivElement> };
 export const jobCardItemType = 'JobCard' as const;
 
 export function JobCard(props: JobCardProps) {

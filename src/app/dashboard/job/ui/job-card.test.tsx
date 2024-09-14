@@ -1,5 +1,4 @@
 import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
-import { jobMocks } from '@/app/dashboard/job/services/job-data/job.mocks';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithQueryClient } from '@/tests/query-client';
@@ -8,6 +7,7 @@ import { JobCard } from './job-card';
 import { mockRouter, MemoryRouterProvider } from '@/tests/next-navigation.mock';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { DashboardStoreProvider } from '@/app/dashboard/store';
+import { jobMocks } from '../services/job-data/mocks';
 
 const jobMock = jobMocks[0];
 

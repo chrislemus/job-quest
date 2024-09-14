@@ -1,5 +1,5 @@
 import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
-import { jobMocks } from '@/app/dashboard/job/services/job-data/job.mocks';
+import { jobMocks } from '@/app/dashboard/job/services/job-data/mocks';
 
 export const jobLogMocks: JobLogEntity[] = [
   {

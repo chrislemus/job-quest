@@ -1,29 +1,30 @@
 import { CreateJobDto, UpdateJobDto } from '@/app/dashboard/job/dto';
 import { jobColors } from '@/app/dashboard/job/constants';
 import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
-import { JobPageRes } from './dto/job-page-res.dto';
-import { validateOrReject } from 'class-validator';
-import { plainToInstance } from 'class-transformer';
-import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
+import { jobDataApiUrlConstant } from './job-data-api-url.constant';
+import { JobDto } from './dto';
+import {
+  GetAllJobsReqConfigDto,
+  GetAllJobsResBodyDto,
+} from './dto/get-all-jobs-resource.dto';
 
 /** Fetch all Jobs */
-async function getAll(filters?: { jobListId?: string }): Promise<JobPageRes> {
-  const response = await jobQuestHttpService.get<JobPageRes>(
-    jobQuestApiUrls.job.root,
-    { params: filters }
-  );
-
-  const data = plainToInstance(JobPageRes, response?.data);
-  await validateOrReject(data);
-
+async function getAll(
+  config?: GetAllJobsReqConfigDto
+): Promise<GetAllJobsResBodyDto> {
+  const { queryParams } = GetAllJobsReqConfigDto.parse(config || {});
+  const url = jobDataApiUrlConstant.root;
+  const res = await jobQuestHttpService.get<GetAllJobsResBodyDto>(url, {
+    params: queryParams,
+  });
+  const data = GetAllJobsResBodyDto.parse(res?.data);
   return data;
 }
 
 /** Fetch a Job by ID */
 async function findById(id: string) {
-  const response = await jobQuestHttpService.get<JobEntity>(
-    jobQuestApiUrls.job.findById(id)
+  const response = await jobQuestHttpService.get<JobDto>(
+    jobDataApiUrlConstant.findById(id)
   );
 
   const data = response?.data;
@@ -32,8 +33,8 @@ async function findById(id: string) {
 
 /** Create a job */
 async function createJob(job: CreateJobDto) {
-  const response = await jobQuestHttpService.post<JobEntity>(
-    jobQuestApiUrls.job.root,
+  const response = await jobQuestHttpService.post<JobDto>(
+    jobDataApiUrlConstant.root,
     {
       ...job,
       color: job.color
@@ -47,8 +48,8 @@ async function createJob(job: CreateJobDto) {
 
 /** Update a Job */
 async function updateJob(jobId: string, updatedJob: UpdateJobDto) {
-  const response = await jobQuestHttpService.patch<JobEntity>(
-    jobQuestApiUrls.job.update(jobId),
+  const response = await jobQuestHttpService.patch<JobDto>(
+    jobDataApiUrlConstant.update(jobId),
     updatedJob
   );
 
@@ -58,8 +59,8 @@ async function updateJob(jobId: string, updatedJob: UpdateJobDto) {
 
 /** Delete a Job */
 async function deleteJob(jobId: string) {
-  const response = await jobQuestHttpService.delete<JobEntity>(
-    jobQuestApiUrls.job.delete(jobId)
+  const response = await jobQuestHttpService.delete<JobDto>(
+    jobDataApiUrlConstant.delete(jobId)
   );
 
   const data = response?.data;

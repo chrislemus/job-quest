@@ -4,10 +4,10 @@ import { AddJobModal } from './add-job-modal';
 import userEvent from '@testing-library/user-event';
 import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
 import { rest, server } from '@/tests/server';
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
-import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { CreateJobDto } from '@/app/dashboard/job/dto';
 import { DashboardStoreProvider } from '@/app/dashboard/store';
+import { JobDto } from '../services';
+import { jobDataApiUrlConstant } from '../services/job-data/job-data-api-url.constant';
 
 describe('Add Job Modal', () => {
   let active = true;
@@ -20,10 +20,10 @@ describe('Add Job Modal', () => {
     const jobList = jobListMocks[0];
     let postData: Record<string, any> = {};
     server.use(
-      rest.post(jobQuestApiUrls.job.root, async (req, res, ctx) => {
+      rest.post(jobDataApiUrlConstant.root, async (req, res, ctx) => {
         const reqData = await req.json<CreateJobDto>();
         postData = reqData;
-        const resData: JobEntity = {
+        const resData: JobDto = {
           id: jobList.id,
           company: reqData.company,
           title: reqData.title,

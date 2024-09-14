@@ -19,7 +19,7 @@ type JobListColumnProps = {
 export function JobListColumn(props: JobListColumnProps) {
   const assignJobList = useAssignJobList();
   const { jobList, toggleModal } = props;
-  const jobsQuery = useJobs({ jobListId: jobList.id });
+  const jobsQuery = useJobs({ queryParams: { jobListId: jobList.id } });
   const jobs = jobsQuery.data?.items;
 
   const [{ isOver: isOverColumnContainerDrop }, columnContainerDropRef] =

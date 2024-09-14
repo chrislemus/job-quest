@@ -1,12 +1,12 @@
 import { jobQuestApi } from '@/api/job-quest';
-import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { ApiErrorRes } from '@/api/job-quest/types';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { jobQueryKey as _jobQueryKey } from '@/app/dashboard/job/constants';
 import { queryClient } from '@/shared/query-client';
 import { JobsData, jobsQueryKey } from './jobs.hook';
+import { JobDto } from '../services';
 
-export type JobData = JobEntity;
+export type JobData = JobDto;
 export type JobError = ApiErrorRes;
 
 export const jobQueryKey = _jobQueryKey.detail;
@@ -31,8 +31,8 @@ export function useJob(jobId: string): UseQueryResult<JobData, JobError> {
  * - job data can be find individually (query by ID)
  * - or in a list (jobs query with filters)
  */
-export function getJobData(jobId: string): JobEntity | undefined {
-  const job = queryClient.getQueryData<JobEntity>(jobQueryKey(jobId));
+export function getJobData(jobId: string): JobDto | undefined {
+  const job = queryClient.getQueryData<JobDto>(jobQueryKey(jobId));
   if (!!job) return job;
 
   const all = queryClient.getQueriesData<JobsData>(jobsQueryKey());
