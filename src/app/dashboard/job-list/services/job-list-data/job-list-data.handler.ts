@@ -1,10 +1,10 @@
 import { rest } from '@/tests/server';
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
-import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
 import { jobQuestApi } from '@/api/job-quest';
+import { jobListMocks } from './mocks';
+import { jobDataApiUrlConstant } from './job-list-data-api-url.constant';
 
 export const jobListServiceHandlers = [
-  rest.get(jobQuestApiUrls.jobList.root, (_req, res, ctx) => {
+  rest.get(jobDataApiUrlConstant.root, (_req, res, ctx) => {
     const data: Awaited<ReturnType<typeof jobQuestApi.jobList.getAll>> = {
       items: jobListMocks,
       pageInfo: {

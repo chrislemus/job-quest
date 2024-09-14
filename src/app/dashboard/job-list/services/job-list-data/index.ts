@@ -1,2 +1,2 @@
-export * from './job-list.service';
+export * from './job-list-data.service';
 export * from './dto';

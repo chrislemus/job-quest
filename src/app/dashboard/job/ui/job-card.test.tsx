@@ -1,4 +1,3 @@
-import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithQueryClient } from '@/tests/query-client';

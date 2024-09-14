@@ -1,1 +1,2 @@
-export * from './job-list-page-res.dto';
+export * from './get-all-job-list-resource.dto';
+export * from './job-list-item.dto';

@@ -1,6 +1,6 @@
-import { JobListEntity } from '@/app/dashboard/job-list/services/job-list-data/job-list.entity';
+import { JobListItemDto } from '../dto';
 
-export const jobListMocks: JobListEntity[] = [
+export const jobListMocks: JobListItemDto[] = [
   {
     id: '1',
     label: 'Queue',

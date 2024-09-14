@@ -2,12 +2,12 @@ import { screen } from '@testing-library/react';
 import { renderWithQueryClient } from '@/tests/query-client';
 import { AddJobModal } from './add-job-modal';
 import userEvent from '@testing-library/user-event';
-import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
 import { rest, server } from '@/tests/server';
 import { CreateJobDto } from '@/app/dashboard/job/dto';
 import { DashboardStoreProvider } from '@/app/dashboard/store';
 import { JobDto } from '../services';
 import { jobDataApiUrlConstant } from '../services/job-data/job-data-api-url.constant';
+import { jobListMocks } from '../../job-list/services/job-list-data/mocks';
 
 describe('Add Job Modal', () => {
   let active = true;

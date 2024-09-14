@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useAssignJobList, useJobs } from '@/app/dashboard/job/hooks';
-import { JobListEntity } from '@/app/dashboard/job-list/services/job-list-data/job-list.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { useDrop } from 'react-dnd';
+import { JobListItemDto } from '../../job-list/services';
 import {
   JobCard,
   JobCardItem,
@@ -12,7 +12,7 @@ import {
 } from './job-card';
 
 type JobListColumnProps = {
-  jobList: JobListEntity;
+  jobList: JobListItemDto;
   toggleModal(defaultJobListId?: string): void;
 };
 
