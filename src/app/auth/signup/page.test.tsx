@@ -4,7 +4,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { server, rest } from '@/tests/server';
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
+import { authDataApiUrlConstant } from '../services/auth-data/auth-data-api-url.constant';
 
 it('should display field errors', async () => {
   renderWithQueryClient(<SignUp />);
@@ -38,7 +38,7 @@ it('should submit valid form', async () => {
   let postData;
 
   server.use(
-    rest.post(jobQuestApiUrls.auth.signup, async (req, res, ctx) => {
+    rest.post(authDataApiUrlConstant.signup, async (req, res, ctx) => {
       postData = await req.json();
       return res(ctx.status(200));
     })

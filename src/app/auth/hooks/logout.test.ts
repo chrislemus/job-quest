@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import { createWrapper } from '@/tests/query-client';
 import { useLogout } from './logout.hook';
 import { mockRouter } from '@/tests/next-navigation.mock';
-import { authLoginUrl } from '@/app/auth/constants';
+import { authSiteUrlConfig } from '@/app/auth/configs';
 
 test('should use mutation', async () => {
   const { result } = renderHook(() => useLogout(), {
@@ -14,5 +14,5 @@ test('should use mutation', async () => {
   await act(async () => {
     await logout.mutateAsync();
   });
-  expect(mockRouter.pathname).toEqual(authLoginUrl);
+  expect(mockRouter.pathname).toEqual(authSiteUrlConfig.login);
 });

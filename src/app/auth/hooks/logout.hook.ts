@@ -1,8 +1,8 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { ApiErrorRes } from '@/api/job-quest/types';
-import { jobQuestApi } from '@/api/job-quest';
 import { useRouter } from 'next/navigation';
-import { authLoginUrl } from '@/app/auth/constants';
+import { authSiteUrlConfig } from '@/app/auth/configs';
+import { authDataService } from '../services';
 
 /** User Logout hook */
 export function useLogout(): UseMutationResult<
@@ -14,9 +14,9 @@ export function useLogout(): UseMutationResult<
   const router = useRouter();
 
   const mutation = useMutation<unknown, ApiErrorRes>({
-    mutationFn: () => jobQuestApi.auth.logout(),
+    mutationFn: () => authDataService.logout(),
     onSuccess: () => {
-      router.push(authLoginUrl);
+      router.push(authSiteUrlConfig.login);
     },
   });
 

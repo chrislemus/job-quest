@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios';
-import { authLocalStore } from '@/api/job-quest/auth/auth-local-store.service';
+import { authLocalStore } from '@/app/auth/services/auth-data/auth-local-store.service';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
-import { authService } from '@/api/job-quest/auth/auth.service';
+import { authDataService } from '@/app/auth/services';
+import { authDataApiUrlConstant } from '@/app/auth/services/auth-data/auth-data-api-url.constant';
 
 /**
  * Job Quest API Http instance.
@@ -15,9 +16,9 @@ export const jobQuestHttpService = axios.create({
  * auth credentials urls that do not require JWT
  */
 const authCredentialsUrl = new Set<string>([
-  jobQuestApiUrls.auth.login,
-  jobQuestApiUrls.auth.refresh,
-  jobQuestApiUrls.auth.signup,
+  authDataApiUrlConstant.login,
+  authDataApiUrlConstant.refresh,
+  authDataApiUrlConstant.signup,
 ]);
 
 jobQuestHttpService.interceptors.request.use((config) => {
@@ -57,12 +58,12 @@ jobQuestHttpService.interceptors.response.use(
 
     const failedAuthReq =
       authErrorCode &&
-      authService.isAuthenticated() &&
+      authDataService.isAuthenticated() &&
       !authCredentialsUrl.has(config?.url || '');
 
     if (config && failedAuthReq) {
       try {
-        await authService.refreshJwt();
+        await authDataService.refreshJwt();
         // once request above completes(jwt refresh)
         // retry original request (below)
         return jobQuestHttpService(config);

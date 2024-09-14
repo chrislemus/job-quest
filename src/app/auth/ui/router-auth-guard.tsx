@@ -1,13 +1,16 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { jobQuestApi } from '@/api/job-quest';
 import { dashboardUrl } from '@/app/dashboard/constants';
-import { authLoginUrl, authSignUpUrl } from '@/app/auth/constants';
+import { authSiteUrlConfig } from '@/app/auth/configs';
 import { useInterval } from 'react-use';
+import { authDataService } from '../services';
 
 export const intervalTime = 5000;
-export const authenticateUrls = new Set<string>([authLoginUrl, authSignUpUrl]);
+export const authenticateUrls = new Set<string>([
+  authSiteUrlConfig.login,
+  authSiteUrlConfig.signUp,
+]);
 
 /**
  * Wraps child components and verifies if user has access to routes.
@@ -16,10 +19,10 @@ export function RouterAuthGuard(p: PropsWithChildren<{}>) {
   const router = useRouter();
   const pathname = usePathname();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    jobQuestApi.auth.isAuthenticated()
+    authDataService.isAuthenticated()
   );
   useInterval(() => {
-    const latestAuthStatus = jobQuestApi.auth.isAuthenticated();
+    const latestAuthStatus = authDataService.isAuthenticated();
     const authChanged = isAuthenticated !== latestAuthStatus;
     // should only update once, when authentication changes.
     // Else it will get stuck pushing the same url in a loop.
@@ -35,7 +38,7 @@ export function RouterAuthGuard(p: PropsWithChildren<{}>) {
       const shouldRedirect = authenticateUrls.has(pathname || '');
       if (shouldRedirect) router?.push(dashboardUrl);
     } else if (!isAuthenticated && inDashboard) {
-      router?.push('/auth/login');
+      router?.push(authSiteUrlConfig.login);
     }
   }, [isAuthenticated]);
 

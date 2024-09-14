@@ -1,17 +1,17 @@
 import Cookies from 'universal-cookie';
-import { JWT } from '@/api/job-quest/auth/dto';
+import { JwtDto } from '@/app/auth/services/auth-data/dto';
 
 const cookies = new Cookies();
 export const authCookieKey = 'userAuth';
 
-function setTokens(tokens: JWT) {
+function setTokens(tokens: JwtDto) {
   // TODO: set maxAge to match jwt expiry, once the implementation of additional data is added on backend
   const maxAge = 86400; // one day (in seconds);
   cookies.set(authCookieKey, tokens, { path: '/', maxAge });
 }
 
-function getTokens(): JWT | null {
-  const tokens = cookies.get<JWT>(authCookieKey) || null;
+function getTokens(): JwtDto | null {
+  const tokens = cookies.get<JwtDto>(authCookieKey) || null;
   return tokens;
 }
 

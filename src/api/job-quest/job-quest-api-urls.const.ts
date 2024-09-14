@@ -6,12 +6,6 @@ const url = (resource: string): string => `${root}${resource}`;
  */
 export const jobQuestApiUrls = {
   root: root,
-  auth: {
-    login: url('/auth/login'),
-    refresh: url('/auth/refresh'),
-    signup: url('/auth/signup'),
-    logout: url('/auth/logout'),
-  },
   user: { profile: url('/user/profile') },
   job: {
     root: url('/job'),

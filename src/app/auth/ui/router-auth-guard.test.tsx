@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
-import { jobQuestApi } from '@/api/job-quest';
 import { mockRouter, usePathnameMock } from '@/tests/next-navigation.mock';
 import {
   RouterAuthGuard,
   intervalTime,
   authenticateUrls,
 } from './router-auth-guard';
+import { authDataService } from '../services';
 
-const authSpy = jest.spyOn(jobQuestApi.auth, 'isAuthenticated');
+const authSpy = jest.spyOn(authDataService, 'isAuthenticated');
 
 describe('Router Auth Guard', () => {
   test('Unauthenticated user in /dashboard should be redirected to /auth/login ', async () => {

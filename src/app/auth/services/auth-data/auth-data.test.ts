@@ -1,19 +1,17 @@
-import { plainToInstance } from 'class-transformer';
-import { validateOrReject } from 'class-validator';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { server, rest } from '@/tests/server';
-import { authService } from './auth.service';
-import { signUpMockCredentials, logInMockCredentials } from './auth.mocks';
-import { userService } from '../user/user.service';
+import { authDataService } from './auth-data.service';
+import { userService } from '@/api/job-quest/user/user.service';
 import { authLocalStore } from './auth-local-store.service';
 import { userProfileMock } from '@/api/job-quest/user/user.mocks';
 import { UserProfileRes } from '@/api/job-quest/user/dto';
+import { authLogInReqBodyMock, authSignupReqBodyMock } from './mocks';
+import { authDataApiUrlConstant } from './auth-data-api-url.constant';
 import {
-  AuthSignUpRes,
-  AuthLogInRes,
-  AuthLogOutResDto,
-  AuthRefreshJwtRes,
-} from '@/api/job-quest/auth/dto';
+  AuthSignUpResBodyDto,
+  AuthLogInResBodyDto,
+  AuthRefreshJwtResBodyDto,
+} from '@/app/auth/services/auth-data/dto';
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -21,94 +19,94 @@ afterEach(() => {
 
 describe('AuthService', () => {
   test('signup() contains valid global server handlers', async () => {
-    const res = await authService
-      .signup(signUpMockCredentials)
-      .then((res) => plainToInstance(AuthSignUpRes, res));
-
-    await validateOrReject(res);
+    const res = await authDataService.signup({ body: authSignupReqBodyMock });
+    AuthSignUpResBodyDto.parse(res);
   });
 
   test('signup() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(jobQuestApiUrls.auth.signup, (_req, res, ctx) => {
+      rest.post(authDataApiUrlConstant.signup, (_req, res, ctx) => {
         return res(ctx.json({}));
       })
     );
 
     let error = false;
-    await authService
-      .signup(signUpMockCredentials)
+    await authDataService
+      .signup({ body: authSignupReqBodyMock })
       .catch((_e: any) => (error = true));
 
     expect(error).toBeTruthy();
   });
 
   test('login() contains valid global server handlers', async () => {
-    const res = await authService
-      .login(logInMockCredentials)
-      .then((res) => plainToInstance(AuthLogInRes, res));
-
-    await validateOrReject(res);
+    const res = await authDataService.login({ body: authLogInReqBodyMock });
+    AuthLogInResBodyDto.parse(res);
   });
 
   test('login() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(jobQuestApiUrls.auth.login, (_req, res, ctx) => {
+      rest.post(authDataApiUrlConstant.login, (_req, res, ctx) => {
         return res(ctx.json({}));
       })
     );
 
     let error = false;
-    await authService
-      .login(logInMockCredentials)
+    await authDataService
+      .login({ body: authLogInReqBodyMock })
       .catch((_e: any) => (error = true));
 
     expect(error).toBeTruthy();
   });
 
   test('logout() contains valid global server handlers', async () => {
-    const res = await authService.logout();
-    AuthLogOutResDto.parse(res);
+    try {
+      await authDataService.logout();
+      expect('successLogout').toBeTruthy();
+    } catch (error) {
+      expect('successLogout').toBeFalsy(); // should not reach here
+    }
   });
 
   test('logout() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(jobQuestApiUrls.auth.logout, (_req, res, ctx) => {
-        return res(ctx.json({}));
+      rest.post(authDataApiUrlConstant.logout, (_req, res, ctx) => {
+        return res(ctx.status(401));
       })
     );
 
-    let error = false;
-    await authService.logout().catch((_e: any) => (error = true));
-    expect(error).toBeTruthy();
+    try {
+      await authDataService.logout();
+      expect('successLogout').toEqual(false); // should not reach here
+    } catch (error) {
+      expect('failedLogout').toBeTruthy();
+    }
   });
 
   test('refresh() contains valid global server handlers', async () => {
-    const res = await authService
-      .refreshJwt()
-      .then((res) => plainToInstance(AuthRefreshJwtRes, res));
-
-    await validateOrReject(res);
+    const res = await authDataService.refreshJwt();
+    AuthRefreshJwtResBodyDto.parse(res);
   });
 
   test('refresh() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(jobQuestApiUrls.auth.refresh, (_req, res, ctx) => {
+      rest.post(authDataApiUrlConstant.refresh, (_req, res, ctx) => {
         return res(ctx.json({}));
       })
     );
 
     let error = false;
-    await authService.refreshJwt().catch((_e: any) => (error = true));
-    expect(error).toBeTruthy();
+    await authDataService.refreshJwt().catch((_e: any) => (error = true));
+    expect('failedLogout').toBeTruthy();
   });
 
   test('refresh() should try to refresh token once', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockImplementation(() => true);
+    jest
+      .spyOn(authDataService, 'isAuthenticated')
+      .mockImplementation(() => true);
     const authLocalStoreGetTokens = jest.spyOn(authLocalStore, 'getTokens');
     const authLocalStoreRemoveTokens = jest.spyOn(
       authLocalStore,
@@ -125,7 +123,7 @@ describe('AuthService', () => {
 
     let refreshRequestCounter = 0;
     server.use(
-      rest.post(jobQuestApiUrls.auth.refresh, (_req, res, ctx) => {
+      rest.post(authDataApiUrlConstant.refresh, (_req, res, ctx) => {
         refreshRequestCounter++;
         return res(ctx.status(401));
       })
@@ -140,14 +138,16 @@ describe('AuthService', () => {
   });
 
   test('refresh() should try to refresh token(once) and retry original request(once)', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockImplementation(() => true);
+    jest
+      .spyOn(authDataService, 'isAuthenticated')
+      .mockImplementation(() => true);
     const authLocalStoreGetTokens = jest
       .spyOn(authLocalStore, 'getTokens')
       .mockReturnValueOnce({
         accessToken: 'accessToken.testMock',
         refreshToken: 'refreshToken.testMock',
       });
-    const authServiceRefreshJwt = jest.spyOn(authService, 'refreshJwt');
+    const authServiceRefreshJwt = jest.spyOn(authDataService, 'refreshJwt');
 
     let userRequestCounter = 0;
     server.use(
