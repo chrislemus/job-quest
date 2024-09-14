@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useAssignJobList, useJobs } from '@/app/dashboard/job/hooks';
-import { JobListEntity } from '@/api/job-quest/job-list/job-list.entity';
+import { JobListEntity } from '@/app/dashboard/job-list/services/job-list-data/job-list.entity';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { useDrop } from 'react-dnd';

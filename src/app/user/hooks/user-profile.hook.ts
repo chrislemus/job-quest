@@ -1,7 +1,7 @@
 import { jobQuestApi } from '@/api/job-quest';
 import { ApiErrorRes } from '@/api/job-quest/types';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
-import { UserProfile } from '@/api/job-quest/user/dto';
+import { UserProfile } from '@/app/user/services/user-data/dto';
 import { userQueryKey as _userQueryKey } from '@/app/user/constants';
 
 export const userQueryKey = _userQueryKey.detail;

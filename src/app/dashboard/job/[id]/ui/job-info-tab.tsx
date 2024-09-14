@@ -6,7 +6,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { UpdateJobDto } from '@/app/dashboard/job/dto';
 import { useJobLists } from '@/app/dashboard/job-list/hooks';
 import { useUpdateJob } from '@/app/dashboard/job/hooks';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
 import { DeleteJobButton } from './delete-job-button';
 import { Listbox } from '@headlessui/react';
 import { useAppDispatch } from '@/app/dashboard/store';
@@ -15,6 +14,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PropsWithChildren, useMemo } from 'react';
+import { JobEntity } from '../../services/job-data/job.entity';
 
 type JobInfoTabProps = {
   job: JobEntity;

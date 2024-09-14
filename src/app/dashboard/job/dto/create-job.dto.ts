@@ -10,7 +10,7 @@ import {
   registerDecorator,
   IsEnum,
 } from 'class-validator';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 
 const propNames = {
   id: 'id',

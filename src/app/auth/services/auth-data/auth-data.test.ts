@@ -1,10 +1,10 @@
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { server, rest } from '@/tests/server';
 import { authDataService } from './auth-data.service';
-import { userService } from '@/api/job-quest/user/user.service';
+import { userService } from '@/app/user/services/user-data/user.service';
 import { authLocalStore } from './auth-local-store.service';
-import { userProfileMock } from '@/api/job-quest/user/user.mocks';
-import { UserProfileRes } from '@/api/job-quest/user/dto';
+import { userProfileMock } from '@/app/user/services/user-data/user.mocks';
+import { UserProfileRes } from '@/app/user/services/user-data/dto';
 import { authLogInReqBodyMock, authSignupReqBodyMock } from './mocks';
 import { authDataApiUrlConstant } from './auth-data-api-url.constant';
 import {

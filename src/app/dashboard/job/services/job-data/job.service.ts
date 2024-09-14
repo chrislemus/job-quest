@@ -5,7 +5,7 @@ import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { JobPageRes } from './dto/job-page-res.dto';
 import { validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 
 /** Fetch all Jobs */
 async function getAll(filters?: { jobListId?: string }): Promise<JobPageRes> {
@@ -66,4 +66,10 @@ async function deleteJob(jobId: string) {
   return data;
 }
 
-export const jobService = { getAll, createJob, findById, updateJob, deleteJob };
+export const jobDataService = {
+  getAll,
+  createJob,
+  findById,
+  updateJob,
+  deleteJob,
+};

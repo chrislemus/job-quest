@@ -1,4 +1,4 @@
-import { UserProfile } from '@/api/job-quest/user/dto';
+import { UserProfile } from '@/app/user/services/user-data/dto';
 
 export const userProfileMock: UserProfile = {
   id: '1',

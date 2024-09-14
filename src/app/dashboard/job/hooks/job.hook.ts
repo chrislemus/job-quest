@@ -1,5 +1,5 @@
 import { jobQuestApi } from '@/api/job-quest';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { ApiErrorRes } from '@/api/job-quest/types';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { jobQueryKey as _jobQueryKey } from '@/app/dashboard/job/constants';

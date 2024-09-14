@@ -1,11 +1,11 @@
 import { Type } from 'class-transformer';
 import { ValidateNested, IsNotEmpty } from 'class-validator';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
 import { ApiPageRes } from '@/api/job-quest/dto/api-page-res.dto';
 
-export class JobPageRes extends ApiPageRes<JobEntity> {
-  @Type(() => JobEntity)
+export class JobLogPageRes extends ApiPageRes<JobLogEntity> {
+  @Type(() => JobLogEntity)
   @ValidateNested({ each: true })
   @IsNotEmpty()
-  items: JobEntity[];
+  items: JobLogEntity[];
 }

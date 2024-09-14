@@ -1,5 +1,5 @@
-import { jobListMocks } from '@/api/job-quest/job-list/job-list.mocks';
-import { jobMocks } from '@/api/job-quest/job/job.mocks';
+import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
+import { jobMocks } from '@/app/dashboard/job/services/job-data/job.mocks';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithQueryClient } from '@/tests/query-client';

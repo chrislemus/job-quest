@@ -1,5 +1,5 @@
-import { jobListMocks } from '@/api/job-quest/job-list/job-list.mocks';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
+import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 
 export const jobMocks: JobEntity[] = [
   {

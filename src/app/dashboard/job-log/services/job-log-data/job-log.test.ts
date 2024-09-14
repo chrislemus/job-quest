@@ -4,7 +4,7 @@ import { jobLogService } from './job-log.service';
 import { rest } from 'msw';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { server } from '@/tests/server';
-import { JobLogPageRes } from '@/api/job-quest/job-log/dto';
+import { JobLogPageRes } from '@/app/dashboard/job-log/services/job-log-data/dto';
 import { jobLogMocks } from './job-log.mocks';
 
 test('contains valid global server handlers', async () => {

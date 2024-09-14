@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/common/query-client';
 import { UpdateJobDto } from '@/app/dashboard/job/dto';
 import { ApiErrorRes } from '@/api/job-quest/types';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { jobQuestApi } from '@/api/job-quest';
 import { getJobData, JobData, jobQueryKey } from './job.hook';
 import { JobsData, jobsQueryKey } from './jobs.hook';

@@ -2,10 +2,10 @@ import { screen } from '@testing-library/react';
 import { renderWithQueryClient } from '@/tests/query-client';
 import { AddJobModal } from './add-job-modal';
 import userEvent from '@testing-library/user-event';
-import { jobListMocks } from '@/api/job-quest/job-list/job-list.mocks';
+import { jobListMocks } from '@/app/dashboard/job-list/services/job-list-data/job-list.mocks';
 import { rest, server } from '@/tests/server';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { CreateJobDto } from '@/app/dashboard/job/dto';
 import { DashboardStoreProvider } from '@/app/dashboard/store';
 

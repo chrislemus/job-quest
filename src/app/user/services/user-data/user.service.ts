@@ -1,5 +1,5 @@
 import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
-import { UserProfileRes } from '@/api/job-quest/user/dto';
+import { UserProfileRes } from '@/app/user/services/user-data/dto';
 import { validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';

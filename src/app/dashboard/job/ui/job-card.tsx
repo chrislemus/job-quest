@@ -1,4 +1,4 @@
-import { JobEntity } from '@/api/job-quest/job/job.entity';
+import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { getContrastText } from '@/common/utils';
 import { queryClient } from '@/common/query-client';
 import { useDrag, useDrop } from 'react-dnd';

@@ -1,5 +1,5 @@
 import { jobQuestApi } from '@/api/job-quest';
-import { JobPageRes as JobsData } from '@/api/job-quest/job/dto';
+import { JobPageRes as JobsData } from '@/app/dashboard/job/services/job-data/dto';
 import { ApiErrorRes as JobsError } from '@/api/job-quest/types';
 import { jobQueryKey } from '@/app/dashboard/job/constants';
 import { useEffect } from 'react';

@@ -1,30 +1,32 @@
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
-import { jobService } from './job.service';
+import { jobListService } from './job-list.service';
 import { rest } from 'msw';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { server } from '@/tests/server';
-import { JobPageRes } from '@/api/job-quest/job/dto';
+import { JobListPageRes } from '@/app/dashboard/job-list/services/job-list-data/dto';
 
 test('contains valid global server handlers', async () => {
-  const res = await jobService.getAll();
-  const mockedJobs = plainToInstance(JobPageRes, res);
-  await validateOrReject(mockedJobs);
+  const res = await jobListService.getAll();
+  const jobList = plainToInstance(JobListPageRes, res);
+  await validateOrReject(jobList);
 });
 
 test('validates response data', async () => {
   // invalid response data
   const data = {
-    data: [{}],
+    data: [{ name: 'hi' }],
     pageInfo: {},
   };
 
   server.use(
-    rest.get(jobQuestApiUrls.job.root, (_req, res, ctx) => res(ctx.json(data)))
+    rest.get(jobQuestApiUrls.jobList.root, (_req, res, ctx) =>
+      res(ctx.json(data))
+    )
   );
 
   try {
-    await jobService.getAll();
+    await jobListService.getAll();
   } catch (errors) {
     expect(errors).toHaveLength(2);
   }

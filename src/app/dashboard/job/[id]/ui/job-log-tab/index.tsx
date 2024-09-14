@@ -3,7 +3,7 @@ import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogs } from '@/app/dashboard/job-log/hooks';
 import { JobLogContent } from './job-log-content';
 import { AddJobLogForm } from './add-job-log-form';
-import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';
+import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
 
 type JobLogTabProps = {
   jobId: string;
