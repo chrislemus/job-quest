@@ -3,7 +3,7 @@ import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
 import { ApiErrorRes } from '@/api/job-quest/types';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { jobQueryKey as _jobQueryKey } from '@/app/dashboard/job/constants';
-import { queryClient } from '@/common/query-client';
+import { queryClient } from '@/shared/query-client';
 import { JobsData, jobsQueryKey } from './jobs.hook';
 
 export type JobData = JobEntity;

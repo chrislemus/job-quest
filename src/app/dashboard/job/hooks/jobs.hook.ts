@@ -4,7 +4,7 @@ import { ApiErrorRes as JobsError } from '@/api/job-quest/types';
 import { jobQueryKey } from '@/app/dashboard/job/constants';
 import { useEffect } from 'react';
 import { useActiveJobList, useJobLists } from '@/app/dashboard/job-list/hooks';
-import { queryClient } from '@/common/query-client';
+import { queryClient } from '@/shared/query-client';
 import { useQuery, UseQueryResult, QueryFunction } from '@tanstack/react-query';
 
 export { JobsData, type JobsError };

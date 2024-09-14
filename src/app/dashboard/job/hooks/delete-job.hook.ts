@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { jobQuestApi } from '@/api/job-quest';
-import { queryClient } from '@/common/query-client';
+import { queryClient } from '@/shared/query-client';
 import { getJobData, JobData, jobQueryKey } from './job.hook';
 import { JobsData, jobsQueryKey } from './jobs.hook';
 

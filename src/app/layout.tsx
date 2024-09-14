@@ -3,7 +3,7 @@ import '@/styles/global.css';
 import 'reflect-metadata';
 import * as React from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { queryClient } from '@/common/query-client';
+import { queryClient } from '@/shared/query-client';
 
 export default function RootLayout(p: React.PropsWithChildren<{}>) {
   return (

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/common/query-client';
+import { queryClient } from '@/shared/query-client';
 import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
 import { ApiErrorRes } from '@/api/job-quest/types';
 import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';

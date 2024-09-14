@@ -1,6 +1,6 @@
 import { JobEntity } from '@/app/dashboard/job/services/job-data/job.entity';
-import { getContrastText } from '@/common/utils';
-import { queryClient } from '@/common/query-client';
+import { getContrastText } from '@/shared/utils';
+import { queryClient } from '@/shared/query-client';
 import { useDrag, useDrop } from 'react-dnd';
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';

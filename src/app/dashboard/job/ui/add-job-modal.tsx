@@ -1,4 +1,4 @@
-import { formValidator } from '@/common/utils';
+import { formValidator } from '@/shared/utils';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@/app/dashboard/job/dto';

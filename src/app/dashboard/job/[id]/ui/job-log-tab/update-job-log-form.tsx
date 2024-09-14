@@ -1,6 +1,6 @@
 import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@/common/utils';
+import { formValidator } from '@/shared/utils';
 import { useUpdateJobLog } from '@/app/dashboard/job-log/hooks';
 import { useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

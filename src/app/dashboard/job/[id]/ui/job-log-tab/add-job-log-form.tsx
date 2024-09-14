@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@/common/utils';
+import { formValidator } from '@/shared/utils';
 import { CreateJobLogDto } from '@/app/dashboard/job/dto';
 import { useCreateJobLog } from '@/app/dashboard/job-log/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

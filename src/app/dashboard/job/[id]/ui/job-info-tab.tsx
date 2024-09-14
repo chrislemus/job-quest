@@ -1,5 +1,5 @@
 'use client';
-import { formValidator } from '@/common/utils';
+import { formValidator } from '@/shared/utils';
 import { jobColors } from '@/app/dashboard/job/constants';
 import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';

@@ -1,5 +1,5 @@
 'use client';
-import { formValidator } from '@/common/utils';
+import { formValidator } from '@/shared/utils';
 import { UserLogin } from '@/app/auth/dto';
 import { useLogin } from '@/app/auth/hooks';
 import { useForm } from 'react-hook-form';

@@ -1,6 +1,6 @@
 import { useDeleteJobLog } from '@/app/dashboard/job-log/hooks';
 import { useMemo } from 'react';
-import { useBoolean } from '@/common/hooks';
+import { useBoolean } from '@/shared/hooks';
 import { UpdateJobLogForm } from './update-job-log-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
