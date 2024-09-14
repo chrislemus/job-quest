@@ -60,7 +60,7 @@ describe('Add Job Modal', () => {
       name: /add/i,
     });
     await userEvent.click(submitButton);
-    expect(postData.jobList.id).toBe(jobList.id);
+    expect(postData.jobListId).toBe(jobList.id);
     expect(postData.company).toBe(data.company);
     expect(postData.title).toBe(data.title);
   });

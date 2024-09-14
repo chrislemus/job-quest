@@ -32,7 +32,7 @@ export function AddJobModal(props: AddJobModalProps) {
   const addJobMutation = useCreateJob();
 
   const jobListOptions = useMemo(() => {
-    const data = JobsListQuery.data?.data?.map((j) => ({
+    const data = JobsListQuery.data?.items?.map((j) => ({
       value: j.id,
       label: j.label,
     }));

@@ -19,7 +19,7 @@ test('returns jobLogs by jobId param', async () => {
     const jobId = jobLogMocks[i].jobId;
     const dataLength = jobLogMocks.filter((j) => (j.jobId = jobId)).length;
     const res = await jobLogService.getAll(jobId);
-    expect(res).toHaveLength(dataLength);
+    expect(res.items).toHaveLength(dataLength);
   }
 });
 

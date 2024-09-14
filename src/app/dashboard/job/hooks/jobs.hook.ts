@@ -39,7 +39,7 @@ export function useJobs(
   // but for now we'll just prefetch other content to optimize UX
   const [activeJobList] = useActiveJobList();
   const JobsListQuery = useJobLists();
-  const jobLists = JobsListQuery.data?.data || [];
+  const jobLists = JobsListQuery.data?.items || [];
   const mainQueryComplete = query.isFetched;
   useEffect(() => {
     if (activeJobList !== null && jobLists && mainQueryComplete) {

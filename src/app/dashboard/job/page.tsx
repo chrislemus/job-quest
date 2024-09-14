@@ -19,7 +19,7 @@ export default function JobListPage() {
     });
   };
 
-  const jobLists = JobsListQuery.data?.data || [];
+  const jobLists = JobsListQuery.data?.items || [];
 
   const jobListCols = useMemo(
     () =>

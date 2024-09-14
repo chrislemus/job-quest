@@ -73,7 +73,7 @@ export function JobInfoTab(p: JobInfoTabProps) {
   const JobsListQuery = useJobLists();
 
   const jobListOptions = useMemo(() => {
-    return JobsListQuery.data?.data?.map((j) => ({
+    return JobsListQuery.data?.items?.map((j) => ({
       value: j.id,
       label: j.label,
     }));

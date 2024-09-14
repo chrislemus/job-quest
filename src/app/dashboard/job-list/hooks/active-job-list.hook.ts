@@ -13,7 +13,7 @@ export function useActiveJobList(): [
   const router = useRouter();
   const jobListQuery = useJobLists();
 
-  const jobLists = jobListQuery.data?.data;
+  const jobLists = jobListQuery.data?.items;
 
   /** Create a Link with updated query string value */
   const setActiveJobList = useCallback(
