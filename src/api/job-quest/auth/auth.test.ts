@@ -11,7 +11,7 @@ import { UserProfileRes } from '@/api/job-quest/user/dto';
 import {
   AuthSignUpRes,
   AuthLogInRes,
-  AuthLogOutRes,
+  AuthLogOutResDto,
   AuthRefreshJwtRes,
 } from '@/api/job-quest/auth/dto';
 
@@ -69,11 +69,8 @@ describe('AuthService', () => {
   });
 
   test('logout() contains valid global server handlers', async () => {
-    const res = await authService
-      .logout()
-      .then((res) => plainToInstance(AuthLogOutRes, res));
-
-    await validateOrReject(res);
+    const res = await authService.logout();
+    AuthLogOutResDto.parse(res);
   });
 
   test('logout() validates response data', async () => {
@@ -157,9 +154,7 @@ describe('AuthService', () => {
       rest.get(jobQuestApiUrls.user.profile, (_req, res, ctx) => {
         userRequestCounter++;
         if (userRequestCounter === 1) return res(ctx.status(401));
-        const data: UserProfileRes = {
-          data: userProfileMock,
-        };
+        const data: UserProfileRes = userProfileMock;
         return res(ctx.json(data));
       })
     );

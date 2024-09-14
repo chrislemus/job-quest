@@ -9,10 +9,10 @@ export default function JobListPage() {
   const JobsListQuery = useJobLists();
   const [modal, setModal] = useState<{
     active: boolean;
-    defaultJobListId?: number;
+    defaultJobListId?: string;
   }>({ active: false, defaultJobListId: undefined });
 
-  const toggleModal = (defaultJobListId?: number) => {
+  const toggleModal = (defaultJobListId?: string) => {
     setModal((prev) => {
       const active = !prev.active;
       return { active, defaultJobListId };

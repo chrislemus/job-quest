@@ -9,15 +9,14 @@ export const jobLogServiceHandlers = [
     let jobLogs = jobLogMocks;
     if (jobId) {
       if (Array.isArray(jobId)) {
-        const jobIds = jobId.map((j) => parseInt(j));
-        jobLogs = jobLogs.filter((j) => jobIds.includes(j.jobId));
+        jobLogs = jobLogs.filter((j) => jobId.includes(j.jobId));
       } else {
-        jobLogs = jobLogs.filter((j) => j.jobId === parseInt(jobId as string));
+        jobLogs = jobLogs.filter((j) => j.jobId === jobId);
       }
     }
 
     const data: Awaited<ReturnType<typeof jobQuestApi.jobLog.getAll>> = {
-      data: jobLogs,
+      items: jobLogs,
       pageInfo: {
         currentPage: 1,
         currentPageCount: jobLogMocks.length,

@@ -1,12 +1,12 @@
 import { jobQuestApi } from '@/api/job-quest';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
-import { ApiErrorRes, ApiOkRes } from '@/api/job-quest/types';
+import { ApiErrorRes } from '@/api/job-quest/types';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { jobQueryKey as _jobQueryKey } from '@/app/dashboard/job/constants';
 import { queryClient } from '@/common/query-client';
 import { JobsData, jobsQueryKey } from './jobs.hook';
 
-export type JobData = ApiOkRes<JobEntity>;
+export type JobData = JobEntity;
 export type JobError = ApiErrorRes;
 
 export const jobQueryKey = _jobQueryKey.detail;

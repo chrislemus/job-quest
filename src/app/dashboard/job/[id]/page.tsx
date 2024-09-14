@@ -14,14 +14,14 @@ const tabs = {
 } as const;
 
 export default function JobPage() {
-  const jobId = +useParams().id;
+  const jobId = useParams().id;
   const searchParams = useSearchParams();
   const selectedTab = searchParams.get('tab') || tabs.info;
   const jobQuery = useJob(jobId);
-  const job = jobQuery?.data?.data;
+  const job = jobQuery?.data;
 
   const jobLogsQuery = useJobLogs(jobId);
-  const jobLogs = jobLogsQuery?.data?.data;
+  const jobLogs = jobLogsQuery?.data?.items;
 
   const pathname = usePathname();
 

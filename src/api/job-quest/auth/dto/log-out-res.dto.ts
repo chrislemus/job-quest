@@ -1,9 +1,5 @@
-import { Type } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
-import { ApiOkRes } from '@/api/job-quest/types';
+import { z } from 'zod';
 
-export class AuthLogOutRes implements ApiOkRes<boolean> {
-  @Type(() => Boolean)
-  @IsNotEmpty()
-  data: boolean;
-}
+export const AuthLogOutResDto = z.boolean();
+export type AuthLogOutResDtoSchema = z.input<typeof AuthLogOutResDto>;
+export type AuthLogOutResDto = z.output<typeof AuthLogOutResDto>;

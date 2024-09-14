@@ -6,7 +6,7 @@ import { JobsData, jobsQueryKey } from './jobs.hook';
 
 export function useDeleteJob() {
   const mutation = useMutation({
-    mutationFn: (jobId: number) => {
+    mutationFn: (jobId: string) => {
       return jobQuestApi.job.deleteJob(jobId);
     },
     onMutate: async (jobId) => {
@@ -21,7 +21,7 @@ export function useDeleteJob() {
         await queryClient.cancelQueries({ queryKey });
         queryClient.setQueryData<JobsData>(queryKey, (res) => {
           if (res) {
-            let data = res?.data;
+            let data = res?.items;
             data = data.filter(({ id }) => id !== job.id);
             return { ...res, data };
           }
@@ -34,15 +34,13 @@ export function useDeleteJob() {
       if (ctx) {
         const { job } = ctx;
 
-        queryClient.setQueryData<JobData>(jobQueryKey(job.id), (res) => {
-          if (res) return { data: job };
-        });
+        queryClient.setQueryData<JobData>(jobQueryKey(job.id), (job) => job);
 
         queryClient.setQueryData<JobsData>(
           jobsQueryKey({ jobListId: job.id }),
           (res) => {
             if (res) {
-              const data = res?.data;
+              const data = res?.items;
               data.push(job);
               return { ...res, data };
             }

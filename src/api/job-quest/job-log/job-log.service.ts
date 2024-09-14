@@ -1,5 +1,4 @@
 import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
-import { ApiOkRes } from '@/api/job-quest/types';
 import { CreateJobLogDto, UpdateJobLogDto } from '@/app/dashboard/job/dto';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { ApiPageRes } from '@/api/job-quest/dto/api-page-res.dto';
@@ -8,10 +7,8 @@ import { JobLogPageRes } from './dto/job-log-page-res.dto';
 import { validateOrReject } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
-async function create(
-  jobLog: CreateJobLogDto
-): Promise<ApiOkRes<JobLogEntity>> {
-  const response = await jobQuestHttpService.post<ApiOkRes<JobLogEntity>>(
+async function create(jobLog: CreateJobLogDto): Promise<JobLogEntity> {
+  const response = await jobQuestHttpService.post<JobLogEntity>(
     jobQuestApiUrls.jobLog.root,
     jobLog
   );
@@ -21,8 +18,8 @@ async function create(
 }
 
 /** Update a Job */
-async function update(jobLogId: number, updatedJob: UpdateJobLogDto) {
-  const response = await jobQuestHttpService.patch<ApiOkRes<JobLogEntity>>(
+async function update(jobLogId: string, updatedJob: UpdateJobLogDto) {
+  const response = await jobQuestHttpService.patch<JobLogEntity>(
     jobQuestApiUrls.jobLog.update(jobLogId),
     updatedJob
   );
@@ -31,7 +28,7 @@ async function update(jobLogId: number, updatedJob: UpdateJobLogDto) {
   return data;
 }
 
-async function getAll(jobId: number): Promise<ApiPageRes<JobLogEntity>> {
+async function getAll(jobId: string): Promise<ApiPageRes<JobLogEntity>> {
   const response = await jobQuestHttpService.get<ApiPageRes<JobLogEntity>>(
     jobQuestApiUrls.jobLog.root,
     { params: { jobId } }
@@ -43,8 +40,8 @@ async function getAll(jobId: number): Promise<ApiPageRes<JobLogEntity>> {
   return data;
 }
 
-async function deleteJobLog(jobLogId: number) {
-  const response = await jobQuestHttpService.delete<ApiOkRes<JobLogEntity>>(
+async function deleteJobLog(jobLogId: string) {
+  const response = await jobQuestHttpService.delete<JobLogEntity>(
     jobQuestApiUrls.jobLog.delete(jobLogId)
   );
 

@@ -16,7 +16,7 @@ export const jobLogsQueryFn: QueryFunction<JobLogData, JobLogsQueryKey> = (
 };
 
 export function useJobLogs(
-  jobId: number
+  jobId: string
 ): UseQueryResult<JobLogData, JobLogError> {
   const query = useQuery<JobLogData, JobLogError, JobLogData, JobLogsQueryKey>({
     queryKey: jobLogsQueryKey(jobId),

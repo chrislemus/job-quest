@@ -1,7 +1,6 @@
 import { CreateJobDto, UpdateJobDto } from '@/app/dashboard/job/dto';
 import { jobColors } from '@/app/dashboard/job/constants';
 import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
-import { ApiOkRes } from '@/api/job-quest/types';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { JobPageRes } from './dto/job-page-res.dto';
 import { validateOrReject } from 'class-validator';
@@ -23,7 +22,7 @@ async function getAll(filters?: { jobListId?: string }): Promise<JobPageRes> {
 
 /** Fetch a Job by ID */
 async function findById(id: string) {
-  const response = await jobQuestHttpService.get<ApiOkRes<JobEntity>>(
+  const response = await jobQuestHttpService.get<JobEntity>(
     jobQuestApiUrls.job.findById(id)
   );
 
@@ -48,7 +47,7 @@ async function createJob(job: CreateJobDto) {
 
 /** Update a Job */
 async function updateJob(jobId: string, updatedJob: UpdateJobDto) {
-  const response = await jobQuestHttpService.patch<ApiOkRes<JobEntity>>(
+  const response = await jobQuestHttpService.patch<JobEntity>(
     jobQuestApiUrls.job.update(jobId),
     updatedJob
   );
@@ -59,7 +58,7 @@ async function updateJob(jobId: string, updatedJob: UpdateJobDto) {
 
 /** Delete a Job */
 async function deleteJob(jobId: string) {
-  const response = await jobQuestHttpService.delete<ApiOkRes<JobEntity>>(
+  const response = await jobQuestHttpService.delete<JobEntity>(
     jobQuestApiUrls.job.delete(jobId)
   );
 

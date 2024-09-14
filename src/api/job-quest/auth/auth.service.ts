@@ -7,22 +7,21 @@ import { plainToInstance } from 'class-transformer';
 import {
   AuthSignUpRes,
   AuthLogInRes,
-  AuthLogOutRes,
+  AuthLogOutResDto,
   AuthRefreshJwtRes,
 } from '@/api/job-quest/auth/dto';
 
 async function signup(user: AuthSignUpArgs): Promise<AuthSignUpRes> {
-  const res = await jobQuestHttpService
+  const data = await jobQuestHttpService
     .post<AuthSignUpRes>(jobQuestApiUrls.auth.signup, user)
     .then(async (res) => {
-      const data = plainToInstance(AuthSignUpRes, res?.data);
+      const data = plainToInstance(AuthSignUpRes, res);
       await validateOrReject(data);
       return data;
     });
 
-  const tokens = res.data;
-  authLocalStore.setTokens(tokens);
-  return res;
+  authLocalStore.setTokens(data);
+  return data;
 }
 
 async function login(credentials: AuthLogInArgs): Promise<AuthLogInRes> {
@@ -40,7 +39,7 @@ async function login(credentials: AuthLogInArgs): Promise<AuthLogInRes> {
 
 async function refreshJwt(): Promise<AuthRefreshJwtRes> {
   const refreshToken = authLocalStore.getTokens()?.refreshToken;
-  const res = await jobQuestHttpService
+  const tokens = await jobQuestHttpService
     .post<AuthRefreshJwtRes>(
       jobQuestApiUrls.auth.refresh,
       {},
@@ -56,25 +55,21 @@ async function refreshJwt(): Promise<AuthRefreshJwtRes> {
       throw new Error(e);
     });
 
-  const tokens = res.data;
   authLocalStore.setTokens(tokens);
 
-  return res;
+  return tokens;
 }
 
-async function logout(): Promise<AuthLogOutRes> {
-  const res = await jobQuestHttpService
-    .post<AuthLogOutRes>(jobQuestApiUrls.auth.logout)
+async function logout(): Promise<AuthLogOutResDto> {
+  const logOutSuccess = await jobQuestHttpService
+    .post<AuthLogOutResDto>(jobQuestApiUrls.auth.logout)
     .then(async (res) => {
-      const data = plainToInstance(AuthLogOutRes, res.data);
-      await validateOrReject(data);
-      return data;
+      return AuthLogOutResDto.parse(res.data);
     });
 
-  const logOutSuccess = res.data;
   if (logOutSuccess) authLocalStore.removeTokens();
 
-  return res;
+  return logOutSuccess;
 }
 
 /** Check if currently authenticated */

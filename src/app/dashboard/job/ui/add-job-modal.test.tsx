@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event';
 import { jobListMocks } from '@/api/job-quest/job-list/job-list.mocks';
 import { rest, server } from '@/tests/server';
 import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
-import { ApiOkRes } from '@/api/job-quest/types';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
 import { CreateJobDto } from '@/app/dashboard/job/dto';
 import { DashboardStoreProvider } from '@/app/dashboard/store';
@@ -24,15 +23,13 @@ describe('Add Job Modal', () => {
       rest.post(jobQuestApiUrls.job.root, async (req, res, ctx) => {
         const reqData = await req.json<CreateJobDto>();
         postData = reqData;
-        const resData: ApiOkRes<JobEntity> = {
-          data: {
-            id: jobList.id,
-            company: reqData.company,
-            title: reqData.title,
-            jobListId: reqData.jobListId as unknown as string,
-            jobListRank: 'a',
-            userId: `1`,
-          },
+        const resData: JobEntity = {
+          id: jobList.id,
+          company: reqData.company,
+          title: reqData.title,
+          jobListId: reqData.jobListId as unknown as string,
+          jobListRank: 'a',
+          userId: `1`,
         };
         return res(ctx.status(201), ctx.json(resData));
       })

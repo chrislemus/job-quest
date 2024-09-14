@@ -6,7 +6,7 @@ import { jobQuestApi } from '@/api/job-quest';
 export const jobListServiceHandlers = [
   rest.get(jobQuestApiUrls.jobList.root, (_req, res, ctx) => {
     const data: Awaited<ReturnType<typeof jobQuestApi.jobList.getAll>> = {
-      data: jobListMocks,
+      items: jobListMocks,
       pageInfo: {
         currentPage: 1,
         currentPageCount: jobListMocks.length,

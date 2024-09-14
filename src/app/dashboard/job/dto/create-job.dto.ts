@@ -6,7 +6,6 @@ import {
   ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  Validate,
   ValidationOptions,
   registerDecorator,
   IsEnum,
@@ -57,7 +56,7 @@ export function JobListProperty(validationOptions?: ValidationOptions) {
   };
 }
 
-enum JobListRankPlacementEnum {
+export enum JobListRankPlacementEnum {
   TOP = 'top',
   BOTTOM = 'bottom',
 }

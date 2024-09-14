@@ -6,13 +6,13 @@ import { AddJobLogForm } from './add-job-log-form';
 import { JobLogEntity } from '@/api/job-quest/job-log/job-log.entity';
 
 type JobLogTabProps = {
-  jobId: number;
+  jobId: string;
   jobLogs: JobLogEntity[] | undefined;
 };
 
 export function JobLogTab(p: JobLogTabProps) {
   const jobLogsQuery = useJobLogs(p.jobId);
-  const jobLogsQueryData = jobLogsQuery.data?.data;
+  const jobLogsQueryData = jobLogsQuery.data;
 
   const logs = useMemo(() => {
     return p.jobLogs?.map((jobLog) => (

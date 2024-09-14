@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/common/query-client';
 import { UpdateJobDto } from '@/app/dashboard/job/dto';
-import { ApiErrorRes, ApiOkRes } from '@/api/job-quest/types';
+import { ApiErrorRes } from '@/api/job-quest/types';
 import { JobEntity } from '@/api/job-quest/job/job.entity';
 import { jobQuestApi } from '@/api/job-quest';
 import { getJobData, JobData, jobQueryKey } from './job.hook';
 import { JobsData, jobsQueryKey } from './jobs.hook';
 
-type Data = ApiOkRes<JobEntity>;
+type Data = JobEntity;
 type Error = ApiErrorRes;
 type Variables = { jobId: string; data: UpdateJobDto };
 type Context = undefined | { oldJob: JobEntity; newJob: JobEntity };
@@ -31,9 +31,7 @@ export function useUpdateJob() {
 
         // Job Update
         await queryClient.cancelQueries({ queryKey: jobQueryKey(jobId) });
-        queryClient.setQueryData<JobData>(jobQueryKey(jobId), (res) => {
-          if (res) return { items: newJob };
-        });
+        queryClient.setQueryData<JobData>(jobQueryKey(jobId), (res) => res);
 
         // Job Lists Updates
         await updateJobListsData('newJob', { oldJob, newJob });
@@ -47,9 +45,7 @@ export function useUpdateJob() {
         // Job Lists Updates
         await updateJobListsData('oldJob', { oldJob, newJob });
         // Job Update
-        queryClient.setQueryData<JobData>(jobQueryKey(newJob.id), (res) => {
-          if (res) return { items: oldJob };
-        });
+        queryClient.setQueryData<JobData>(jobQueryKey(newJob.id), (res) => res);
       }
     },
     onSettled: async (_res, _error, _vars, ctx) => {

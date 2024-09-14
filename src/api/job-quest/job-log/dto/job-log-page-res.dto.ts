@@ -7,5 +7,5 @@ export class JobLogPageRes extends ApiPageRes<JobLogEntity> {
   @Type(() => JobLogEntity)
   @ValidateNested({ each: true })
   @IsNotEmpty()
-  data: JobLogEntity[];
+  items: JobLogEntity[];
 }

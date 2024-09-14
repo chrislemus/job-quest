@@ -5,9 +5,7 @@ import { UserProfileRes } from '@/api/job-quest/user/dto';
 
 export const userServiceHandlers = [
   rest.get(jobQuestApiUrls.user.profile, (_req, res, ctx) => {
-    const data: UserProfileRes = {
-      data: userProfileMock,
-    };
+    const data: UserProfileRes = userProfileMock;
 
     return res(ctx.json(data));
   }),

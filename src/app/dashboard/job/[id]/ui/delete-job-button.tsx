@@ -6,7 +6,7 @@ import { useAppDispatch } from '@/app/dashboard/store';
 import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
 
 type DeleteJobButtonProps = {
-  jobId: number;
+  jobId: string;
 };
 
 export function DeleteJobButton(p: DeleteJobButtonProps) {

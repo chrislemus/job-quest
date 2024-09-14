@@ -7,7 +7,7 @@ import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { useMemo } from 'react';
 
 type AddJobLogFormProps = {
-  jobId: number;
+  jobId: string;
 };
 
 export function AddJobLogForm(p: AddJobLogFormProps) {

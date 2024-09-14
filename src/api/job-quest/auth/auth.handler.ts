@@ -4,36 +4,28 @@ import { jwtMock } from './auth.mocks';
 import {
   AuthSignUpRes,
   AuthLogInRes,
-  AuthLogOutRes,
+  AuthLogOutResDto,
   AuthRefreshJwtRes,
 } from '@/api/job-quest/auth/dto';
 
 export const authServiceHandlers = [
   rest.post(jobQuestApiUrls.auth.signup, (_req, res, ctx) => {
-    const data: AuthSignUpRes = {
-      data: jwtMock,
-    };
+    const data: AuthSignUpRes = jwtMock;
 
     return res(ctx.json(data));
   }),
   rest.post(jobQuestApiUrls.auth.login, (_req, res, ctx) => {
-    const data: AuthLogInRes = {
-      data: jwtMock,
-    };
+    const data: AuthLogInRes = jwtMock;
 
     return res(ctx.json(data));
   }),
   rest.post(jobQuestApiUrls.auth.logout, (_req, res, ctx) => {
-    const data: AuthLogOutRes = {
-      data: true,
-    };
+    const data = AuthLogOutResDto.parse(true);
 
     return res(ctx.json(data));
   }),
   rest.post(jobQuestApiUrls.auth.refresh, (_req, res, ctx) => {
-    const data: AuthRefreshJwtRes = {
-      data: jwtMock,
-    };
+    const data: AuthRefreshJwtRes = jwtMock;
 
     return res(ctx.json(data));
   }),

@@ -59,7 +59,7 @@ export function JobInfoTab(p: JobInfoTabProps) {
     defaultValues: {
       title: p.job.title,
       company: p.job.company,
-      jobList: { id: p.job.jobListId },
+      jobListId: p.job.jobListId,
       color: p.job.color || undefined,
       url: p.job.url || undefined,
       location: p.job.location || undefined,
@@ -128,7 +128,7 @@ export function JobInfoTab(p: JobInfoTabProps) {
                 id="job-list"
                 data-testid="input-job-list"
                 placeholder="Please select"
-                {...formMethods.register('jobList.id')}
+                {...formMethods.register('jobListId')}
               >
                 {jobListOptions.map(({ label, value }) => (
                   <option key={value} value={value}>
@@ -136,7 +136,7 @@ export function JobInfoTab(p: JobInfoTabProps) {
                   </option>
                 ))}
               </select>
-              <FieldError error={fieldErrors?.jobList?.id?.message} />
+              <FieldError error={fieldErrors?.jobListId?.message} />
             </div>
           )}
 
