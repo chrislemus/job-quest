@@ -7,9 +7,4 @@ const url = (resource: string): string => `${root}${resource}`;
 export const jobQuestApiUrls = {
   root: root,
   user: { profile: url('/user/profile') },
-  jobLog: {
-    root: url('/job-log'),
-    update: (id: string) => url(`/job-log/${id}`),
-    delete: (id: string) => url(`/job-log/${id}`),
-  },
 };

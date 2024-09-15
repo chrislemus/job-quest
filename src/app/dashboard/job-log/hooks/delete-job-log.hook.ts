@@ -2,18 +2,15 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/shared/query-client';
 import { ApiErrorRes } from '@/api/job-quest/types';
 import { jobQuestApi } from '@/api/job-quest';
-import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
+import { JobLogItemDto } from '@/app/dashboard/job-log/services/job-log-data/dto/job-log.dto';
 import { useAppDispatch } from '@/app/dashboard/store';
 import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
 import { jobLogsQueryKey } from './job-logs.hook';
 
-export type DeleteJobLogData = JobLogEntity;
-export type DeleteJobLogError = ApiErrorRes;
-
 export function useDeleteJobLog() {
   const dispatch = useAppDispatch();
 
-  const mutation = useMutation<DeleteJobLogData, DeleteJobLogError, string>({
+  const mutation = useMutation<JobLogItemDto, ApiErrorRes, string>({
     mutationFn: (jobLogId) => {
       return jobQuestApi.jobLog.deleteJobLog(jobLogId);
     },

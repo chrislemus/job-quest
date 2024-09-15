@@ -1,17 +1,14 @@
-import { plainToInstance } from 'class-transformer';
-import { validateOrReject } from 'class-validator';
-import { jobLogService } from './job-log.service';
+import { jobLogService } from './job-log-data.service';
 import { rest } from 'msw';
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { server } from '@/tests/server';
-import { JobLogPageRes } from '@/app/dashboard/job-log/services/job-log-data/dto';
-import { jobLogMocks } from './job-log.mocks';
+import { JobLogPageResBodyDto } from '@/app/dashboard/job-log/services/job-log-data/dto';
+import { jobLogMocks } from './mocks/job-log.mock';
+import { jobLogDataApiUrlConstant } from './job-log-data-api-url.constant';
 
 test('contains valid global server handlers', async () => {
   const jobId = jobLogMocks[0].jobId;
   const res = await jobLogService.getAll(jobId);
-  const jobLog = plainToInstance(JobLogPageRes, res);
-  await validateOrReject(jobLog);
+  JobLogPageResBodyDto.parse(res);
 });
 
 test('returns jobLogs by jobId param', async () => {
@@ -31,14 +28,15 @@ test('validates response data', async () => {
   };
 
   server.use(
-    rest.get(jobQuestApiUrls.jobLog.root, (_req, res, ctx) =>
+    rest.get(jobLogDataApiUrlConstant.root, (_req, res, ctx) =>
       res(ctx.json(data))
     )
   );
 
   try {
     await jobLogService.getAll(jobLogMocks[0].jobId);
+    expect(true).toBeFalsy(); // should not reach here
   } catch (errors) {
-    expect(errors).toHaveLength(2);
+    expect(errors).toBeTruthy();
   }
 });

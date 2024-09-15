@@ -1,10 +1,10 @@
 import { rest } from '@/tests/server';
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
-import { jobLogMocks } from '@/app/dashboard/job-log/services/job-log-data/job-log.mocks';
+import { jobLogMocks } from '@/app/dashboard/job-log/services/job-log-data/mocks/job-log.mock';
 import { jobQuestApi } from '@/api/job-quest';
+import { jobLogDataApiUrlConstant } from './job-log-data-api-url.constant';
 
 export const jobLogServiceHandlers = [
-  rest.get(jobQuestApiUrls.jobLog.root, (req, res, ctx) => {
+  rest.get(jobLogDataApiUrlConstant.root, (req, res, ctx) => {
     let jobId = req.params.jobId;
     let jobLogs = jobLogMocks;
     if (jobId) {

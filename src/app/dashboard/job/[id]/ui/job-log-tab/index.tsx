@@ -3,11 +3,11 @@ import { PropsWithChildren, useMemo } from 'react';
 import { useJobLogs } from '@/app/dashboard/job-log/hooks';
 import { JobLogContent } from './job-log-content';
 import { AddJobLogForm } from './add-job-log-form';
-import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
+import { JobLogItemDto } from '@/app/dashboard/job-log/services/job-log-data/dto/job-log.dto';
 
 type JobLogTabProps = {
   jobId: string;
-  jobLogs: JobLogEntity[] | undefined;
+  jobLogs: JobLogItemDto[] | undefined;
 };
 
 export function JobLogTab(p: JobLogTabProps) {

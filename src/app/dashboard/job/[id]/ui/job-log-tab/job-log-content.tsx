@@ -4,10 +4,10 @@ import { useBoolean } from '@/shared/hooks';
 import { UpdateJobLogForm } from './update-job-log-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
+import { JobLogItemDto } from '@/app/dashboard/job-log/services/job-log-data/dto/job-log.dto';
 
 type JobLogItemProps = {
-  jobLog: JobLogEntity;
+  jobLog: JobLogItemDto;
 };
 
 export function JobLogContent(p: JobLogItemProps) {

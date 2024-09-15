@@ -2,12 +2,10 @@ import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/shared/query-client';
 import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
 import { ApiErrorRes } from '@/api/job-quest/types';
-import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
 import { jobQuestApi } from '@/api/job-quest';
 import { jobLogsQueryKey } from './job-logs.hook';
+import { JobLogItemDto } from '../services';
 
-export type UpdateJobLogData = JobLogEntity;
-export type UpdateJobLogError = ApiErrorRes;
 export type UpdateJobLogVariables = {
   jobLogId: string;
   data: UpdateJobLogDto;
@@ -15,8 +13,8 @@ export type UpdateJobLogVariables = {
 
 export function useUpdateJobLog() {
   const mutation = useMutation<
-    UpdateJobLogData,
-    UpdateJobLogError,
+    JobLogItemDto,
+    ApiErrorRes,
     UpdateJobLogVariables
   >({
     mutationFn: (args) => {

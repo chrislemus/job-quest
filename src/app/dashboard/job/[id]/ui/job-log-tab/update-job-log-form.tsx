@@ -5,10 +5,10 @@ import { useUpdateJobLog } from '@/app/dashboard/job-log/hooks';
 import { useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { JobLogEntity } from '@/app/dashboard/job-log/services/job-log-data/job-log.entity';
+import { JobLogItemDto } from '@/app/dashboard/job-log/services/job-log-data/dto/job-log.dto';
 
 export type UpdateJobLogFormProps = {
-  jobLog: JobLogEntity;
+  jobLog: JobLogItemDto;
   disableForm: () => void;
 };
 
