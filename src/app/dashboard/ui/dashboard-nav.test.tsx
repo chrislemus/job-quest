@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { renderWithQueryClient } from '@/tests/query-client';
 import { DashboardNav } from './dashboard-nav';
 import { mockRouter } from '@/tests/next-navigation.mock';
-import { userProfileMock } from '@/app/user/services/user-data/user.mocks';
+import { userProfileMock } from '@/app/user/services/user-data/mocks/user.mock';
 import userEvent from '@testing-library/user-event';
 
 const { firstName, lastName } = userProfileMock;

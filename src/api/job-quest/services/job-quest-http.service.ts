@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { authLocalStore } from '@/app/auth/services/auth-data/auth-local-store.service';
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { authDataService } from '@/app/auth/services';
 import { authDataApiUrlConstant } from '@/app/auth/services/auth-data/auth-data-api-url.constant';
+import { jobQuestApiConfig } from '@/core/configs';
 
 /**
  * Job Quest API Http instance.
@@ -23,8 +23,9 @@ const authCredentialsUrl = new Set<string>([
 
 jobQuestHttpService.interceptors.request.use((config) => {
   // ensure that calls are only made to API to avoid sending auth details to other resources
-  if (!jobQuestApiUrls.root) throw new Error('jobQuestApiUrl not provided');
-  if (!config.url?.startsWith(jobQuestApiUrls.root)) {
+  if (!jobQuestApiConfig.baseUrl)
+    throw new Error('jobQuestApiUrl not provided');
+  if (!config.url?.startsWith(jobQuestApiConfig.baseUrl)) {
     throw Error('jobQuestHttpService Forbidden url call');
   }
 

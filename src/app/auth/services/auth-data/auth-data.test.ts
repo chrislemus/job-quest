@@ -1,10 +1,9 @@
-import { jobQuestApiUrls } from '@/api/job-quest/job-quest-api-urls.const';
 import { server, rest } from '@/tests/server';
 import { authDataService } from './auth-data.service';
-import { userService } from '@/app/user/services/user-data/user.service';
+import { userService } from '@/app/user/services/user-data/user-data.service';
 import { authLocalStore } from './auth-local-store.service';
-import { userProfileMock } from '@/app/user/services/user-data/user.mocks';
-import { UserProfileRes } from '@/app/user/services/user-data/dto';
+import { userProfileMock } from '@/app/user/services/user-data/mocks/user.mock';
+import { UserProfileDto } from '@/app/user/services/user-data/dto';
 import { authLogInReqBodyMock, authSignupReqBodyMock } from './mocks';
 import { authDataApiUrlConstant } from './auth-data-api-url.constant';
 import {
@@ -12,6 +11,7 @@ import {
   AuthLogInResBodyDto,
   AuthRefreshJwtResBodyDto,
 } from '@/app/auth/services/auth-data/dto';
+import { userDataApiUrlConstant } from '@/app/user/services/user-data/user-data-api-url.constant';
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -115,7 +115,7 @@ describe('AuthService', () => {
 
     let userRequestCounter = 0;
     server.use(
-      rest.get(jobQuestApiUrls.user.profile, (_req, res, ctx) => {
+      rest.get(userDataApiUrlConstant.profile, (_req, res, ctx) => {
         userRequestCounter++;
         return res(ctx.status(401));
       })
@@ -151,10 +151,10 @@ describe('AuthService', () => {
 
     let userRequestCounter = 0;
     server.use(
-      rest.get(jobQuestApiUrls.user.profile, (_req, res, ctx) => {
+      rest.get(userDataApiUrlConstant.profile, (_req, res, ctx) => {
         userRequestCounter++;
         if (userRequestCounter === 1) return res(ctx.status(401));
-        const data: UserProfileRes = userProfileMock;
+        const data: UserProfileDto = userProfileMock;
         return res(ctx.json(data));
       })
     );

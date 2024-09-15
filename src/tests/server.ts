@@ -4,7 +4,7 @@ import { jobDataServiceHandlers } from '@/app/dashboard/job/services/job-data/jo
 import { jobLogServiceHandlers } from '@/app/dashboard/job-log/services/job-log-data/job-log-data.handler';
 import { jobListServiceHandlers } from '@/app/dashboard/job-list/services/job-list-data/job-list-data.handler';
 import { authDataServiceHandlers } from '@/app/auth/services/auth-data/auth-data.handler';
-import { userServiceHandlers } from '@/app/user/services/user-data/user.handler';
+import { userServiceHandlers } from '@/app/user/services/user-data/user-data.handler';
 
 // This configures a request mocking server with the given request handlers.
 const server = setupServer(
