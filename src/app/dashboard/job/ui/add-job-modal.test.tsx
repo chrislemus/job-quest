@@ -2,12 +2,13 @@ import { screen } from '@testing-library/react';
 import { renderWithQueryClient } from '@/tests/query-client';
 import { AddJobModal } from './add-job-modal';
 import userEvent from '@testing-library/user-event';
-import { rest, server } from '@/tests/server';
+import { server } from '@/tests/server';
 import { CreateJobDto } from '@/app/dashboard/job/dto';
 import { DashboardStoreProvider } from '@/app/dashboard/store';
 import { JobDto } from '../services';
 import { jobDataApiUrlConstant } from '../services/job-data/job-data-api-url.constant';
 import { jobListMocks } from '../../job-list/services/job-list-data/mocks';
+import { http, HttpResponse } from 'msw';
 
 describe('Add Job Modal', () => {
   let active = true;
@@ -20,19 +21,22 @@ describe('Add Job Modal', () => {
     const jobList = jobListMocks[0];
     let postData: Record<string, any> = {};
     server.use(
-      rest.post(jobDataApiUrlConstant.root, async (req, res, ctx) => {
-        const reqData = await req.json<CreateJobDto>();
-        postData = reqData;
-        const resData: JobDto = {
-          id: jobList.id,
-          company: reqData.company,
-          title: reqData.title,
-          jobListId: reqData.jobListId as unknown as string,
-          jobListRank: 'a',
-          userId: `1`,
-        };
-        return res(ctx.status(201), ctx.json(resData));
-      })
+      http.post<never, CreateJobDto, JobDto>(
+        jobDataApiUrlConstant.root,
+        async (info) => {
+          const reqData = await info.request.json();
+          postData = reqData;
+          const resData: JobDto = {
+            id: jobList.id,
+            company: reqData.company,
+            title: reqData.title,
+            jobListId: reqData.jobListId as unknown as string,
+            jobListRank: 'a',
+            userId: `1`,
+          };
+          return HttpResponse.json(resData, { status: 201 });
+        }
+      )
     );
 
     renderWithQueryClient(

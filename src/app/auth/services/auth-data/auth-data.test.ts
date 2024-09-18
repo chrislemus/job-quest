@@ -1,4 +1,5 @@
-import { server, rest } from '@/tests/server';
+import { http, HttpResponse } from 'msw';
+import { server } from '@/tests/server';
 import { authDataService } from './auth-data.service';
 import { userService } from '@/app/user/services/user-data/user-data.service';
 import { authLocalStore } from './auth-local-store.service';
@@ -6,12 +7,12 @@ import { userProfileMock } from '@/app/user/services/user-data/mocks/user.mock';
 import { UserProfileDto } from '@/app/user/services/user-data/dto';
 import { authLogInReqBodyMock, authSignupReqBodyMock } from './mocks';
 import { authDataApiUrlConstant } from './auth-data-api-url.constant';
+import { userDataApiUrlConstant } from '@/app/user/services/user-data/user-data-api-url.constant';
 import {
   AuthSignUpResBodyDto,
   AuthLogInResBodyDto,
   AuthRefreshJwtResBodyDto,
 } from '@/app/auth/services/auth-data/dto';
-import { userDataApiUrlConstant } from '@/app/user/services/user-data/user-data-api-url.constant';
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -26,8 +27,8 @@ describe('AuthService', () => {
   test('signup() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(authDataApiUrlConstant.signup, (_req, res, ctx) => {
-        return res(ctx.json({}));
+      http.post(authDataApiUrlConstant.signup, () => {
+        return HttpResponse.json(null);
       })
     );
 
@@ -47,8 +48,8 @@ describe('AuthService', () => {
   test('login() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(authDataApiUrlConstant.login, (_req, res, ctx) => {
-        return res(ctx.json({}));
+      http.post(authDataApiUrlConstant.login, () => {
+        return HttpResponse.json(null);
       })
     );
 
@@ -72,8 +73,8 @@ describe('AuthService', () => {
   test('logout() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(authDataApiUrlConstant.logout, (_req, res, ctx) => {
-        return res(ctx.status(401));
+      http.post(authDataApiUrlConstant.logout, () => {
+        return HttpResponse.json(null, { status: 401 });
       })
     );
 
@@ -93,8 +94,8 @@ describe('AuthService', () => {
   test('refresh() validates response data', async () => {
     // return invalid response data
     server.use(
-      rest.post(authDataApiUrlConstant.refresh, (_req, res, ctx) => {
-        return res(ctx.json({}));
+      http.post(authDataApiUrlConstant.refresh, () => {
+        return HttpResponse.json(null);
       })
     );
 
@@ -115,17 +116,17 @@ describe('AuthService', () => {
 
     let userRequestCounter = 0;
     server.use(
-      rest.get(userDataApiUrlConstant.profile, (_req, res, ctx) => {
+      http.get(userDataApiUrlConstant.profile, () => {
         userRequestCounter++;
-        return res(ctx.status(401));
+        return HttpResponse.json(null, { status: 401 });
       })
     );
 
     let refreshRequestCounter = 0;
     server.use(
-      rest.post(authDataApiUrlConstant.refresh, (_req, res, ctx) => {
+      http.post(authDataApiUrlConstant.refresh, () => {
         refreshRequestCounter++;
-        return res(ctx.status(401));
+        return HttpResponse.json(null, { status: 401 });
       })
     );
 
@@ -151,12 +152,16 @@ describe('AuthService', () => {
 
     let userRequestCounter = 0;
     server.use(
-      rest.get(userDataApiUrlConstant.profile, (_req, res, ctx) => {
-        userRequestCounter++;
-        if (userRequestCounter === 1) return res(ctx.status(401));
-        const data: UserProfileDto = userProfileMock;
-        return res(ctx.json(data));
-      })
+      http.get<never, never, UserProfileDto>(
+        userDataApiUrlConstant.profile,
+        () => {
+          userRequestCounter++;
+          if (userRequestCounter === 1)
+            return HttpResponse.json(null, { status: 401 });
+          const data = userProfileMock;
+          return HttpResponse.json(data);
+        }
+      )
     );
 
     await userService.profile();

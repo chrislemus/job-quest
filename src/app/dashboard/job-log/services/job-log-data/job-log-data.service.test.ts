@@ -1,5 +1,5 @@
 import { jobLogService } from './job-log-data.service';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { server } from '@/tests/server';
 import { JobLogPageResBodyDto } from '@/app/dashboard/job-log/services/job-log-data/dto';
 import { jobLogMocks } from './mocks/job-log.mock';
@@ -28,9 +28,7 @@ test('validates response data', async () => {
   };
 
   server.use(
-    rest.get(jobLogDataApiUrlConstant.root, (_req, res, ctx) =>
-      res(ctx.json(data))
-    )
+    http.get(jobLogDataApiUrlConstant.root, () => HttpResponse.json(data))
   );
 
   try {

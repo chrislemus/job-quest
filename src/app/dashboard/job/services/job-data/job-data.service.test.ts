@@ -1,8 +1,8 @@
 import { jobDataService } from './job-data.service';
-import { rest } from 'msw';
 import { server } from '@/tests/server';
 import { GetAllJobsResBodyDto } from '@/app/dashboard/job/services/job-data/dto';
 import { jobDataApiUrlConstant } from './job-data-api-url.constant';
+import { http, HttpResponse } from 'msw';
 
 test('contains valid global server handlers', async () => {
   const res = await jobDataService.getAll();
@@ -17,9 +17,7 @@ test('validates response data', async () => {
   };
 
   server.use(
-    rest.get(jobDataApiUrlConstant.root, (_req, res, ctx) =>
-      res(ctx.json(data))
-    )
+    http.get(jobDataApiUrlConstant.root, () => HttpResponse.json(data))
   );
 
   try {

@@ -1,5 +1,5 @@
 import { jobListDataService } from './job-list-data.service';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { server } from '@/tests/server';
 import { jobDataApiUrlConstant } from './job-list-data-api-url.constant';
 import { GetAllJobListResBodyDto } from './dto';
@@ -17,9 +17,7 @@ test('validates response data', async () => {
   };
 
   server.use(
-    rest.get(jobDataApiUrlConstant.root, (_req, res, ctx) =>
-      res(ctx.json(data))
-    )
+    http.get(jobDataApiUrlConstant.root, () => HttpResponse.json(data))
   );
 
   try {

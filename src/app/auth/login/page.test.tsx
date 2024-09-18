@@ -3,8 +3,10 @@ import Login from './page';
 import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { server, rest } from '@/tests/server';
+import { server } from '@/tests/server';
 import { authDataApiUrlConstant } from '../services/auth-data/auth-data-api-url.constant';
+import { http, HttpResponse } from 'msw';
+import { AuthLogInResBodyDto } from '../services';
 
 it('should display field errors', async () => {
   renderWithQueryClient(<Login />);
@@ -33,10 +35,13 @@ it('should submit valid form', async () => {
   let postData;
 
   server.use(
-    rest.post(authDataApiUrlConstant.login, async (req, res, ctx) => {
-      postData = await req.json();
-      return res(ctx.status(200));
-    })
+    http.post<AuthLogInResBodyDto>(
+      authDataApiUrlConstant.login,
+      async (config) => {
+        postData = await config.request.json();
+        return HttpResponse.json(null, { status: 200 });
+      }
+    )
   );
 
   await screen

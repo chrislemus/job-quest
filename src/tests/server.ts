@@ -1,4 +1,3 @@
-import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { jobDataServiceHandlers } from '@/app/dashboard/job/services/job-data/job-data.handler';
 import { jobLogServiceHandlers } from '@/app/dashboard/job-log/services/job-log-data/job-log-data.handler';
@@ -15,4 +14,4 @@ const server = setupServer(
   ...authDataServiceHandlers
 );
 
-export { rest, server };
+export { server };

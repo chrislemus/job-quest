@@ -1,29 +1,32 @@
-import { rest } from '@/tests/server';
-import { jobQuestApi } from '@/api/job-quest';
 import { jobMocks } from './mocks';
 import { jobDataApiUrlConstant } from './job-data-api-url.constant';
+import { http, HttpResponse } from 'msw';
+import { GetAllJobsResBodyDto, JobDto } from './dto';
 
 export const jobDataServiceHandlers = [
-  rest.get(jobDataApiUrlConstant.root, (_req, res, ctx) => {
-    const data: Awaited<ReturnType<typeof jobQuestApi.job.getAll>> = {
-      items: jobMocks,
-      pageInfo: {
-        currentPage: 1,
-        currentPageCount: jobMocks.length,
-        currentPageSize: jobMocks.length,
-      },
-    };
-    return res(ctx.json(data));
-  }),
-
-  rest.get(`${jobDataApiUrlConstant.root}/:jobId`, (req, res, ctx) => {
-    const { jobId } = req.params;
-    const job = jobMocks.find((job) => job.id === jobId);
-
-    if (job) {
-      return res(ctx.status(200), ctx.json(job));
+  http.get<never, never, GetAllJobsResBodyDto>(
+    jobDataApiUrlConstant.root,
+    () => {
+      const data = {
+        items: jobMocks,
+        pageInfo: {
+          currentPage: 1,
+          currentPageCount: jobMocks.length,
+          currentPageSize: jobMocks.length,
+        },
+      };
+      return HttpResponse.json(data);
     }
+  ),
 
-    return res(ctx.status(401));
-  }),
+  http.get<{ jobId: string }, never, JobDto>(
+    `${jobDataApiUrlConstant.root}/:jobId`,
+    (info) => {
+      const { jobId } = info.params;
+      const job = jobMocks.find((job) => job.id === jobId);
+
+      if (job) return HttpResponse.json(job);
+      return HttpResponse.json(null, { status: 404 });
+    }
+  ),
 ];
