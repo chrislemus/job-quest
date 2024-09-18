@@ -11,10 +11,9 @@ type JobLogItemProps = {
 };
 
 export function JobLogContent(p: JobLogItemProps) {
-  const updatedDate = useMemo(
-    () => new Date(p.jobLog.updatedAt).toLocaleDateString(),
-    [p.jobLog.updatedAt]
-  );
+  const updatedDate = useMemo(() => {
+    return new Date(p.jobLog.updatedAt).toLocaleDateString();
+  }, [p.jobLog.updatedAt]);
 
   const deleteJobLogMutation = useDeleteJobLog();
   const deleteJobLog = () => deleteJobLogMutation.mutate(p.jobLog.id);
