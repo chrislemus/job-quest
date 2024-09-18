@@ -34,7 +34,7 @@ export function JobLogTab(p: JobLogTabProps) {
 
 function JobLogContainer(p: PropsWithChildren<{}>) {
   const user = useUser();
-  const firstNameInitial = user.data?.firstName?.[0] || '?';
+  const firstNameInitial = user.data?.firstName?.[0].toUpperCase() || '?';
 
   return (
     <div className="flex gap-2">
