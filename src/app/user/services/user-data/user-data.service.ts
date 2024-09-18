@@ -6,7 +6,7 @@ import { userDataApiUrlConstant } from './user-data-api-url.constant';
 async function profile(): Promise<UserProfileDto> {
   const url = userDataApiUrlConstant.profile;
   const res = await jobQuestHttpService.get<UserProfileDto>(url);
-  const data = UserProfileDto.parse(res);
+  const data = UserProfileDto.parse(res.data);
   return data;
 }
 
