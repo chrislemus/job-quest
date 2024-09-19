@@ -1,7 +1,7 @@
 import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
-import { CreateJobLogDto, UpdateJobLogDto } from '@/app/dashboard/job/dto';
+import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
 import { JobLogPageResBodyDto } from './dto/job-log-page-res-body.dto';
-import { JobLogItemDto } from './dto';
+import { CreateJobLogDto, JobLogItemDto } from './dto';
 import { jobLogDataApiUrlConstant } from './job-log-data-api-url.constant';
 
 async function create(jobLog: CreateJobLogDto): Promise<JobLogItemDto> {

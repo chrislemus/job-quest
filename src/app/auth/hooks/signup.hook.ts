@@ -1,5 +1,5 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import { UserSignUp } from '@/app/auth/dto';
+import { UserSignUpDto } from '@/app/auth/dto';
 import { ApiErrorRes } from '@/api/job-quest/types';
 import { JwtDto } from '@/app/auth/services/auth-data/dto';
 import { dashboardUrl } from '@/app/dashboard/constants';
@@ -10,12 +10,12 @@ import { authDataService } from '../services';
 export function useSignUp(): UseMutationResult<
   JwtDto,
   ApiErrorRes,
-  UserSignUp
+  UserSignUpDto
 > {
   const router = useRouter();
 
-  const mutation = useMutation<JwtDto, ApiErrorRes, UserSignUp>({
-    mutationFn: (user: UserSignUp) => authDataService.signup({ body: user }),
+  const mutation = useMutation<JwtDto, ApiErrorRes, UserSignUpDto>({
+    mutationFn: (user: UserSignUpDto) => authDataService.signup({ body: user }),
     gcTime: 0,
     onSuccess: () => {
       console.log('onSuccess!');

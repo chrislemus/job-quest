@@ -1,5 +1,4 @@
 'use client';
-import { formValidator } from '@/shared/utils';
 import { jobColors } from '@/app/dashboard/job/constants';
 import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
@@ -15,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PropsWithChildren, useMemo } from 'react';
 import { JobDto } from '../../services';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type JobInfoTabProps = {
   job: JobDto;
@@ -55,7 +55,7 @@ export function JobInfoTab(p: JobInfoTabProps) {
   const editJobMutation = useUpdateJob();
 
   const formMethods = useForm<UpdateJobDto>({
-    resolver: formValidator(UpdateJobDto),
+    resolver: zodResolver(UpdateJobDto),
     defaultValues: {
       title: p.job.title,
       company: p.job.company,

@@ -1,71 +1,11 @@
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
-import { CreateJobDto, JobListRankDto } from './create-job.dto';
+import { z } from 'zod';
+import { CreateJobDto } from './create-job.dto';
 
-/**
- * Request body Data transfer object for updating a Job.
- */
-export class UpdateJobDto implements Partial<CreateJobDto> {
-  /**
-   * Job Title
-   * @example 'Software Engineer'
-   */
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  title?: string;
-  /**
-   * Job company
-   * @example Acme
-   */
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  company?: string;
-  /**
-   * Job Location
-   * @example 'Raleigh, NC'
-   */
-  @IsOptional()
-  @IsString()
-  location?: string;
-  /**
-   * Job post URL
-   */
-  @IsOptional()
-  @IsString()
-  url?: string;
-  /**
-   * Job salary
-   * @example 56k
-   */
-  @IsOptional()
-  @IsString()
-  salary?: string;
-  /**
-   * Job description
-   */
-  @IsOptional()
-  @IsString()
-  description?: string;
-  /**
-   * Hexadecimal color to be used in UI when displaying job content
-   * @example #ffff
-   */
-  @IsOptional()
-  @IsString()
-  color?: string;
-
-  @IsOptional()
-  @IsString()
-  jobListId: string;
-
-  /** Job list data */
-  @IsOptional()
-  @ValidateNested()
-  jobListRank?: JobListRankDto;
-}
+export const UpdateJobDto = CreateJobDto.partial().refine(
+  (data) => Object.keys(data).length > 0,
+  {
+    message: 'No data provided for update',
+  }
+);
+export type UpdateJobDto = z.output<typeof UpdateJobDto>;
+export type UpdateJobDtoInput = z.input<typeof UpdateJobDto>;

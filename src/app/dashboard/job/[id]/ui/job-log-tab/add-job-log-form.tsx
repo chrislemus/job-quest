@@ -1,10 +1,10 @@
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@/shared/utils';
-import { CreateJobLogDto } from '@/app/dashboard/job/dto';
 import { useCreateJobLog } from '@/app/dashboard/job-log/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { useMemo } from 'react';
+import { CreateJobLogDto } from '@/app/dashboard/job-log/services';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type AddJobLogFormProps = {
   jobId: string;
@@ -13,7 +13,7 @@ type AddJobLogFormProps = {
 export function AddJobLogForm(p: AddJobLogFormProps) {
   const form = useForm<CreateJobLogDto>({
     defaultValues: { jobId: p.jobId },
-    resolver: formValidator(CreateJobLogDto),
+    resolver: zodResolver(CreateJobLogDto),
   });
 
   const content = form.watch('content');

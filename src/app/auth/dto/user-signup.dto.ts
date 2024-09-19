@@ -1,18 +1,11 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { z } from 'zod';
 
-export class UserSignUp {
-  @IsString()
-  @IsNotEmpty()
-  firstName: string;
+export const UserSignUpDto = z.object({
+  firstName: z.string().min(1, { message: 'should not be empty' }),
+  lastName: z.string().min(1, { message: 'should not be empty' }),
+  email: z.string().email({ message: 'email must be an email' }),
+  password: z.string().min(1, { message: 'password must be longer' }),
+});
 
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
-
-  @IsEmail()
-  email: string;
-
-  @MinLength(1)
-  @IsString()
-  password: string;
-}
+export type UserSignUpDto = z.output<typeof UserSignUpDto>;
+export type UserSignUpDtoInput = z.input<typeof UserSignUpDto>;

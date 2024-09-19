@@ -1,10 +1,10 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { z } from 'zod';
+import { UserSignUpDto } from '.';
 
-export class UserLogin {
-  @IsEmail()
-  email: string;
+export const UserLoginDto = z.object({
+  email: UserSignUpDto.shape.email,
+  password: UserSignUpDto.shape.password,
+});
 
-  @MinLength(1)
-  @IsString()
-  password: string;
-}
+export type UserLoginDto = z.output<typeof UserLoginDto>;
+export type UserLoginDtoInput = z.input<typeof UserLoginDto>;

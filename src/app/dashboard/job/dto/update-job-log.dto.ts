@@ -1,6 +1,8 @@
-import { MinLength } from 'class-validator';
+import { z } from 'zod';
 
-export class UpdateJobLogDto {
-  @MinLength(1)
-  content: string;
-}
+export const UpdateJobLogDto = z.object({
+  content: z.string().min(1),
+});
+
+export type UpdateJobLogDto = z.output<typeof UpdateJobLogDto>;
+export type UpdateJobLogDtoInput = z.input<typeof UpdateJobLogDto>;

@@ -1,11 +1,11 @@
 import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
 import { useForm } from 'react-hook-form';
-import { formValidator } from '@/shared/utils';
 import { useUpdateJobLog } from '@/app/dashboard/job-log/hooks';
 import { useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { JobLogItemDto } from '@/app/dashboard/job-log/services/job-log-data/dto/job-log.dto';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export type UpdateJobLogFormProps = {
   jobLog: JobLogItemDto;
@@ -14,7 +14,7 @@ export type UpdateJobLogFormProps = {
 
 export function UpdateJobLogForm(p: UpdateJobLogFormProps) {
   const form = useForm<UpdateJobLogDto>({
-    resolver: formValidator(UpdateJobLogDto),
+    resolver: zodResolver(UpdateJobLogDto),
     defaultValues: { content: p.jobLog.content },
   });
 

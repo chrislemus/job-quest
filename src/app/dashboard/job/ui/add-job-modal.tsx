@@ -1,12 +1,12 @@
-import { formValidator } from '@/shared/utils';
+import cn from 'classnames';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateJobDto } from '@/app/dashboard/job/dto';
 import { useJobLists } from '@/app/dashboard/job-list/hooks';
 import { useCreateJob } from '@/app/dashboard/job/hooks';
-import cn from 'classnames';
 import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
 import { useAppDispatch } from '@/app/dashboard/store';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 type AddJobModalProps = {
   active: boolean;
@@ -21,7 +21,7 @@ export function AddJobModal(props: AddJobModalProps) {
   const dispatch = useAppDispatch();
 
   const form = useForm<CreateJobDto>({
-    resolver: formValidator(CreateJobDto),
+    resolver: zodResolver(CreateJobDto),
     shouldUnregister: true,
     defaultValues: {
       jobListId: defaultJobListId,

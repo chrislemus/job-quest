@@ -1,9 +1,10 @@
+import { JobDto } from '@/app/dashboard/job/services';
 import { z } from 'zod';
 
 export const JobLogItemDto = z.object({
-  id: z.string(),
-  jobId: z.string(),
-  content: z.string(),
+  id: z.string().uuid(),
+  jobId: JobDto.shape.id,
+  content: z.string().min(1),
   /** epoch time */
   createdAt: z.number(),
   /** epoch time */

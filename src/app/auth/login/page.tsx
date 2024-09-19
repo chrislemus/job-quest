@@ -1,11 +1,11 @@
 'use client';
-import { formValidator } from '@/shared/utils';
-import { UserLogin } from '@/app/auth/dto';
+import { UserLoginDto } from '@/app/auth/dto';
 import { useLogin } from '@/app/auth/hooks';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function Login() {
-  const form = useForm<UserLogin>({ resolver: formValidator(UserLogin) });
+  const form = useForm<UserLoginDto>({ resolver: zodResolver(UserLoginDto) });
   const login = useLogin();
   const { errors } = form.formState;
   const emailError = errors.email?.message;
