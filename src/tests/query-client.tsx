@@ -14,12 +14,6 @@ if (defaultOptions.queries) defaultOptions.queries.retry = false;
 const generateQueryClient = () =>
   new QueryClient({
     defaultOptions,
-    logger: {
-      log: console.log,
-      warn: console.warn,
-      // ✅ no more errors on the console
-      error: () => {},
-    },
   });
 
 export function QueryClientTestProvider(

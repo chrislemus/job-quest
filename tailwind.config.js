@@ -12,7 +12,7 @@ module.exports = {
     themes: [
       {
         emerald: {
-          ...require('daisyui/src/colors/themes')['[data-theme=emerald]'],
+          ...require('daisyui/src/theming/themes')['[data-theme=emerald]'],
           primary: '#047AFF',
           'primary-content': '#F9FAFB',
           secondary: '#463AA2',

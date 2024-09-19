@@ -16,7 +16,7 @@ export function useSignUp(): UseMutationResult<
 
   const mutation = useMutation<JwtDto, ApiErrorRes, UserSignUp>({
     mutationFn: (user: UserSignUp) => authDataService.signup({ body: user }),
-    cacheTime: 0,
+    gcTime: 0,
     onSuccess: () => {
       console.log('onSuccess!');
       router.push(dashboardUrl);

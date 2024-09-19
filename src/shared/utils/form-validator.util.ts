@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { FieldErrors } from 'react-hook-form';
-import { toNestError, validateFieldsNatively } from '@hookform/resolvers';
+import { toNestErrors, validateFieldsNatively } from '@hookform/resolvers';
 import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { validate, validateSync, ValidationError } from 'class-validator';
 import { FieldValues, ResolverOptions, ResolverResult } from 'react-hook-form';
@@ -68,7 +68,7 @@ export const formValidator: Resolver = (
 
       return {
         values: {},
-        errors: toNestError(parsedErrors, options),
+        errors: toNestErrors(parsedErrors, options),
       };
     }
 

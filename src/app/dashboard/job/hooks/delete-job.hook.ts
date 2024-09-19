@@ -14,7 +14,7 @@ export function useDeleteJob() {
       if (job) {
         // job detail update
         await queryClient.cancelQueries({ queryKey: jobQueryKey(jobId) });
-        queryClient.removeQueries(jobQueryKey(jobId));
+        queryClient.removeQueries({ queryKey: jobQueryKey(jobId) });
 
         // Job Lists Updates
         const queryKey = jobsQueryKey({

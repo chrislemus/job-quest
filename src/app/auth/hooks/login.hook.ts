@@ -16,7 +16,7 @@ export function useLogin(): UseMutationResult<
   const mutation = useMutation<JwtDto, ApiErrorRes, AuthLogInReqBodyDto>({
     mutationFn: (user: AuthLogInReqBodyDto) =>
       authDataService.login({ body: user }),
-    cacheTime: 0,
+    gcTime: 0,
     onSuccess: () => {
       router.push(dashboardUrl);
     },

@@ -46,9 +46,8 @@ export function hexToRgb(
 
   const re = new RegExp(`.{1,${color.length >= 6 ? 2 : 1}}`, 'g');
   let colors = color.match(re);
-
   if (colors && colors[0].length === 1) {
-    colors = colors.map((n) => n + n);
+    colors = colors.map((n) => n + n) as RegExpMatchArray;
   }
 
   return colors

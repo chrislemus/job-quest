@@ -35,7 +35,7 @@ export function DeleteJobButton(p: DeleteJobButtonProps) {
           <p className="py-4">Are you sure you want to delete this Job?</p>
           <div className="flex gap-4 pt-6">
             <button
-              disabled={deleteJobMutation.isLoading}
+              disabled={deleteJobMutation.isPending}
               className="btn btn-error disabled:loading"
               type="button"
               onClick={() => {

@@ -14,7 +14,7 @@ const tabs = {
 } as const;
 
 export default function JobPage() {
-  const jobId = useParams().id;
+  const jobId = useParams().id as string;
   const searchParams = useSearchParams();
   const selectedTab = searchParams.get('tab') || tabs.info;
   const jobQuery = useJob(jobId);

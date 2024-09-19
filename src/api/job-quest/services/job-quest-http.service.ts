@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { authLocalStore } from '@/app/auth/services/auth-data/auth-local-store.service';
 import { authDataService } from '@/app/auth/services';
 import { authDataApiUrlConstant } from '@/app/auth/services/auth-data/auth-data-api-url.constant';
@@ -36,7 +36,7 @@ jobQuestHttpService.interceptors.request.use((config) => {
 
   const accessToken = authLocalStore.getTokens()?.accessToken;
   if (accessToken) {
-    if (!config.headers) config['headers'] = {};
+    if (!config.headers) config['headers'] = {} as AxiosRequestHeaders;
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
   return config;

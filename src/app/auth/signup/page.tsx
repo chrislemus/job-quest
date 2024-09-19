@@ -112,7 +112,7 @@ export default function SignUp() {
 
         <button
           type="submit"
-          disabled={form.formState.isSubmitting || signUp.isLoading}
+          disabled={form.formState.isSubmitting || signUp.isPending}
           className="btn btn-primary mt-4 disabled:loading"
         >
           Sign Up

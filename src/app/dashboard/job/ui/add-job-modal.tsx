@@ -118,7 +118,6 @@ export function AddJobModal(props: AddJobModalProps) {
             <select
               className="select select-bordered"
               data-testid="input-job-list"
-              placeholder="Please select"
               {...form.register('jobListId')}
             >
               {jobListOptions.map((opt) => {

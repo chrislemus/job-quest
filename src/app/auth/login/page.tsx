@@ -74,7 +74,7 @@ export default function Login() {
 
         <button
           type="submit"
-          disabled={form.formState.isSubmitting || login.isLoading}
+          disabled={form.formState.isSubmitting || login.isPending}
           className="btn btn-primary mt-4 disabled:loading"
         >
           Log In

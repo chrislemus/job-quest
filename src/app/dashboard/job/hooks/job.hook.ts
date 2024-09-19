@@ -35,7 +35,9 @@ export function getJobData(jobId: string): JobDto | undefined {
   const job = queryClient.getQueryData<JobDto>(jobQueryKey(jobId));
   if (!!job) return job;
 
-  const all = queryClient.getQueriesData<JobsData>(jobsQueryKey());
+  const all = queryClient.getQueriesData<JobsData>({
+    queryKey: jobsQueryKey(),
+  });
   for (const [_queryKey, _data] of all) {
     const data = _data?.items;
     if (data) {

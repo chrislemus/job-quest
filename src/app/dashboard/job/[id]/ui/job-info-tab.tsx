@@ -127,7 +127,6 @@ export function JobInfoTab(p: JobInfoTabProps) {
                 className="select select-bordered"
                 id="job-list"
                 data-testid="input-job-list"
-                placeholder="Please select"
                 {...formMethods.register('jobListId')}
               >
                 {jobListOptions.map(({ label, value }) => (
