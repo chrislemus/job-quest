@@ -1,4 +1,4 @@
-import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { jobQuestHttpService } from '@/shared/services';
 import { authLocalStore } from './auth-local-store.service';
 import { authDataApiUrlConstant } from './auth-data-api-url.constant';
 import {

@@ -1,4 +1,4 @@
-import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { jobQuestHttpService } from '@/shared/services';
 import { jobDataApiUrlConstant } from './job-list-data-api-url.constant';
 import { GetAllJobListResBodyDto } from './dto';
 

@@ -1,10 +1,9 @@
-import { jobQuestApi } from '@/api/job-quest';
-import { ApiErrorRes } from '@/api/job-quest/types';
+import { ApiErrorRes } from '@/shared/types';
 import { QueryFunction, useQuery, UseQueryResult } from '@tanstack/react-query';
 import { jobQueryKey as _jobQueryKey } from '@/app/dashboard/job/constants';
 import { queryClient } from '@/shared/query-client';
 import { JobsData, jobsQueryKey } from './jobs.hook';
-import { JobDto } from '../services';
+import { jobDataService, JobDto } from '../services';
 
 export type JobData = JobDto;
 export type JobError = ApiErrorRes;
@@ -15,7 +14,7 @@ export type JobQueryKey = ReturnType<typeof jobQueryKey>;
 export const jobQueryFn: QueryFunction<JobData, JobQueryKey> = (ctx) => {
   const { queryKey } = ctx;
   const [_pk, { jobId }] = queryKey;
-  return jobQuestApi.job.findById(jobId);
+  return jobDataService.findById(jobId);
 };
 
 export function useJob(jobId: string): UseQueryResult<JobData, JobError> {

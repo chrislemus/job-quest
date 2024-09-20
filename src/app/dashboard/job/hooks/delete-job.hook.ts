@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { jobQuestApi } from '@/api/job-quest';
 import { queryClient } from '@/shared/query-client';
 import { getJobData, JobData, jobQueryKey } from './job.hook';
 import { JobsData, jobsQueryKey } from './jobs.hook';
+import { jobDataService } from '../services';
 
 export function useDeleteJob() {
   const mutation = useMutation({
     mutationFn: (jobId: string) => {
-      return jobQuestApi.job.deleteJob(jobId);
+      return jobDataService.deleteJob(jobId);
     },
     onMutate: async (jobId) => {
       const job = getJobData(jobId);

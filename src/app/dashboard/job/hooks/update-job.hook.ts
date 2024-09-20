@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/shared/query-client';
 import { UpdateJobDto } from '@/app/dashboard/job/dto';
-import { ApiErrorRes } from '@/api/job-quest/types';
-import { jobQuestApi } from '@/api/job-quest';
+import { ApiErrorRes } from '@/shared/types';
 import { getJobData, JobData, jobQueryKey } from './job.hook';
 import { JobsData, jobsQueryKey } from './jobs.hook';
-import { JobDto } from '../services';
+import { jobDataService, JobDto } from '../services';
 
 type Data = JobDto;
 type Error = ApiErrorRes;
@@ -15,7 +14,7 @@ type Context = undefined | { oldJob: JobDto; newJob: JobDto };
 export function useUpdateJob() {
   const mutation = useMutation<Data, Error, Variables, Context>({
     mutationFn: (vars) => {
-      return jobQuestApi.job.updateJob(vars.jobId, vars.data);
+      return jobDataService.updateJob(vars.jobId, vars.data);
     },
     onMutate: async ({ jobId, data }) => {
       const oldJob = getJobData(jobId);

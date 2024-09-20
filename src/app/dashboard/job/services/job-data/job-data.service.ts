@@ -1,6 +1,6 @@
 import { CreateJobDto, UpdateJobDto } from '@/app/dashboard/job/dto';
 import { jobColors } from '@/app/dashboard/job/constants';
-import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { jobQuestHttpService } from '@/shared/services';
 import { jobDataApiUrlConstant } from './job-data-api-url.constant';
 import { JobDto } from './dto';
 import {

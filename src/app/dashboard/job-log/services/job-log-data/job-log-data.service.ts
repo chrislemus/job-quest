@@ -1,4 +1,4 @@
-import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { jobQuestHttpService } from '@/shared/services';
 import { UpdateJobLogDto } from '@/app/dashboard/job/dto';
 import { JobLogPageResBodyDto } from './dto/job-log-page-res-body.dto';
 import { CreateJobLogDto, JobLogItemDto } from './dto';
@@ -43,4 +43,4 @@ async function deleteJobLog(jobLogId: string) {
   return data;
 }
 
-export const jobLogService = { create, getAll, update, deleteJobLog };
+export const jobLogDataService = { create, getAll, update, deleteJobLog };

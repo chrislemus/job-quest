@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { server } from '@/tests/server';
 import { authDataService } from './auth-data.service';
-import { userService } from '@/app/user/services/user-data/user-data.service';
+import { userDataService } from '@/app/user/services/user-data/user-data.service';
 import { authLocalStore } from './auth-local-store.service';
 import { userProfileMock } from '@/app/user/services/user-data/mocks/user.mock';
 import { UserProfileDto } from '@/app/user/services/user-data/dto';
@@ -130,7 +130,7 @@ describe('AuthService', () => {
       })
     );
 
-    await userService.profile().catch((_e) => {});
+    await userDataService.profile().catch((_e) => {});
 
     expect(authLocalStoreGetTokens).toBeCalledTimes(2);
     expect(userRequestCounter).toEqual(1);
@@ -164,7 +164,7 @@ describe('AuthService', () => {
       )
     );
 
-    await userService.profile();
+    await userDataService.profile();
     expect(authServiceRefreshJwt).toBeCalledTimes(1);
     expect(userRequestCounter).toEqual(2);
     // !!! similar as EXPECT blocks above !!!

@@ -1,15 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '@/shared/query-client';
 import { CreateJobDto } from '@/app/dashboard/job/dto';
-import { ApiErrorRes } from '@/api/job-quest/types';
-import { jobQuestApi } from '@/api/job-quest';
+import { ApiErrorRes } from '@/shared/types';
 import { jobQueryKey } from './job.hook';
 import { jobsQueryKey } from './jobs.hook';
-import { JobDto } from '../services';
+import { jobDataService, JobDto } from '../services';
 
 export function useCreateJob() {
   const mutation = useMutation<JobDto, ApiErrorRes, CreateJobDto>({
-    mutationFn: jobQuestApi.job.createJob,
+    mutationFn: jobDataService.createJob,
 
     onSuccess(res) {
       console.log({ res });

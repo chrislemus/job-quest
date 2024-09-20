@@ -1,4 +1,4 @@
-import { userService } from './user-data.service';
+import { userDataService } from './user-data.service';
 import { UserProfileDto } from '@/app/user/services/user-data/dto';
 import { server } from '@/tests/server';
 import { userDataApiUrlConstant } from './user-data-api-url.constant';
@@ -6,7 +6,7 @@ import { http, HttpResponse } from 'msw';
 
 describe('UserService', () => {
   test('profile() contains valid global server handlers', async () => {
-    const res = await userService.profile();
+    const res = await userDataService.profile();
     UserProfileDto.parse(res);
   });
 
@@ -19,7 +19,7 @@ describe('UserService', () => {
     );
 
     let error = false;
-    await userService.profile().catch((_e: any) => (error = true));
+    await userDataService.profile().catch((_e: any) => (error = true));
 
     expect(error).toBeTruthy();
   });

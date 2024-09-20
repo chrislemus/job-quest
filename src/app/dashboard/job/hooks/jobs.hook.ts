@@ -1,15 +1,15 @@
-import { jobQuestApi } from '@/api/job-quest';
 import { GetAllJobsResBodyDto as JobsData } from '@/app/dashboard/job/services/job-data/dto';
-import { ApiErrorRes as JobsError } from '@/api/job-quest/types';
+import { ApiErrorRes as JobsError } from '@/shared/types';
 import { jobQueryKey } from '@/app/dashboard/job/constants';
 import { useEffect } from 'react';
 import { useActiveJobList, useJobLists } from '@/app/dashboard/job-list/hooks';
 import { queryClient } from '@/shared/query-client';
 import { useQuery, UseQueryResult, QueryFunction } from '@tanstack/react-query';
+import { jobDataService } from '../services';
 
 export { JobsData, type JobsError };
 
-export type JobsFilters = Parameters<typeof jobQuestApi.job.getAll>[0];
+export type JobsFilters = Parameters<typeof jobDataService.getAll>[0];
 
 export const jobsQueryKey = jobQueryKey.all;
 export type JobsQueryKey = ReturnType<typeof jobsQueryKey>;
@@ -19,7 +19,7 @@ export const jobsQueryFn: QueryFunction<JobsData, JobsQueryKey> = async (
 ) => {
   const { queryKey } = ctx;
   const [_pk, { queryParams }] = queryKey;
-  const res = await jobQuestApi.job.getAll({ queryParams });
+  const res = await jobDataService.getAll({ queryParams });
   return res;
 };
 

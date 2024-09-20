@@ -1,4 +1,4 @@
-import { jobQuestHttpService } from '@/api/job-quest/services/job-quest-http.service';
+import { jobQuestHttpService } from '@/shared/services';
 import { UserProfileDto } from '@/app/user/services/user-data/dto';
 import { userDataApiUrlConstant } from './user-data-api-url.constant';
 
@@ -10,6 +10,6 @@ async function profile(): Promise<UserProfileDto> {
   return data;
 }
 
-export const userService = {
+export const userDataService = {
   profile,
 };

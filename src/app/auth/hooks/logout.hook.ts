@@ -1,5 +1,5 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
-import { ApiErrorRes } from '@/api/job-quest/types';
+import { ApiErrorRes } from '@/shared/types';
 import { useRouter } from 'next/navigation';
 import { authSiteUrlConfig } from '@/app/auth/configs';
 import { authDataService } from '../services';
