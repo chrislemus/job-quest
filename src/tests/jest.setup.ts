@@ -3,7 +3,6 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
-import 'reflect-metadata';
 import { server } from './server';
 import { usePathname as _usePathname } from 'next/navigation';
 import { useSearchParams as _useSearchParams } from 'next/navigation';
