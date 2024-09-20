@@ -6,7 +6,6 @@ import { UpdateJobDto } from '@/app/dashboard/job/dto';
 import { useJobLists } from '@/app/dashboard/job-list/hooks';
 import { useUpdateJob } from '@/app/dashboard/job/hooks';
 import { DeleteJobButton } from './delete-job-button';
-import { Listbox } from '@headlessui/react';
 import { useAppDispatch } from '@/app/dashboard/store';
 import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
 import React from 'react';
@@ -15,6 +14,12 @@ import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { PropsWithChildren, useMemo } from 'react';
 import { JobDto } from '../../services';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from '@headlessui/react';
 
 type JobInfoTabProps = {
   job: JobDto;
@@ -151,15 +156,15 @@ export function JobInfoTab(p: JobInfoTabProps) {
                   className="relative"
                   {...fieldProps}
                 >
-                  <Listbox.Button
+                  <ListboxButton
                     className="h-12 w-16 rounded-lg"
                     style={{ background: fieldProps.value }}
                   />
 
-                  <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-32 overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                  <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-32 overflow-auto rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
                     {jobColors.map((color) => {
                       return (
-                        <Listbox.Option
+                        <ListboxOption
                           key={color}
                           className="flex justify-center items-center h-8 aria-disabled:opacity-25 hover:bg-slate-100 hover:cursor-pointer"
                           disabled={color === fieldProps.value}
@@ -169,10 +174,10 @@ export function JobInfoTab(p: JobInfoTabProps) {
                             className="w-5/6 h-4/6"
                             style={{ background: color }}
                           />
-                        </Listbox.Option>
+                        </ListboxOption>
                       );
                     })}
-                  </Listbox.Options>
+                  </ListboxOptions>
                 </Listbox>
               )}
             />
