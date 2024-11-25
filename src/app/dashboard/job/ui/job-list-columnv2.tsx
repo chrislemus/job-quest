@@ -1,145 +1,145 @@
-import { useMemo, useState } from 'react';
-import {
-  useAssignJobList,
-  useJobRanksQuery,
-  useJobs,
-} from '@/app/dashboard/job/hooks';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-import { useDrop } from 'react-dnd';
-import { JobListItemDto } from '../../job-list/services';
-import {
-  JobCard,
-  JobCardItem,
-  jobCardItemType,
-  JobCardLoading,
-} from './job-card';
+// import { useMemo, useState } from 'react';
+// import {
+//   useAssignJobList,
+//   useJobRanksQuery,
+//   useJobs,
+// } from '@/app/dashboard/job/hooks';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+// import { useDrop } from 'react-dnd';
+// import { JobListItemDto } from '../../job-list/services';
+// import {
+//   JobCard,
+//   JobCardItem,
+//   jobCardItemType,
+//   JobCardLoading,
+// } from './job-card';
 
-type JobListColumnProps = {
-  jobList: JobListItemDto;
-  toggleModal(defaultJobListId?: string): void;
-};
+// type JobListColumnProps = {
+//   jobList: JobListItemDto;
+//   toggleModal(defaultJobListId?: string): void;
+// };
 
-export function JobListColumn(props: JobListColumnProps) {
-  const assignJobList = useAssignJobList();
-  const { jobList, toggleModal } = props;
-  const jobRanksQuery = useJobRanksQuery(jobList.id);
-  const jobRanks = jobRanksQuery.data?.items;
-  if (jobRanks) {
-    console.log({ jobRanks });
-  }
-  // const jobsQuery = useJobs({ queryParams: { jobListId: jobList.id } });
-  // const jobs = jobsQuery.data?.items;
+// export function JobListColumn(props: JobListColumnProps) {
+//   const assignJobList = useAssignJobList();
+//   const { jobList, toggleModal } = props;
+//   const jobRanksQuery = useJobRanksQuery(jobList.id);
+//   const jobRanks = jobRanksQuery.data?.items;
+//   if (jobRanks) {
+//     console.log({ jobRanks });
+//   }
+//   // const jobsQuery = useJobs({ queryParams: { jobListId: jobList.id } });
+//   // const jobs = jobsQuery.data?.items;
 
-  const [{ isOver: isOverColumnContainerDrop }, columnContainerDropRef] =
-    useDrop(() => {
-      return {
-        accept: jobCardItemType,
-        collect: (m) => ({ isOver: m.isOver() }),
-      };
-    }, []);
+//   const [{ isOver: isOverColumnContainerDrop }, columnContainerDropRef] =
+//     useDrop(() => {
+//       return {
+//         accept: jobCardItemType,
+//         collect: (m) => ({ isOver: m.isOver() }),
+//       };
+//     }, []);
 
-  const [_, emptyColumnSpaceDropRef] = useDrop<JobCardItem>(() => {
-    return {
-      accept: jobCardItemType,
-      drop: (job, monitor) => {
-        console.log('monitor', monitor);
-        assignJobList(job.id, { jobListId: jobList.id });
-      },
-    };
-  }, []);
+//   const [_, emptyColumnSpaceDropRef] = useDrop<JobCardItem>(() => {
+//     return {
+//       accept: jobCardItemType,
+//       drop: (job, monitor) => {
+//         console.log('monitor', monitor);
+//         assignJobList(job.id, { jobListId: jobList.id });
+//       },
+//     };
+//   }, []);
 
-  const jobCards = useMemo(() => {
-    if (!(jobs && jobs.length > 0)) return;
-    return jobs
-      ?.sort((a, b) => {
-        const rank = a.jobRankTemp?.rank;
-        const placement = a.jobRankTemp?.placement;
+//   const jobCards = useMemo(() => {
+//     if (!(jobs && jobs.length > 0)) return;
+//     return jobs
+//       ?.sort((a, b) => {
+//         const rank = a.jobRankTemp?.rank;
+//         const placement = a.jobRankTemp?.placement;
 
-        if (rank && b.jobRank === rank) {
-          if (!placement || placement === 'bottom') return 1;
-          if (placement === 'top') return -1;
-        }
+//         if (rank && b.jobRank === rank) {
+//           if (!placement || placement === 'bottom') return 1;
+//           if (placement === 'top') return -1;
+//         }
 
-        if (a.jobRank < b.jobRank) return -1;
-        if (a.jobRank > b.jobRank) return 1;
-        return 0;
-      })
-      .map((job) => {
-        return <JobCard job={job} key={job.id} />;
-      });
-  }, [jobsQuery.dataUpdatedAt]);
+//         if (a.jobRank < b.jobRank) return -1;
+//         if (a.jobRank > b.jobRank) return 1;
+//         return 0;
+//       })
+//       .map((job) => {
+//         return <JobCard job={job} key={job.id} />;
+//       });
+//   }, [jobsQuery.dataUpdatedAt]);
 
-  const loadingJobCardCount = jobRanks?.length || 1;
-  const loadingCards = useMemo(() => {
-    return Array.from({ length: loadingJobCardCount }, (_v, i) => (
-      <JobCardLoading key={i} />
-    ));
-  }, [loadingJobCardCount]);
+//   const loadingJobCardCount = jobRanks?.length || 1;
+//   const loadingCards = useMemo(() => {
+//     return Array.from({ length: loadingJobCardCount }, (_v, i) => (
+//       <JobCardLoading key={i} />
+//     ));
+//   }, [loadingJobCardCount]);
 
-  const errorAlert = useMemo(() => {
-    return <JobListTabContentError refetchFn={jobRanksQuery.refetch} />;
-  }, []);
+//   const errorAlert = useMemo(() => {
+//     return <JobListTabContentError refetchFn={jobRanksQuery.refetch} />;
+//   }, []);
 
-  return (
-    <div className="h-full flex flex-col min-w-[18rem] max-w-[18rem] px-1 overflow-auto">
-      <div className="text-center sticky top-0 bg-white w-full">
-        <h1 className=" text-lg font-semibold">{jobList.label}</h1>
-        {jobRanks && (
-          <>
-            <p>{jobRanks.length} Jobs</p>
-            <button
-              className="btn btn-ghost w-full text-gray-400 border-1 border-gray-300 text-2xl"
-              onClick={() => toggleModal(jobList.id)}
-            >
-              +
-            </button>
-          </>
-        )}
-      </div>
-      {jobRanksQuery.isError ? (
-        errorAlert
-      ) : (
-        <div
-          data-can-drop={isOverColumnContainerDrop}
-          ref={columnContainerDropRef}
-          className="h-full flex flex-col overflow-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
-        >
-          {jobsQuery.isLoading ? loadingCards : jobCards}
-          {!jobsQuery.isLoading && (
-            <div className="grow" ref={emptyColumnSpaceDropRef} />
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div className="h-full flex flex-col min-w-[18rem] max-w-[18rem] px-1 overflow-auto">
+//       <div className="text-center sticky top-0 bg-white w-full">
+//         <h1 className=" text-lg font-semibold">{jobList.label}</h1>
+//         {jobRanks && (
+//           <>
+//             <p>{jobRanks.length} Jobs</p>
+//             <button
+//               className="btn btn-ghost w-full text-gray-400 border-1 border-gray-300 text-2xl"
+//               onClick={() => toggleModal(jobList.id)}
+//             >
+//               +
+//             </button>
+//           </>
+//         )}
+//       </div>
+//       {jobRanksQuery.isError ? (
+//         errorAlert
+//       ) : (
+//         <div
+//           data-can-drop={isOverColumnContainerDrop}
+//           ref={columnContainerDropRef}
+//           className="h-full flex flex-col overflow-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
+//         >
+//           {jobsQuery.isLoading ? loadingCards : jobCards}
+//           {!jobsQuery.isLoading && (
+//             <div className="grow" ref={emptyColumnSpaceDropRef} />
+//           )}
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
 
-function JobListTabContentError(p: { refetchFn: () => Promise<any> }) {
-  const [loading, setLoading] = useState(false);
+// function JobListTabContentError(p: { refetchFn: () => Promise<any> }) {
+//   const [loading, setLoading] = useState(false);
 
-  return (
-    <div className="alert alert-error text-center shadow-lg text-error-content">
-      <p>
-        <FontAwesomeIcon className="h-6" icon={faCircleXmark} />
-        Failed to load jobs.
-        <br />
-      </p>
-      <div className="flex-none">
-        <button
-          className="btn btn-ghost disabled:loading"
-          disabled={loading}
-          onClick={async () => {
-            setLoading(true);
-            try {
-              await p.refetchFn();
-            } catch (error) {}
-            setLoading(false);
-          }}
-        >
-          Retry
-        </button>
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="alert alert-error text-center shadow-lg text-error-content">
+//       <p>
+//         <FontAwesomeIcon className="h-6" icon={faCircleXmark} />
+//         Failed to load jobs.
+//         <br />
+//       </p>
+//       <div className="flex-none">
+//         <button
+//           className="btn btn-ghost disabled:loading"
+//           disabled={loading}
+//           onClick={async () => {
+//             setLoading(true);
+//             try {
+//               await p.refetchFn();
+//             } catch (error) {}
+//             setLoading(false);
+//           }}
+//         >
+//           Retry
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }

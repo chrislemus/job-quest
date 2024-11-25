@@ -99,11 +99,13 @@ export function JobListColumn(props: JobListColumnProps) {
       ) : (
         <div
           data-can-drop={isOverColumnContainerDrop}
+          // @ts-expect-error todo: fix this
           ref={columnContainerDropRef}
           className="h-full flex flex-col overflow-auto overscroll-contain px-1 py-2 data-[can-drop=true]:bg-gray-100"
         >
           {jobsQuery.isLoading ? loadingCards : jobCards}
           {!jobsQuery.isLoading && (
+            // @ts-expect-error todo: fix this
             <div className="grow" ref={emptyColumnSpaceDropRef} />
           )}
         </div>
