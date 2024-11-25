@@ -16,7 +16,11 @@ export function JobLogContent(p: JobLogItemProps) {
   }, [p.jobLog.updatedAt]);
 
   const deleteJobLogMutation = useDeleteJobLog();
-  const deleteJobLog = () => deleteJobLogMutation.mutate(p.jobLog.id);
+  const deleteJobLog = () =>
+    deleteJobLogMutation.mutate({
+      jobLogId: p.jobLog.id,
+      jobId: p.jobLog.jobId,
+    });
 
   const [displayForm, setDisplayForm] = useBoolean();
 

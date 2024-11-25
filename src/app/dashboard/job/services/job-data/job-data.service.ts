@@ -2,11 +2,12 @@ import { CreateJobDto, UpdateJobDto } from '@/app/dashboard/job/dto';
 import { jobColors } from '@/app/dashboard/job/constants';
 import { jobQuestHttpService } from '@/shared/services';
 import { jobDataApiUrlConstant } from './job-data-api-url.constant';
-import { JobDto } from './dto';
+import { GetAllJobRanksResBodyDto, JobDto } from './dto';
 import {
   GetAllJobsReqConfigDto,
   GetAllJobsResBodyDto,
-} from './dto/get-all-jobs-resource.dto';
+  GetAllJobRanksReqConfigDto,
+} from './dto';
 
 /** Fetch all Jobs */
 async function getAll(
@@ -18,6 +19,19 @@ async function getAll(
     params: queryParams,
   });
   const data = GetAllJobsResBodyDto.parse(res?.data);
+  return data;
+}
+
+/** Fetch all job ranks */
+async function getAllJobRanks(
+  config?: GetAllJobRanksReqConfigDto
+): Promise<GetAllJobRanksResBodyDto> {
+  const { queryParams } = GetAllJobRanksReqConfigDto.parse(config || {});
+  const url = jobDataApiUrlConstant.jobRanks;
+  const res = await jobQuestHttpService.get<GetAllJobRanksResBodyDto>(url, {
+    params: queryParams,
+  });
+  const data = GetAllJobRanksResBodyDto.parse(res?.data);
   return data;
 }
 
@@ -69,6 +83,7 @@ async function deleteJob(jobId: string) {
 
 export const jobDataService = {
   getAll,
+  getAllJobRanks,
   createJob,
   findById,
   updateJob,

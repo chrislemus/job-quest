@@ -15,9 +15,13 @@ async function create(jobLog: CreateJobLogDto): Promise<JobLogItemDto> {
 }
 
 /** Update a Job */
-async function update(jobLogId: string, updatedJob: UpdateJobLogDto) {
+async function update(
+  jobLogId: string,
+  jobId: string,
+  updatedJob: UpdateJobLogDto
+) {
   const response = await jobQuestHttpService.patch<JobLogItemDto>(
-    jobLogDataApiUrlConstant.update(jobLogId),
+    jobLogDataApiUrlConstant.update(jobLogId, jobId),
     updatedJob
   );
 
@@ -34,12 +38,11 @@ async function getAll(jobId: string): Promise<JobLogPageResBodyDto> {
   return data;
 }
 
-async function deleteJobLog(jobLogId: string) {
-  const response = await jobQuestHttpService.delete<JobLogItemDto>(
-    jobLogDataApiUrlConstant.delete(jobLogId)
+async function deleteJobLog(jobLogId: string, jobId: string) {
+  const res = await jobQuestHttpService.delete(
+    jobLogDataApiUrlConstant.delete(jobLogId, jobId)
   );
-
-  const data = response?.data;
+  const data = JobLogItemDto.pick({ id: true }).parse(res.data);
   return data;
 }
 

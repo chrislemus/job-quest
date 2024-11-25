@@ -2,7 +2,7 @@ import { JobListItemDto } from '@/app/dashboard/job-list/services';
 import { z } from 'zod';
 
 /** for optimistic UI updates only */
-export const JobListRanUITempDto = z.object({
+export const jobRankUITempDto = z.object({
   rank: z.string().min(1),
   placement: z.enum(['top', 'bottom']).optional(),
 });
@@ -19,8 +19,17 @@ export const JobDto = z.object({
   description: z.string().optional(),
   color: z.string().optional(),
   jobListId: JobListItemDto.shape.id,
-  jobListRank: z.string().min(1),
+  jobRank: z.string().min(1),
   userId: z.string().uuid(),
   /** for optimistic UI updates only */
-  jobListRankTemp: JobListRanUITempDto.optional(),
+  jobRankTemp: jobRankUITempDto.optional(),
+});
+
+export type JobRankDtoInput = z.input<typeof JobRankDto>;
+export type JobRankDto = z.output<typeof JobRankDto>;
+export const JobRankDto = JobDto.pick({
+  jobRank: true,
+  jobListId: true,
+}).extend({
+  jobId: z.string().uuid(),
 });

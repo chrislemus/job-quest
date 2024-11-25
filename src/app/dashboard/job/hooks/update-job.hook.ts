@@ -20,12 +20,12 @@ export function useUpdateJob() {
       const oldJob = getJobData(jobId);
       console.log({ oldJob });
       if (oldJob) {
-        const { jobListRank, ...resData } = data;
+        const { jobRank, ...resData } = data;
         const newJob: JobDto = { ...oldJob, ...resData };
 
-        if (jobListRank) {
-          newJob.jobListRankTemp = jobListRank;
-          newJob.jobListRank = jobListRank.rank;
+        if (jobRank) {
+          newJob.jobRankTemp = jobRank;
+          newJob.jobRank = jobRank.rank;
         }
 
         // Job Update
@@ -122,13 +122,12 @@ async function updateJobListsData(
                 job.id === jobToSet.id ? jobToSet : job
               );
             }
-            if (setJob == 'newJob' && jobToSet.jobListRankTemp) {
+            if (setJob == 'newJob' && jobToSet.jobRankTemp) {
               const sortedJobs = jobs.filter((j) => j.id !== jobToSet.id);
               let pointerJobIdx = sortedJobs.findIndex(
-                (j) => j.jobListRank === jobToSet.jobListRankTemp?.rank
+                (j) => j.jobRank === jobToSet.jobRankTemp?.rank
               );
-              if (jobToSet.jobListRankTemp.placement === 'bottom')
-                pointerJobIdx++;
+              if (jobToSet.jobRankTemp.placement === 'bottom') pointerJobIdx++;
               sortedJobs.splice(pointerJobIdx, 0, jobToSet);
               jobs = [...sortedJobs];
             }

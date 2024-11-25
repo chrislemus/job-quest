@@ -56,8 +56,8 @@ export function JobCard(props: JobCardProps) {
 
           assignJobList(item.id, {
             jobListId,
-            jobListRank: {
-              rank: job.jobListRank,
+            jobRank: {
+              rank: job.jobRank,
               placement: cardPosition as JobListRankPlacementEnum,
             },
           });
@@ -110,6 +110,7 @@ export function JobCard(props: JobCardProps) {
         <div className="flex">
           <div className="flex-1 cursor-pointer text-left p-5 ">
             <p className="font-bold">{job.title} </p>
+            <p className="font-bold">{job.jobRank} </p>
             <p>{job.company}</p>
           </div>
         </div>

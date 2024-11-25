@@ -7,4 +7,9 @@ export const jobQueryKey = {
   all: (filters: Parameters<typeof jobDataService.getAll>[0] = {}) => {
     return [pk, { ...filters }] as const;
   },
+  allJobRanks: (
+    filters: Parameters<typeof jobDataService.getAllJobRanks>[0]
+  ) => {
+    return [pk, 'ranks', { ...filters }] as const;
+  },
 };

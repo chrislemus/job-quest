@@ -3,7 +3,7 @@ import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
 import { UpdateJobDto } from '@/app/dashboard/job/dto';
 import { useUpdateJob } from './update-job.hook';
 
-type jobListData = Pick<UpdateJobDto, 'jobListId' | 'jobListRank'>;
+type jobListData = Pick<UpdateJobDto, 'jobListId' | 'jobRank'>;
 
 export function useAssignJobList() {
   const editJobMutation = useUpdateJob();

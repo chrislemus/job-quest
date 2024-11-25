@@ -46,7 +46,7 @@ export default function JobPage() {
         <h1 className="font-semibold text-3xl">{job.title} </h1>
         <p className="mt-1 max-w-2xl text-xl">{job.company} </p>
       </div>
-      <div className="tabs">
+      <div className="tabs tabs-bordered">
         {Object.values(tabs).map((tab) => {
           return (
             <Link

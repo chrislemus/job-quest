@@ -23,15 +23,14 @@ type JobListColumnProps = {
 export function JobListColumn(props: JobListColumnProps) {
   const assignJobList = useAssignJobList();
   const { jobList, toggleModal } = props;
-  // const jobRanksQuery = useJobRanksQuery(jobList.id);
-  // const jobRanks = jobRanksQuery.data?.items;
-  // if (jobRanks) {
-  //   console.log({ jobRanks });
-  // }
-  const jobsQuery = useJobs({ queryParams: { jobListId: jobList.id } });
-  const jobs = jobsQuery.data?.items;
-  console.debug(jobList.label);
-  console.debug(jobs);
+  const jobRanksQuery = useJobRanksQuery(jobList.id);
+  const jobRanks = jobRanksQuery.data?.items;
+  if (jobRanks) {
+    console.log({ jobRanks });
+  }
+  // const jobsQuery = useJobs({ queryParams: { jobListId: jobList.id } });
+  // const jobs = jobsQuery.data?.items;
+
   const [{ isOver: isOverColumnContainerDrop }, columnContainerDropRef] =
     useDrop(() => {
       return {
@@ -44,6 +43,7 @@ export function JobListColumn(props: JobListColumnProps) {
     return {
       accept: jobCardItemType,
       drop: (job, monitor) => {
+        console.log('monitor', monitor);
         assignJobList(job.id, { jobListId: jobList.id });
       },
     };
@@ -70,21 +70,24 @@ export function JobListColumn(props: JobListColumnProps) {
       });
   }, [jobsQuery.dataUpdatedAt]);
 
+  const loadingJobCardCount = jobRanks?.length || 1;
   const loadingCards = useMemo(() => {
-    return Array.from({ length: 8 }, (_v, i) => <JobCardLoading key={i} />);
-  }, []);
+    return Array.from({ length: loadingJobCardCount }, (_v, i) => (
+      <JobCardLoading key={i} />
+    ));
+  }, [loadingJobCardCount]);
 
   const errorAlert = useMemo(() => {
-    return <JobListTabContentError refetchFn={jobsQuery.refetch} />;
+    return <JobListTabContentError refetchFn={jobRanksQuery.refetch} />;
   }, []);
 
   return (
     <div className="h-full flex flex-col min-w-[18rem] max-w-[18rem] px-1 overflow-auto">
       <div className="text-center sticky top-0 bg-white w-full">
         <h1 className=" text-lg font-semibold">{jobList.label}</h1>
-        {jobs && (
+        {jobRanks && (
           <>
-            <p>{jobs?.length} Jobs</p>
+            <p>{jobRanks.length} Jobs</p>
             <button
               className="btn btn-ghost w-full text-gray-400 border-1 border-gray-300 text-2xl"
               onClick={() => toggleModal(jobList.id)}
@@ -94,7 +97,7 @@ export function JobListColumn(props: JobListColumnProps) {
           </>
         )}
       </div>
-      {jobsQuery.isError ? (
+      {jobRanksQuery.isError ? (
         errorAlert
       ) : (
         <div
@@ -119,7 +122,7 @@ function JobListTabContentError(p: { refetchFn: () => Promise<any> }) {
     <div className="alert alert-error text-center shadow-lg text-error-content">
       <p>
         <FontAwesomeIcon className="h-6" icon={faCircleXmark} />
-        Failed to load job list nav.
+        Failed to load jobs.
         <br />
       </p>
       <div className="flex-none">

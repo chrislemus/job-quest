@@ -34,7 +34,7 @@ export function UpdateJobLogForm(p: UpdateJobLogFormProps) {
     <form
       onSubmit={form.handleSubmit(async (data) => {
         await updateJobLogMutation.mutateAsync(
-          { jobLogId: p.jobLog.id, data },
+          { jobLogId: p.jobLog.id, jobId: p.jobLog.jobId, data },
           {
             onSuccess: () => {
               p.disableForm();

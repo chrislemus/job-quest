@@ -4,3 +4,4 @@ export * from './delete-job.hook';
 export * from './jobs.hook';
 export * from './job.hook';
 export * from './assign-job-list.hook';
+export * from './job-ranks-query.hook';

@@ -7,16 +7,25 @@ import { enqueueToast } from '@/app/dashboard/toast/toast.slice';
 import { jobLogsQueryKey } from './job-logs.hook';
 import { jobLogDataService } from '../services';
 
+export type DeleteJobLogVariables = {
+  jobLogId: string;
+  jobId: string;
+};
+
 export function useDeleteJobLog() {
   const dispatch = useAppDispatch();
 
-  const mutation = useMutation<JobLogItemDto, ApiErrorRes, string>({
-    mutationFn: (jobLogId) => {
-      return jobLogDataService.deleteJobLog(jobLogId);
+  const mutation = useMutation<
+    Pick<JobLogItemDto, 'id'>,
+    ApiErrorRes,
+    DeleteJobLogVariables
+  >({
+    mutationFn: ({ jobLogId, jobId }) => {
+      return jobLogDataService.deleteJobLog(jobLogId, jobId);
     },
-    onSuccess(jobLogData) {
+    onSuccess(_data, { jobId }) {
       queryClient.invalidateQueries({
-        queryKey: jobLogsQueryKey(jobLogData.jobId),
+        queryKey: jobLogsQueryKey(jobId),
       });
     },
     onError() {

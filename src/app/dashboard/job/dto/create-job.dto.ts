@@ -14,9 +14,9 @@ export type JobListRankDtoInput = z.input<typeof JobListRankDto>;
 export const CreateJobDto = JobDto.omit({
   id: true,
   userId: true,
-  jobListRank: true,
+  jobRank: true,
 }).extend({
-  jobListRank: JobListRankDto.optional(),
+  jobRank: JobListRankDto.optional(),
 });
 export type CreateJobDto = z.output<typeof CreateJobDto>;
 export type CreateJobDtoInput = z.input<typeof CreateJobDto>;

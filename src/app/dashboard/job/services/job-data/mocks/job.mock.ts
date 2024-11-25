@@ -13,7 +13,7 @@ export const jobMocks: JobDto[] = [
     description: 'great place to work',
     color: '#e91e63',
     userId: userProfileMock.id,
-    jobListRank: 'a',
+    jobRank: 'a',
     jobListId: jobListMocks[0].id,
   },
   {
@@ -25,7 +25,7 @@ export const jobMocks: JobDto[] = [
     salary: '120k',
     color: '#cddc39',
     userId: userProfileMock.id,
-    jobListRank: 'b',
+    jobRank: 'b',
     jobListId: jobListMocks[1].id,
   },
   {
@@ -34,7 +34,7 @@ export const jobMocks: JobDto[] = [
     company: 'WalBlue',
     color: '#009688',
     userId: userProfileMock.id,
-    jobListRank: 'c',
+    jobRank: 'c',
     jobListId: jobListMocks[2].id,
   },
   {
@@ -43,7 +43,7 @@ export const jobMocks: JobDto[] = [
     company: 'SmartPet',
     color: '#03a9f4',
     userId: userProfileMock.id,
-    jobListRank: 'd',
+    jobRank: 'd',
     jobListId: jobListMocks[3].id,
   },
 ];

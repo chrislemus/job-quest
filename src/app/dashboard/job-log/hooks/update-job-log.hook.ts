@@ -7,6 +7,7 @@ import { jobLogDataService, JobLogItemDto } from '../services';
 
 export type UpdateJobLogVariables = {
   jobLogId: string;
+  jobId: string;
   data: UpdateJobLogDto;
 };
 
@@ -17,7 +18,7 @@ export function useUpdateJobLog() {
     UpdateJobLogVariables
   >({
     mutationFn: (args) => {
-      return jobLogDataService.update(args.jobLogId, args.data);
+      return jobLogDataService.update(args.jobLogId, args.jobId, args.data);
     },
     onSuccess(newJobLogData) {
       queryClient.invalidateQueries({

@@ -20,7 +20,9 @@ module.exports = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://127.0.0.1:3000/:path*',
+        // destination: 'http://127.0.0.1:3000/:path*',
+        // destination: 'http://localhost:3005/:path*', // express server
+        destination: 'http://localhost:8787/:path*', // local server
       },
     ];
   },

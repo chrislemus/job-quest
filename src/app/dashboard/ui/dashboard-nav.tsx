@@ -41,17 +41,26 @@ export function DashboardNav() {
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
-          <div
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <div className="avatar placeholder ">
+              <div className="bg-neutral text-neutral-content w-8 rounded-full">
+                <span className="text-1xl">{userInitials}</span>
+              </div>
+            </div>
+          </div>
+          {/* <div
             tabIndex={0}
+            role="button"
             className="btn btn-ghost btn-circle avatar placeholder"
           >
             <div className="bg-blue-500 text-neutral-content rounded-full w-8">
               <span>{userInitials}</span>
             </div>
-          </div>
+          </div> */}
+
           <ul
             tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            className="dropdown-content menu rounded-box z-[1000] w-52 p-2 bg-base-100 shadow"
           >
             <li onClick={() => logoutStore.mutate()}>
               <a>Logout</a>
