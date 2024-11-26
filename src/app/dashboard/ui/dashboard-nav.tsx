@@ -29,7 +29,7 @@ export function DashboardNav() {
     <div className="navbar shadow-sm">
       <div className="flex-1">
         <Link
-          href="/dashboard"
+          href="/dashboard/job"
           className="text-primary text-xl font-semibold flex justify-center items-center gap-2"
         >
           <svg
