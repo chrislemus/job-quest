@@ -7,5 +7,7 @@ export function useOAuthConfig() {
     window.location.href = `${cognitoDomain}/logout?client_id=${client_id}`;
   };
   const redirect_uri = process.env.NEXT_PUBLIC_OAUTH_REDIRECT_URI;
-  return { client_id, authority, redirect_uri, signOutRedirect };
+  const config = { client_id, authority, redirect_uri, signOutRedirect };
+  console.log(config);
+  return config;
 }
