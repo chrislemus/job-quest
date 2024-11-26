@@ -4,6 +4,7 @@ import { useJobLogs } from '@/app/dashboard/job-log/hooks';
 import { JobLogContent } from './job-log-content';
 import { AddJobLogForm } from './add-job-log-form';
 import { JobLogItemDto } from '@/app/dashboard/job-log/services/job-log-data/dto/job-log.dto';
+import { useAuth } from 'react-oidc-context';
 
 type JobLogTabProps = {
   jobId: string;
@@ -33,15 +34,19 @@ export function JobLogTab(p: JobLogTabProps) {
 }
 
 function JobLogContainer(p: PropsWithChildren<{}>) {
-  const user = useUser();
-  const firstNameInitial = user.data?.firstName?.[0].toUpperCase() || '?';
+  const auth = useAuth();
+  const { user } = auth;
+  const fistInitial = user?.profile.name?.[0]?.toUpperCase() || '?';
+
+  // const user = useUser();
+  // const firstNameInitial = user.data?.firstName?.[0].toUpperCase() || '?';
 
   return (
     <div className="flex gap-2">
       <div>
         <div className="avatar placeholder">
           <div className=" bg-gray-300  text-white rounded-full w-6">
-            <span>{firstNameInitial}</span>
+            <span>{fistInitial}</span>
           </div>
         </div>
       </div>

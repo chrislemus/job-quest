@@ -1,5 +1,5 @@
 import { useOAuthConfig } from '@/app/auth/hooks';
-import { useMemo } from 'react';
+// import { useMemo } from 'react';
 import Link from 'next/link';
 import { useAuth } from 'react-oidc-context';
 import { useRouter } from 'next/navigation';
@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 export function DashboardNav() {
-  const auth = useAuth();
   const authConfig = useOAuthConfig();
+  const auth = useAuth();
   const { user } = auth;
 
   const router = useRouter();
@@ -17,13 +17,13 @@ export function DashboardNav() {
   const lastName = user?.profile.family_name;
   const fullName = `${firstName} ${lastName}`;
 
-  const userInitials = useMemo(() => {
-    const firstName = user?.profile.name?.[0];
-    const lastName = user?.profile.family_name?.[0];
-    if (firstName) {
-      return `${firstName}${lastName}`.toUpperCase();
-    }
-  }, [user]);
+  // const userInitials = useMemo(() => {
+  //   const firstName = user?.profile.name?.[0];
+  //   const lastName = user?.profile.family_name?.[0];
+  //   if (firstName) {
+  //     return `${firstName}${lastName}`.toUpperCase();
+  //   }
+  // }, [user]);
 
   return (
     <div className="navbar shadow-sm">
