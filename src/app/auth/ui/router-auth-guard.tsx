@@ -1,10 +1,9 @@
 'use client';
-import { usePathname, useRouter } from 'next/navigation';
-import { PropsWithChildren, useEffect, useState } from 'react';
-import { dashboardUrl } from '@/app/dashboard/constants';
+
+import { PropsWithChildren } from 'react';
 import { authSiteUrlConfig } from '@/app/auth/configs';
-import { useInterval } from 'react-use';
-import { authDataService } from '../services';
+import { AuthProvider } from 'react-oidc-context';
+import { useOAuthConfig } from '../hooks';
 
 export const intervalTime = 5000;
 export const authenticateUrls = new Set<string>([
@@ -16,31 +15,53 @@ export const authenticateUrls = new Set<string>([
  * Wraps child components and verifies if user has access to routes.
  */
 export function RouterAuthGuard(p: PropsWithChildren<{}>) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    authDataService.isAuthenticated()
+  const { client_id, authority, redirect_uri } = useOAuthConfig();
+
+  return (
+    <AuthProvider
+      scope="email openid phone"
+      response_type="code"
+      client_id={client_id}
+      authority={authority}
+      redirect_uri={redirect_uri}
+    >
+      <RouterAuthGuardInternal>{p.children}</RouterAuthGuardInternal>
+    </AuthProvider>
   );
-  useInterval(() => {
-    const latestAuthStatus = authDataService.isAuthenticated();
-    const authChanged = isAuthenticated !== latestAuthStatus;
-    // should only update once, when authentication changes.
-    // Else it will get stuck pushing the same url in a loop.
-    // an alternative would be to increase the interval time,
-    // yet this still won't account for slow connections.
-    if (authChanged) setIsAuthenticated(latestAuthStatus);
-  }, intervalTime);
+}
+export function RouterAuthGuardInternal(p: PropsWithChildren<{}>) {
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // console.log({ pathname });
 
-  useEffect(() => {
-    const inDashboard = pathname?.startsWith(dashboardUrl);
+  // if (!url) {
+  //   throw new Error('NEXT_PUBLIC_JOB_QUEST_API_ROOT_URL is not defined');
+  // }
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+  //   authDataService.isAuthenticated()
+  // );
+  // useInterval(() => {
+  //   const latestAuthStatus = authDataService.isAuthenticated();
+  //   const authChanged = isAuthenticated !== latestAuthStatus;
+  //   // should only update once, when authentication changes.
+  //   // Else it will get stuck pushing the same url in a loop.
+  //   // an alternative would be to increase the interval time,
+  //   // yet this still won't account for slow connections.
+  //   if (authChanged) setIsAuthenticated(latestAuthStatus);
+  // }, intervalTime);
 
-    if (isAuthenticated && !inDashboard) {
-      const shouldRedirect = authenticateUrls.has(pathname || '');
-      if (shouldRedirect) router?.push(dashboardUrl);
-    } else if (!isAuthenticated && inDashboard) {
-      router?.push(authSiteUrlConfig.login);
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   const inDashboard = pathname?.startsWith(dashboardUrl);
 
-  return <>{p.children}</>;
+  //   if (isAuthenticated && !inDashboard) {
+  //     const shouldRedirect = authenticateUrls.has(pathname || '');
+  //     if (shouldRedirect) router?.push(dashboardUrl);
+  //   } else if (!isAuthenticated && inDashboard) {
+  //     router?.push(authSiteUrlConfig.login);
+  //   }
+  // }, [isAuthenticated]);
+
+  return p.children;
 }
