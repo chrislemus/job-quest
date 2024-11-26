@@ -6,7 +6,7 @@ export default function App() {
 
   return (
     <div className="bg-base-200 min-h-screen">
-      <div className="container mx-auto px-5 pt-16 max-w-5xl">
+      <div className="container mx-auto px-5 pt-16 pb-32 max-w-5xl">
         <div className="flex flex-col md:flex-row bg-base-100 shadow-lg rounded-lg overflow-hidden">
           {/* Card Left */}
           <div className="w-full md:w-1/2 py-10 px-5 bg-gradient-to-r from-blue-500 to-cyan-500">
