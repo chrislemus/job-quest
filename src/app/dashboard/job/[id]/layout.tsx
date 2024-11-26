@@ -8,7 +8,7 @@ export default function JobLayout(p: PropsWithChildren<{}>) {
   const router = useRouter();
 
   return (
-    <div className="container mx-auto min-h-screen px-4">
+    <div className="container mx-auto min-h-screen pb-24 px-4">
       <div className="grid grid-cols-1 gap-4">
         <div>
           <button
