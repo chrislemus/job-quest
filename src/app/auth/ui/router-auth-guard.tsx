@@ -1,9 +1,11 @@
 'use client';
 
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { authSiteUrlConfig } from '@/app/auth/configs';
-import { AuthProvider } from 'react-oidc-context';
+import { AuthProvider, useAuth } from 'react-oidc-context';
 import { useOAuthConfig } from '../hooks';
+import { usePathname, useRouter } from 'next/navigation';
+import { dashboardUrl } from '@/app/dashboard/constants';
 
 export const intervalTime = 5000;
 export const authenticateUrls = new Set<string>([
@@ -19,7 +21,7 @@ export function RouterAuthGuard(p: PropsWithChildren<{}>) {
 
   return (
     <AuthProvider
-      scope="email openid phone"
+      scope="email openid phone profile"
       response_type="code"
       client_id={client_id}
       authority={authority}
@@ -30,10 +32,35 @@ export function RouterAuthGuard(p: PropsWithChildren<{}>) {
   );
 }
 export function RouterAuthGuardInternal(p: PropsWithChildren<{}>) {
-  // const router = useRouter();
-  // const pathname = usePathname();
-  // console.log({ pathname });
+  const router = useRouter();
+  const pathname = usePathname();
+  const auth = useAuth();
+  const { isAuthenticated, isLoading } = auth;
 
+  useEffect(() => {
+    if (isLoading) return;
+    const inDashboard = pathname?.startsWith(dashboardUrl);
+    if (isAuthenticated && !inDashboard) {
+      router.push(`${dashboardUrl}/job`);
+    } else if (!isAuthenticated && inDashboard) {
+      router.push('/');
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto flex justify-center pt-24">
+        <div className="flex flex-col">
+          <div className="flex justify-center">
+            <span className="loading loading-spinner loading-lg text-primary"></span>
+          </div>
+          <div className="pt-6">
+            <p className="text-2xl">Loading</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   // if (!url) {
   //   throw new Error('NEXT_PUBLIC_JOB_QUEST_API_ROOT_URL is not defined');
   // }
@@ -53,7 +80,7 @@ export function RouterAuthGuardInternal(p: PropsWithChildren<{}>) {
   // }, intervalTime);
 
   // useEffect(() => {
-  //   const inDashboard = pathname?.startsWith(dashboardUrl);
+  // const inDashboard = pathname?.startsWith(dashboardUrl);
 
   //   if (isAuthenticated && !inDashboard) {
   //     const shouldRedirect = authenticateUrls.has(pathname || '');

@@ -110,8 +110,8 @@ export function JobCard(props: JobCardProps) {
         <div className="flex">
           <div className="flex-1 cursor-pointer text-left p-5 ">
             <p className="font-bold">{job.title} </p>
-            <p className="font-bold">{job.jobRank} </p>
             <p>{job.company}</p>
+            <p className=" text-sm">{job.jobRank} </p>
           </div>
         </div>
       </Link>

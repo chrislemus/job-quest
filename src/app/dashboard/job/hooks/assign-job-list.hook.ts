@@ -10,7 +10,6 @@ export function useAssignJobList() {
   const dispatch = useAppDispatch();
 
   return (jobId: string, jobListData: jobListData) => {
-    console.log('useAssignJobList', jobListData);
     return editJobMutation
       .mutateAsync({
         jobId,

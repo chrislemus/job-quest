@@ -18,7 +18,6 @@ export function useUpdateJob() {
     },
     onMutate: async ({ jobId, data }) => {
       const oldJob = getJobData(jobId);
-      console.log({ oldJob });
       if (oldJob) {
         const { jobRank, ...resData } = data;
         const newJob: JobDto = { ...oldJob, ...resData };
@@ -88,7 +87,6 @@ async function updateJobListsData(
   setJob: SetVersion,
   jobVersions: JobVersions
 ) {
-  console.log({ jobVersions, setJob });
   const { oldJob, newJob } = jobVersions;
   const jobToSet = { ...jobVersions[setJob] };
 
@@ -96,7 +94,6 @@ async function updateJobListsData(
   const jobListsUpdates = uniqueList([oldJob.jobListId, newJob.jobListId]);
   const jobListChanged = jobListsUpdates.length > 1;
 
-  console.log({ jobListChanged, jobListsUpdates });
   return Promise.all(
     // Job Lists Updates
     jobListsUpdates.map(async (jobListId) => {

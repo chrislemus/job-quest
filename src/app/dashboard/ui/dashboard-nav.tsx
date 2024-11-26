@@ -1,19 +1,29 @@
-import { useLogout } from '@/app/auth/hooks';
-import { useUser } from '@/app/user/hooks';
+import { useOAuthConfig } from '@/app/auth/hooks';
 import { useMemo } from 'react';
 import Link from 'next/link';
+import { useAuth } from 'react-oidc-context';
+import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 export function DashboardNav() {
-  const user = useUser();
-  const logoutStore = useLogout();
+  const auth = useAuth();
+  const authConfig = useOAuthConfig();
+  const { user } = auth;
+
+  const router = useRouter();
+
+  const firstName = user?.profile.name;
+  const lastName = user?.profile.family_name;
+  const fullName = `${firstName} ${lastName}`;
 
   const userInitials = useMemo(() => {
-    const first = user.data?.firstName?.[0];
-    const last = user.data?.lastName?.[0];
-    if (first) {
-      return `${first}${last}`.toUpperCase();
+    const firstName = user?.profile.name?.[0];
+    const lastName = user?.profile.family_name?.[0];
+    if (firstName) {
+      return `${firstName}${lastName}`.toUpperCase();
     }
-  }, [user.data]);
+  }, [user]);
 
   return (
     <div className="navbar shadow-sm">
@@ -40,29 +50,30 @@ export function DashboardNav() {
         </Link>
       </div>
       <div className="flex-none">
+        <div className="pr-3">Welcome, {fullName}</div>
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <FontAwesomeIcon icon={faBars} className="w-4 h-4" />
+            {/* 
             <div className="avatar placeholder ">
               <div className="bg-neutral text-neutral-content w-8 rounded-full">
                 <span className="text-1xl">{userInitials}</span>
               </div>
-            </div>
+            </div> */}
           </div>
-          {/* <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar placeholder"
-          >
-            <div className="bg-blue-500 text-neutral-content rounded-full w-8">
-              <span>{userInitials}</span>
-            </div>
-          </div> */}
 
           <ul
             tabIndex={0}
             className="dropdown-content menu rounded-box z-[1000] w-52 p-2 bg-base-100 shadow"
           >
-            <li onClick={() => logoutStore.mutate()}>
+            <li
+              onClick={() => {
+                auth.signoutSilent().then(() => {
+                  auth.removeUser();
+                  authConfig.signOutRedirect();
+                });
+              }}
+            >
               <a>Logout</a>
             </li>
           </ul>

@@ -11,7 +11,6 @@ export function useCreateJob() {
     mutationFn: jobDataService.createJob,
 
     onSuccess(res) {
-      console.log({ res });
       queryClient.invalidateQueries({
         refetchType: 'all',
         queryKey: jobQueryKey(res.id),

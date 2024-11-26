@@ -18,7 +18,6 @@ export function useSignUp(): UseMutationResult<
     mutationFn: (user: UserSignUpDto) => authDataService.signup({ body: user }),
     gcTime: 0,
     onSuccess: () => {
-      console.log('onSuccess!');
       router.push(dashboardUrl);
     },
   });

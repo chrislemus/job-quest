@@ -1,8 +1,12 @@
+'use client';
 import axios, { AxiosError, AxiosRequestHeaders } from 'axios';
 import { authLocalStore } from '@/app/auth/services/auth-data/auth-local-store.service';
 import { authDataService } from '@/app/auth/services';
 import { authDataApiUrlConstant } from '@/app/auth/services/auth-data/auth-data-api-url.constant';
 import { jobQuestApiConfig } from '@/core/configs';
+import { useAuth } from 'react-oidc-context';
+import { UserManager } from 'oidc-client-ts';
+import { getAccessTokenSync } from '@/app/auth/hooks';
 
 /**
  * Job Quest API Http instance.
@@ -34,7 +38,16 @@ jobQuestHttpService.interceptors.request.use((config) => {
     return config;
   }
 
-  const accessToken = authLocalStore.getTokens()?.accessToken;
+  // todo: clean up
+  // todo: clean up
+  // todo: clean up
+  // todo: clean up
+  // todo: clean up
+  // const accessToken2 = sessionStorage.getItem(
+  //   'oidc.user:https://cognito-idp.us-east-1.amazonaws.com/us-east-1_daITR6Exc:2piuenoc83o5anoshl7f9bv8fr'
+  // );
+  const accessToken = getAccessTokenSync();
+
   if (accessToken) {
     if (!config.headers) config['headers'] = {} as AxiosRequestHeaders;
     config.headers['Authorization'] = `Bearer ${accessToken}`;
